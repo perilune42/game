@@ -36,64 +36,68 @@ public class PlayerControl : MonoBehaviour
     }
     public void SetCurrentAction(PlayerAction newAction, bool keep = false)
     {
-        pendingDirection = null;
-        selectedShip.positionPreview.Hide();
-        if (tempColoredCells != null) 
-        { 
-        foreach (var cell in tempColoredCells)
+        if (newAction != currentAction)
         {
-            cell.ColorDefault();
-        }
-        }
-        tempColoredCells.Clear();
-        if (currentAction != newAction && currentAction != PlayerAction.None && !keep) //switching between actions
-        {
-            selectedShip.speed = prevSpeed; //reset previews
-            selectedShip.moveDir = prevMoveDir;
-            selectedShip.GetNextTile();
+            pendingDirection = null;
             selectedShip.positionPreview.Hide();
-        }
-        if (newAction == PlayerAction.None)
-        {
-            actionLabel.text = "";
-
-        }
-        if (newAction == PlayerAction.Pass)
-        {
-            actionLabel.text = "Pass";
-            selectedShip.positionPreview.PreviewAt(selectedShip.GetNextTile(), selectedShip.headingDir);
-            tempColoredCells.Add(hexGrid.GetCellAtPos(selectedShip.GetNextTile()));
-        }
-        if (newAction == PlayerAction.Rotate)
-        {
-            actionLabel.text = "Rotate";
-
-            tempColoredCells.Add(hexGrid.GetCellAtPos(HexVector.FromDirection(HexDirection.N) + selectedShip.pos));
-            tempColoredCells.Add(hexGrid.GetCellAtPos(HexVector.FromDirection(HexDirection.NE) + selectedShip.pos));
-            tempColoredCells.Add(hexGrid.GetCellAtPos(HexVector.FromDirection(HexDirection.SE) + selectedShip.pos));
-            tempColoredCells.Add(hexGrid.GetCellAtPos(HexVector.FromDirection(HexDirection.S) + selectedShip.pos));
-            tempColoredCells.Add(hexGrid.GetCellAtPos(HexVector.FromDirection(HexDirection.SW) + selectedShip.pos));
-            tempColoredCells.Add(hexGrid.GetCellAtPos(HexVector.FromDirection(HexDirection.NW) + selectedShip.pos));
-
-            foreach (var cell in tempColoredCells)
+            if (tempColoredCells != null)
             {
-                cell.ColorHighlight();
+                foreach (var cell in tempColoredCells)
+                {
+                    cell.ColorDefault();
+                }
             }
-            
-        }
-        if (newAction == PlayerAction.Boost && currentAction != PlayerAction.Boost)
-        {
-            actionLabel.text = "Boost";
-            selectedShip.Boost(selectedShip.accel);
-            selectedShip.positionPreview.PreviewAt(selectedShip.GetNextTile(), selectedShip.headingDir);
-            tempColoredCells.Add(hexGrid.GetCellAtPos(selectedShip.GetNextTile()));
-            foreach (var cell in tempColoredCells)
+            tempColoredCells.Clear();
+            if (currentAction != newAction && currentAction != PlayerAction.None && !keep) //switching between actions
             {
-                cell.ColorHighlight();
+                selectedShip.speed = prevSpeed; //reset previews
+                selectedShip.moveDir = prevMoveDir;
+                selectedShip.GetNextTile();
+                selectedShip.positionPreview.Hide();
             }
+            if (newAction == PlayerAction.None)
+            {
+                actionLabel.text = "";
+
+            }
+            if (newAction == PlayerAction.Pass)
+            {
+                actionLabel.text = "Pass";
+                selectedShip.positionPreview.PreviewAt(selectedShip.GetNextTile(), selectedShip.headingDir);
+                tempColoredCells.Add(hexGrid.GetCellAtPos(selectedShip.GetNextTile()));
+            }
+            if (newAction == PlayerAction.Rotate)
+            {
+                actionLabel.text = "Rotate";
+
+                tempColoredCells.Add(hexGrid.GetCellAtPos(HexVector.FromDirection(HexDirection.N) + selectedShip.pos));
+                tempColoredCells.Add(hexGrid.GetCellAtPos(HexVector.FromDirection(HexDirection.NE) + selectedShip.pos));
+                tempColoredCells.Add(hexGrid.GetCellAtPos(HexVector.FromDirection(HexDirection.SE) + selectedShip.pos));
+                tempColoredCells.Add(hexGrid.GetCellAtPos(HexVector.FromDirection(HexDirection.S) + selectedShip.pos));
+                tempColoredCells.Add(hexGrid.GetCellAtPos(HexVector.FromDirection(HexDirection.SW) + selectedShip.pos));
+                tempColoredCells.Add(hexGrid.GetCellAtPos(HexVector.FromDirection(HexDirection.NW) + selectedShip.pos));
+
+                foreach (var cell in tempColoredCells)
+                {
+                    cell.ColorHighlight();
+                }
+
+            }
+            if (newAction == PlayerAction.Boost && currentAction != PlayerAction.Boost)
+            {
+                actionLabel.text = "Boost";
+                selectedShip.Boost(selectedShip.accel);
+                selectedShip.positionPreview.PreviewAt(selectedShip.GetNextTile(), selectedShip.headingDir);
+                tempColoredCells.Add(hexGrid.GetCellAtPos(selectedShip.GetNextTile()));
+                foreach (var cell in tempColoredCells)
+                {
+                    cell.ColorHighlight();
+                }
+            }
+
+            hexGrid.hexMesh.RecolorMesh();
+            currentAction = newAction;
         }
-        hexGrid.hexMesh.RecolorMesh();
-        currentAction = newAction;
     }
 
     public void InteractCell(HexCoordinates coordinates)
