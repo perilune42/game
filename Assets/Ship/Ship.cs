@@ -24,18 +24,23 @@ public class Ship : MonoBehaviour
     public HexCell cell;
     HexCoordinates nextTile;
     PathShower pathShower;
+    ObjectMover objectMover;
 
     float slowThreshold = 1f;
     float fastThreshold = 2f;
     float turningFactor = 0.5f;
 
-
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
         hexGrid = GetComponentInParent<HexGrid>();
         pathShower = GetComponentInChildren<PathShower>();
         positionPreview = GetComponentInChildren<PositionPreview>();
+        objectMover = GetComponent<ObjectMover>();
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
         cell = hexGrid.GetCellAtPos(pos);
         cell.containedShip = this;
         transform.position = cell.transform.position;
@@ -101,7 +106,7 @@ public class Ship : MonoBehaviour
                 }
                 else if (moveDir - headingDir == 2 || moveDir - headingDir == -4) //CCW 120 deg
                 {
-                    moveDir = (HexDirection)((int)(moveDir - 1) % 6);
+                    moveDir = (HexDirection)((int)(moveDir + 5) % 6);
                     speed = accel;
                 }
             }
@@ -157,7 +162,8 @@ public class Ship : MonoBehaviour
         cell.containedShip = this;
 
         Debug.Log("Ship Moved");
-        transform.position = cell.transform.position;
+        //transform.position = cell.transform.position;
+        objectMover.MoveTo(pos);
         GetNextTile();
         actions--;
     }

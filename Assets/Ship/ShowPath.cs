@@ -25,8 +25,18 @@ public class PathShower : MonoBehaviour
         
     }
 
+    public void Hide()
+    {
+        lineRenderer.enabled = false;
+    }
+    public void UnHide()
+    {
+        lineRenderer.enabled = true;
+    }
+
     public void Show(HexCoordinates nextTile)
     {
+        
         lineRenderer.SetPosition(0, ship.transform.position);
         lineRenderer.SetPosition(1, hexGrid.GetCellAtPos(nextTile).transform.position);
         if (ship.GetSpeedLevel() == 1 ) lineRenderer.material = speed1;
