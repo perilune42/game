@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="Assets\Grid\HexMesh.cs" />
     <Compile Include="Assets\ObjectMover.cs" />
+    <Compile Include="Assets\AnimConfig.cs" />
     <Compile Include="Assets\Ship\ShowPath.cs" />
     <Compile Include="Assets\DebugScript.cs" />
     <Compile Include="Assets\Teams.cs" />
@@ -78,11 +79,11 @@
     <Compile Include="Assets\PositionPreview.cs" />
     <Compile Include="Assets\Grid\HexMetrics.cs" />
     <Compile Include="Assets\Popup.cs" />
+    <Compile Include="Assets\CamMover.cs" />
     <Compile Include="Assets\DestroySelf.cs" />
     <Compile Include="Assets\Grid\HexCoordinates.cs" />
     <Compile Include="Assets\Grid\HexGrid.cs" />
     <Compile Include="Assets\ActionHandler\PlayerAction.cs" />
-    <Compile Include="Assets\GlobalConfig.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

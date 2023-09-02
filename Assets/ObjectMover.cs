@@ -7,7 +7,7 @@ public class ObjectMover : MonoBehaviour
     HexCoordinates destination;
     Vector3 targetPos;
     HexGrid hexGrid;
-    GlobalConfig config;
+    AnimConfig config;
     PathShower pathShower;
     Ship ship;
     Vector3 velocity = Vector3.zero;
@@ -18,7 +18,7 @@ public class ObjectMover : MonoBehaviour
     void Awake()
     {
         hexGrid = FindAnyObjectByType<HexGrid>();
-        config = FindObjectOfType<GlobalConfig>();
+        config = FindObjectOfType<AnimConfig>();
         pathShower = GetComponentInChildren<PathShower>();
         ship = GetComponent<Ship>();
     }
@@ -38,8 +38,7 @@ public class ObjectMover : MonoBehaviour
         {
             isMoving = false;
             delta = -1;
-            pathShower.UnHide();
-            pathShower.Show(ship.GetNextTile());
+            ship.PostMove();
         }
         prevPos = transform.position;
     }

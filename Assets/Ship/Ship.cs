@@ -192,6 +192,15 @@ public class Ship : MonoBehaviour
         
     }
 
+    public void PostMove()
+    {
+        pathShower.UnHide();
+        pathShower.Show(GetNextTile());
+        cell = hexGrid.GetCellAtPos(pos);
+        cell.ColorSelectShip();
+        hexGrid.hexMesh.RecolorMesh();
+    }
+
     void UpdatePath()
     {
 

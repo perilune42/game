@@ -16,6 +16,7 @@ public class PlayerControl : MonoBehaviour
     List<HexCell> tempColoredCells = new List<HexCell>();
     public ShipList shipList;
     public TurnHandler turnHandler;
+    CamMover camMover;
 
     HexDirection? pendingDirection;
     int prevSpeed;
@@ -27,6 +28,7 @@ public class PlayerControl : MonoBehaviour
         prevMoveDir = selectedShip.moveDir;
         hexGrid = FindObjectOfType<HexGrid>();
         turnHandler = FindObjectOfType<TurnHandler>();
+        camMover = FindObjectOfType<CamMover>();   
     }
 
     public void Init()
@@ -200,10 +202,12 @@ public class PlayerControl : MonoBehaviour
             prevMoveDir = selectedShip.moveDir;
             HexCell cell = hexGrid.GetCellAtPos(ship.pos);
             cell.ColorSelectShip();
+            camMover.MoveTo(cell.transform.position);
             if (lastSelectedCell != null && lastSelectedCell.coordinates != cell.coordinates) lastSelectedCell.ColorDefault();
             lastSelectedCell = cell;
             shipList.UpdateCards();
             hexGrid.hexMesh.RecolorMesh();
+            
         }
     }
 
@@ -225,8 +229,9 @@ public class PlayerControl : MonoBehaviour
     {
         hexGrid.GetCellAtPos(ship.pos).ColorDefault();
         ship.UseAction(actions);
-        hexGrid.GetCellAtPos(ship.pos).ColorSelectShip();
+        
         lastSelectedCell = hexGrid.GetCellAtPos(ship.pos);
+        hexGrid.hexMesh.RecolorMesh();
     }
 
     // Start is called before the first frame update
