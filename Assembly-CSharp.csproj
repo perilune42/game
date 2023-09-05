@@ -58,10 +58,12 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.8f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Ship\Weapon.cs" />
     <Compile Include="Assets\Grid\HexMesh.cs" />
     <Compile Include="Assets\ObjectMover.cs" />
     <Compile Include="Assets\AllUnitList.cs" />
     <Compile Include="Assets\AnimConfig.cs" />
+    <Compile Include="Assets\WeaponButton.cs" />
     <Compile Include="Assets\Ship\ShowPath.cs" />
     <Compile Include="Assets\DebugScript.cs" />
     <Compile Include="Assets\Teams.cs" />
@@ -71,6 +73,7 @@
     <Compile Include="Assets\Grid\HexDirections.cs" />
     <Compile Include="Assets\ActionHandler\PlayerControl.cs" />
     <Compile Include="Assets\ActionHandler\InputHandler.cs" />
+    <Compile Include="Assets\Ship\WeaponType.cs" />
     <Compile Include="Assets\ShipCard.cs" />
     <Compile Include="Assets\ShipList.cs" />
     <Compile Include="Assets\Grid\HexCell.cs" />
@@ -81,6 +84,7 @@
     <Compile Include="Assets\Grid\HexMetrics.cs" />
     <Compile Include="Assets\Popup.cs" />
     <Compile Include="Assets\CamMover.cs" />
+    <Compile Include="Assets\WeaponList.cs" />
     <Compile Include="Assets\DestroySelf.cs" />
     <Compile Include="Assets\Grid\HexCoordinates.cs" />
     <Compile Include="Assets\Grid\HexGrid.cs" />

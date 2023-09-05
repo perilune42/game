@@ -16,7 +16,8 @@ public class ShipCard : MonoBehaviour
 
     public void SetPosition(int pos)
     {
-        transform.localPosition = new Vector3(gameObject.GetComponent<RectTransform>().rect.width / 2, -(gameObject.GetComponent<RectTransform>().rect.height + vertSpacing) * pos, 0);
+        RectTransform rectTransform = GetComponent<RectTransform>();
+        rectTransform.anchoredPosition = new Vector2(0, -(gameObject.GetComponent<RectTransform>().rect.height + vertSpacing) * pos);
     }
 
     // Start is called before the first frame update

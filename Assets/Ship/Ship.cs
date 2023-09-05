@@ -22,6 +22,8 @@ public class Ship : MonoBehaviour
 
     public ShipHealth shipHealth;
 
+    public Weapon[] weapons;
+
     HexGrid hexGrid;
     [HideInInspector]
     public HexCell cell;
@@ -40,6 +42,7 @@ public class Ship : MonoBehaviour
         positionPreview = GetComponentInChildren<PositionPreview>();
         objectMover = GetComponent<ObjectMover>();
         shipHealth = GetComponent<ShipHealth>();
+        weapons = GetComponentsInChildren<Weapon>();
     }
 
     // Start is called before the first frame update

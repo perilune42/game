@@ -16,6 +16,7 @@ public class PlayerControl : MonoBehaviour
     List<HexCell> tempColoredCells = new List<HexCell>();
     public ShipList shipList;
     public TurnHandler turnHandler;
+    WeaponList weaponList;
     CamMover camMover;
 
     Ship targetedShip;
@@ -32,6 +33,7 @@ public class PlayerControl : MonoBehaviour
         hexGrid = FindObjectOfType<HexGrid>();
         turnHandler = FindObjectOfType<TurnHandler>();
         camMover = FindObjectOfType<CamMover>();   
+        weaponList = FindObjectOfType<WeaponList>();
     }
 
     public void Init()
@@ -228,7 +230,7 @@ public class PlayerControl : MonoBehaviour
             lastSelectedCell = cell;
             shipList.UpdateCards();
             hexGrid.hexMesh.RecolorMesh();
-            
+            weaponList.DisplayWeapons(ship);
         }
     }
 
