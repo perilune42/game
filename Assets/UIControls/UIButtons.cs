@@ -47,6 +47,14 @@ public class UIButtons : MonoBehaviour
         }
     }
 
+    public void Fire()
+    {
+        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(PlayerAction.TargetShip))
+        {
+            playerControl.SetCurrentAction(PlayerAction.TargetShip);
+        }
+    }
+
     public void EndTurn()
     {
         turnHandler.CycleTeam();

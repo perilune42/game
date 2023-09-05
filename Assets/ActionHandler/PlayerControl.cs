@@ -18,6 +18,9 @@ public class PlayerControl : MonoBehaviour
     public TurnHandler turnHandler;
     CamMover camMover;
 
+    Ship targetedShip;
+
+
     HexDirection? pendingDirection;
     int prevSpeed;
     HexDirection prevMoveDir;
@@ -97,6 +100,11 @@ public class PlayerControl : MonoBehaviour
                 }
             }
 
+            if (newAction == PlayerAction.TargetShip)
+            {
+                actionLabel.text = "Fire";
+            }
+
             hexGrid.hexMesh.RecolorMesh();
             currentAction = newAction;
         }
@@ -144,6 +152,14 @@ public class PlayerControl : MonoBehaviour
                 }
                 break;
 
+            case PlayerAction.TargetShip:
+                if (coordinates != selectedShip.pos && hexGrid.GetCellAtPos(coordinates).containedShip != null)
+                {
+                    targetedShip = hexGrid.GetCellAtPos(coordinates).containedShip;
+                    actionLabel.text = "Targeting " + targetedShip.shipName;
+                }
+                break;
+
     }
     }
 
@@ -175,6 +191,11 @@ public class PlayerControl : MonoBehaviour
                 SetCurrentAction(PlayerAction.None, true);
                 break;
             
+            case PlayerAction.TargetShip:
+                targetedShip.shipHealth.Damage(1);
+                SetCurrentAction(PlayerAction.None, true);
+                //UpdateShipPos(selectedShip);
+                break;
 
             
         }

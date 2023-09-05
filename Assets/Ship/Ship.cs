@@ -17,7 +17,10 @@ public class Ship : MonoBehaviour
     public int actions = 4;
     public string shipName = "Ship";
     public int id;
+    public int uid;
     public bool isSelected = false;
+
+    public ShipHealth shipHealth;
 
     HexGrid hexGrid;
     [HideInInspector]
@@ -36,6 +39,7 @@ public class Ship : MonoBehaviour
         pathShower = GetComponentInChildren<PathShower>();
         positionPreview = GetComponentInChildren<PositionPreview>();
         objectMover = GetComponent<ObjectMover>();
+        shipHealth = GetComponent<ShipHealth>();
     }
 
     // Start is called before the first frame update
@@ -185,6 +189,8 @@ public class Ship : MonoBehaviour
             case PlayerAction.None:
                 return actions > 0;
             case PlayerAction.Pass:
+                return actions > 0;
+            case PlayerAction.TargetShip:
                 return actions > 0;
             default:
                 return false;

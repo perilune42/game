@@ -8,6 +8,7 @@ public class ShipCard : MonoBehaviour
 {
     public TMP_Text shipNameLabel;
     public TMP_Text actionsLabel;
+    public TMP_Text healthLabel;
     public Ship ship;
     public int vertSpacing = 10;
     public ShipList shipList;
@@ -30,7 +31,8 @@ public class ShipCard : MonoBehaviour
     }
     public void UpdateLabels()
     {
-        actionsLabel.text = ship.actions.ToString();
+        actionsLabel.text = ship.actions.ToString() + " / 4";
+        healthLabel.text = ship.shipHealth.health.ToString() + " / " + ship.shipHealth.maxHealth.ToString();
     }
     public void SetActive(bool active)
     {

@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="Assets\Grid\HexMesh.cs" />
     <Compile Include="Assets\ObjectMover.cs" />
+    <Compile Include="Assets\AllUnitList.cs" />
     <Compile Include="Assets\AnimConfig.cs" />
     <Compile Include="Assets\Ship\ShowPath.cs" />
     <Compile Include="Assets\DebugScript.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Assets\DestroySelf.cs" />
     <Compile Include="Assets\Grid\HexCoordinates.cs" />
     <Compile Include="Assets\Grid\HexGrid.cs" />
+    <Compile Include="Assets\Ship\ShipHealth.cs" />
     <Compile Include="Assets\ActionHandler\PlayerAction.cs" />
   </ItemGroup>
   <ItemGroup>
