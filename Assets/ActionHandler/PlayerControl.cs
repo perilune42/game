@@ -229,9 +229,11 @@ public class PlayerControl : MonoBehaviour
     {
         hexGrid.GetCellAtPos(ship.pos).ColorDefault();
         ship.UseAction(actions);
-        
+        //if (actions > 0 && ship.speed > 0) camMover.Track(selectedShip.transform);
+
         lastSelectedCell = hexGrid.GetCellAtPos(ship.pos);
         hexGrid.hexMesh.RecolorMesh();
+        
     }
 
     // Start is called before the first frame update
