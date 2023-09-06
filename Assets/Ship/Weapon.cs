@@ -8,6 +8,12 @@ public class Weapon : MonoBehaviour
     public WeaponType type = WeaponType.Direct;
     public string weaponName = "weapon";
 
+    public void Shoot(Ship ship)
+    {
+        ship.shipHealth.Damage(damage);
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {

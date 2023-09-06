@@ -11,12 +11,16 @@ public class WeaponButton : MonoBehaviour
     public int horizSpacing = 10;
     public Weapon weapon;
     RectTransform rectTransform;
+    UIButtons buttonController;
+    Button button;
 
 
     // Start is called before the first frame update
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
+        buttonController = FindObjectOfType<UIButtons>();
+        button = GetComponent<Button>();
     }
 
     public void SetPosition(int pos)
@@ -27,7 +31,10 @@ public class WeaponButton : MonoBehaviour
     public void Init()
     {
         weaponNameLabel.text = weapon.weaponName;
+        button.onClick.AddListener(() => buttonController.SelectWeapon(weapon));
     }
+
+
    /* public void SetActive(bool active)
     {
         if (active)

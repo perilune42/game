@@ -49,15 +49,23 @@ public class UIButtons : MonoBehaviour
 
     public void Fire()
     {
-        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(PlayerAction.TargetShip))
+        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(PlayerAction.DirectTargetShip))
         {
-            playerControl.SetCurrentAction(PlayerAction.TargetShip);
+            playerControl.SetCurrentAction(PlayerAction.DirectTargetShip);
         }
     }
 
     public void EndTurn()
     {
         turnHandler.CycleTeam();
+    }
+
+    public void SelectWeapon(Weapon weapon)
+    {
+        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(PlayerAction.DirectTargetShip))
+        {
+            playerControl.SetCurrentAction(PlayerAction.DirectTargetShip, false, weapon);
+        }
     }
 
     

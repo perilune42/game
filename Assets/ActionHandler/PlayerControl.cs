@@ -10,7 +10,8 @@ public class PlayerControl : MonoBehaviour
     public PlayerAction currentAction = PlayerAction.None;
     //public PlayerAction pendingAction = PlayerAction.None;
     public Ship selectedShip;
-    public TMP_Text actionLabel;
+    [SerializeField]
+    TMP_Text actionLabel;
     HexGrid hexGrid;
     public HexCell lastSelectedCell = null;
     List<HexCell> tempColoredCells = new List<HexCell>();
@@ -20,6 +21,7 @@ public class PlayerControl : MonoBehaviour
     CamMover camMover;
 
     Ship targetedShip;
+    Weapon selectedWeapon;
 
 
     HexDirection? pendingDirection;
@@ -41,9 +43,9 @@ public class PlayerControl : MonoBehaviour
         SwitchShip(0);
         //turnHandler.Init();
     }
-    public void SetCurrentAction(PlayerAction newAction, bool keep = false)
+    public void SetCurrentAction(PlayerAction newAction, bool keep = false, Weapon weapon = null) //keep: keeping any changes to speed and direction
     {
-        if (newAction != currentAction)
+        if ((newAction != currentAction || weapon != null))
         {
             pendingDirection = null;
             selectedShip.positionPreview.Hide();
@@ -102,15 +104,19 @@ public class PlayerControl : MonoBehaviour
                 }
             }
 
-            if (newAction == PlayerAction.TargetShip)
+
+            if (newAction == PlayerAction.DirectTargetShip)
             {
-                actionLabel.text = "Fire";
+                actionLabel.text = "Firing " + weapon.weaponName;
+                selectedWeapon = weapon;
+
             }
 
             hexGrid.hexMesh.RecolorMesh();
             currentAction = newAction;
         }
     }
+
 
     public void InteractCell(HexCoordinates coordinates)
     {
@@ -154,7 +160,7 @@ public class PlayerControl : MonoBehaviour
                 }
                 break;
 
-            case PlayerAction.TargetShip:
+            case PlayerAction.DirectTargetShip:
                 if (coordinates != selectedShip.pos && hexGrid.GetCellAtPos(coordinates).containedShip != null)
                 {
                     targetedShip = hexGrid.GetCellAtPos(coordinates).containedShip;
@@ -193,8 +199,8 @@ public class PlayerControl : MonoBehaviour
                 SetCurrentAction(PlayerAction.None, true);
                 break;
             
-            case PlayerAction.TargetShip:
-                targetedShip.shipHealth.Damage(1);
+            case PlayerAction.DirectTargetShip:
+                selectedWeapon.Shoot(targetedShip);
                 SetCurrentAction(PlayerAction.None, true);
                 //UpdateShipPos(selectedShip);
                 break;

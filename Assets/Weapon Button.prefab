@@ -270,5 +270,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponNameLabel: {fileID: 4482216457394517440}
   horizSpacing: 10
-  image: {fileID: 0}
   weapon: {fileID: 0}

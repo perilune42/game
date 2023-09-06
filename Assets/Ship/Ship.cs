@@ -193,7 +193,7 @@ public class Ship : MonoBehaviour
                 return actions > 0;
             case PlayerAction.Pass:
                 return actions > 0;
-            case PlayerAction.TargetShip:
+            case PlayerAction.DirectTargetShip:
                 return actions > 0;
             default:
                 return false;
