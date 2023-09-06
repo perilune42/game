@@ -11,7 +11,7 @@ public class UIButtons : MonoBehaviour
 
     private void Awake()
     {
-        playerControl = FindObjectOfType<PlayerControl>();
+        playerControl = PlayerControl.Instance;
         turnHandler = FindObjectOfType<TurnHandler>();
     }
 

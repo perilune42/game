@@ -9,7 +9,7 @@ public class ShipList : MonoBehaviour
     public List<Ship> ships;
     public List<ShipCard> shipCards;
     public ShipCard shipCardPrefab;
-    public PlayerControl playerControl;
+    PlayerControl playerControl;
 
     public Team team;
 
@@ -18,7 +18,7 @@ public class ShipList : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     { 
-        playerControl = FindObjectOfType<PlayerControl>();
+        playerControl = PlayerControl.Instance;
         allShips = FindObjectsOfType<Ship>().ToList<Ship>();
         int i = 0;
         foreach (Ship ship in allShips)

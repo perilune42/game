@@ -7,13 +7,15 @@ using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
 {
+    public static PlayerControl Instance;
+
     public PlayerAction currentAction = PlayerAction.None;
     //public PlayerAction pendingAction = PlayerAction.None;
     public Ship selectedShip;
     [SerializeField]
     TMP_Text actionLabel;
     HexGrid hexGrid;
-    public HexCell lastSelectedCell = null;
+    HexCell lastSelectedCell = null;
     List<HexCell> tempColoredCells = new List<HexCell>();
     public ShipList shipList;
     public TurnHandler turnHandler;
@@ -30,6 +32,10 @@ public class PlayerControl : MonoBehaviour
 
     void Awake()
     {
+        if(Instance == null)
+        {
+            Instance = this;
+        }
         prevSpeed = selectedShip.speed;
         prevMoveDir = selectedShip.moveDir;
         hexGrid = FindObjectOfType<HexGrid>();

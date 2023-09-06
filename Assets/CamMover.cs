@@ -5,8 +5,6 @@ using UnityEngine;
 public class CamMover : MonoBehaviour
 {
     Vector3 targetPos;
-    
-    AnimConfig config;
 
     Vector3 velocity = Vector3.zero;
     public bool isMoving = false;
@@ -19,7 +17,7 @@ public class CamMover : MonoBehaviour
     // Start is called efore the first frame update
     void Awake()
     {
-        config = FindObjectOfType<AnimConfig>();
+
     }
 
     // Update is called once per frame
@@ -33,7 +31,7 @@ public class CamMover : MonoBehaviour
         }
         if (targetPos != null && isMoving)
         {
-            transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref velocity, config.camAnimAccel * speedModifier);
+            transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref velocity, AnimConfig.camAnimAccel * speedModifier);
             delta = Mathf.Abs((transform.position - prevPos).magnitude);
         }
 

@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class AnimConfig : MonoBehaviour
 {
-    public float moveAnimAccel = 1;
-    public float maxMoveSpeed = 1;
+    [SerializeField]
+    public static float moveAnimAccel = 0.2f;
+    public static float maxMoveSpeed = 2;
 
-    public float camAnimAccel = 1;
-    public float camMaxMoveSpeed = 1;
+    public static float camAnimAccel = 0.1f;
+    public static float camMaxMoveSpeed = 1;
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Events;
 
 public class InputHandler : MonoBehaviour
 {
@@ -10,15 +11,18 @@ public class InputHandler : MonoBehaviour
     HexCoordinates lastCellPos = new HexCoordinates(0,0);
     HexCoordinates coordinates = new HexCoordinates(0, 0);
 
+    public UnityEvent TriggerCycleShip;
+
     Ship ship;
     PlayerControl playerControl;
     TurnHandler turnHandler;
     // Start is called before the first frame update
     void Awake()
     {
-        playerControl = FindObjectOfType<PlayerControl>();
+        playerControl = PlayerControl.Instance;
         ship = playerControl.selectedShip;
         turnHandler = FindObjectOfType<TurnHandler>();
+        
     }
 
     // Update is called once per frame
@@ -58,7 +62,7 @@ public class InputHandler : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            playerControl.CycleShip();
+            TriggerCycleShip.Invoke();
         }
         if (Input.GetKeyDown(KeyCode.Return))
         {

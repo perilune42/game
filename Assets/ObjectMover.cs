@@ -7,7 +7,6 @@ public class ObjectMover : MonoBehaviour
     HexCoordinates destination;
     Vector3 targetPos;
     HexGrid hexGrid;
-    AnimConfig config;
     PathShower pathShower;
     Ship ship;
     Vector3 velocity = Vector3.zero;
@@ -18,7 +17,6 @@ public class ObjectMover : MonoBehaviour
     void Awake()
     {
         hexGrid = FindAnyObjectByType<HexGrid>();
-        config = FindObjectOfType<AnimConfig>();
         pathShower = GetComponentInChildren<PathShower>();
         ship = GetComponent<Ship>();
     }
@@ -30,7 +28,7 @@ public class ObjectMover : MonoBehaviour
         if (destination != null && isMoving)
         {
             targetPos = hexGrid.GetCellAtPos(destination).transform.position;
-            transform.position = VectorMin(Vector3.SmoothDamp(transform.position, targetPos, ref velocity, config.moveAnimAccel), Vector3.MoveTowards(transform.position, targetPos, config.maxMoveSpeed));
+            transform.position = VectorMin(Vector3.SmoothDamp(transform.position, targetPos, ref velocity, AnimConfig.moveAnimAccel), Vector3.MoveTowards(transform.position, targetPos, AnimConfig.maxMoveSpeed));
             delta = Mathf.Abs((transform.position - prevPos).magnitude);
         }
         

@@ -7,12 +7,10 @@ public class AllUnitList : MonoBehaviour
 {
     public List<Ship> allShips;
 
-    public PlayerControl playerControl;
 
     // Start is called before the first frame update
     void Start()
     {
-        //playerControl = FindObjectOfType<PlayerControl>();
         allShips = FindObjectsOfType<Ship>().ToList<Ship>();
         int i = 0;
         foreach (Ship ship in allShips)
