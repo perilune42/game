@@ -10,6 +10,10 @@ public class WeaponList : MonoBehaviour
     public WeaponButton weaponButtonPrefab;
     List<WeaponButton> buttons = new List<WeaponButton>();
 
+    private void Awake()
+    {
+        GameEvents.instance.onDisplayWeapons += DisplayWeapons;
+    }
 
 
     // Start is called before the first frame update

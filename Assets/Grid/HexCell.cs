@@ -56,8 +56,5 @@ public class HexCell : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }

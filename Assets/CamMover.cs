@@ -17,7 +17,7 @@ public class CamMover : MonoBehaviour
     // Start is called efore the first frame update
     void Awake()
     {
-
+        GameEvents.instance.onCamMoveTo += MoveTo;
     }
 
     // Update is called once per frame

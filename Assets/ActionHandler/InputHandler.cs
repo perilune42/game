@@ -95,7 +95,8 @@ public class InputHandler : MonoBehaviour
             if (hexGrid.GetCellAtPos(lastCellPos).color == hexGrid.hoverColor) hexGrid.GetCellAtPos(lastCellPos).RevertColor();
             lastCellPos = coordinates;
         }
-        hexMesh.RecolorMesh();
+        //hexMesh.RecolorMesh();
+        GameEvents.instance.RecolorMesh();
     }
     void InputClick(Vector3 position)
     {

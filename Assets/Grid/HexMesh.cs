@@ -5,6 +5,8 @@ using System.Collections.Generic;
 public class HexMesh : MonoBehaviour {
 
 	Mesh hexMesh;
+
+    [SerializeField]
 	HexGrid hexGrid;
 	List<Vector3> vertices;
 	List<int> triangles;
@@ -13,6 +15,7 @@ public class HexMesh : MonoBehaviour {
 	List<Color> colors;
 	public PlayerControl playerControl;
 
+    int triggerCount = 0;
     void Awake () {
 		GetComponent<MeshFilter>().mesh = hexMesh = new Mesh();
         meshCollider = gameObject.AddComponent<MeshCollider>();
@@ -20,9 +23,29 @@ public class HexMesh : MonoBehaviour {
 		vertices = new List<Vector3>();
         colors = new List<Color>();
         triangles = new List<int>();
-		hexGrid = GetComponentInParent<HexGrid>();
-		hexMesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32; 
-	}
+		hexMesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
+        
+    }
+
+    private void Start()
+    {
+        GameEvents.instance.onRecolorMesh += RecolorMesh;
+    }
+
+    void Update()
+    {
+
+
+    }
+
+    public void CheckNull()
+    {
+        if (hexGrid == null)
+        {
+            Debug.LogError("hexGrid nulled.");
+
+        }
+    }
 
     public void Triangulate () {
 		HexCell[] cells = hexGrid.cells;
@@ -61,18 +84,31 @@ public class HexMesh : MonoBehaviour {
         hexMesh.colors = colors.ToArray();
     }
 
-    public void RecolorMesh()
+    private void RecolorMesh()
     {
-		//Triangulate();
+        // Check if hexGrid is null before accessing its properties
+        if (hexGrid == null)
+        {
+            //Debug.LogError("hexGrid is null.");
+            return;
+        }
 
         colors.Clear();
-        
-        for (int i = 0; i < hexGrid.cells.Length; i++)
+
+        for (int i = 0; i < hexGrid.height * hexGrid.width; i++)
         {
             for (int j = 0; j < 6; j++)
             {
-				AddTriangleColor(hexGrid.cells[i].color);
-			}
+                // Check if hexGrid.cells[i] is null before accessing its color property
+                if (hexGrid.cells[i] != null)
+                {
+                    AddTriangleColor(hexGrid.cells[i].color);
+                }
+                else
+                {
+                    Debug.LogWarning("hexGrid.cells[" + i + "] is null.");
+                }
+            }
         }
 
         hexMesh.colors = colors.ToArray();

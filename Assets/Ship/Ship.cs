@@ -207,7 +207,7 @@ public class Ship : MonoBehaviour
         pathShower.Show(GetNextTile());
         cell = hexGrid.GetCellAtPos(pos);
         cell.ColorSelectShip();
-        hexGrid.hexMesh.RecolorMesh();
+        GameEvents.instance.RecolorMesh();
     }
 
     void UpdatePath()

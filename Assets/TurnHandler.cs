@@ -11,10 +11,12 @@ public class TurnHandler : MonoBehaviour
     public TMP_Text teamLabel;
     PlayerControl playerControl;
     ShipList[] shipLists;
-    private void Awake()
+    private void Start()
     {
-        playerControl = FindObjectOfType<PlayerControl>();
+        playerControl = PlayerControl.Instance;
         shipLists = FindObjectsOfType<ShipList>();
+        GameEvents.instance.onTurnEnd += CycleTeam;
+        GameEvents.instance.onTurnHandlerInit += Init;
     }
 
     public void CycleTeam()
@@ -70,10 +72,6 @@ public class TurnHandler : MonoBehaviour
             list.UpdateCards();
         }
         teamLabel.text = currentTeam.ToString();
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
     }
 
     // Update is called once per frame

@@ -13,14 +13,13 @@ public class PlayerControl : MonoBehaviour
     //public PlayerAction pendingAction = PlayerAction.None;
     public Ship selectedShip;
     [SerializeField]
-    TMP_Text actionLabel;
+    TMP_Text actionLabel;  //event
+    [SerializeField]
     HexGrid hexGrid;
     HexCell lastSelectedCell = null;
     List<HexCell> tempColoredCells = new List<HexCell>();
     public ShipList shipList;
-    public TurnHandler turnHandler;
     WeaponList weaponList;
-    CamMover camMover;
 
     Ship targetedShip;
     Weapon selectedWeapon;
@@ -38,9 +37,7 @@ public class PlayerControl : MonoBehaviour
         }
         prevSpeed = selectedShip.speed;
         prevMoveDir = selectedShip.moveDir;
-        hexGrid = FindObjectOfType<HexGrid>();
-        turnHandler = FindObjectOfType<TurnHandler>();
-        camMover = FindObjectOfType<CamMover>();   
+        //hexGrid = FindObjectOfType<HexGrid>();
         weaponList = FindObjectOfType<WeaponList>();
     }
 
@@ -101,7 +98,7 @@ public class PlayerControl : MonoBehaviour
             if (newAction == PlayerAction.Boost && currentAction != PlayerAction.Boost)
             {
                 actionLabel.text = "Boost";
-                selectedShip.Boost(selectedShip.accel);
+                selectedShip.Boost(selectedShip.accel);  //event
                 selectedShip.positionPreview.PreviewAt(selectedShip.GetNextTile(), selectedShip.headingDir);
                 tempColoredCells.Add(hexGrid.GetCellAtPos(selectedShip.GetNextTile()));
                 foreach (var cell in tempColoredCells)
@@ -118,7 +115,7 @@ public class PlayerControl : MonoBehaviour
 
             }
 
-            hexGrid.hexMesh.RecolorMesh();
+            //GameEvents.instance.RecolorMesh();
             currentAction = newAction;
         }
     }
@@ -217,9 +214,11 @@ public class PlayerControl : MonoBehaviour
         prevSpeed = selectedShip.speed;
         prevMoveDir = selectedShip.moveDir;
         selectedShip.positionPreview.Hide();
-        hexGrid.hexMesh.RecolorMesh();
         selectedShip.GetNextTile();
-        shipList.UpdateCards();
+
+       
+        //GameEvents.instance.RecolorMesh();
+        GameEvents.instance.UpdateShipCards();
     }
 
     public void CycleShip()
@@ -237,12 +236,16 @@ public class PlayerControl : MonoBehaviour
             prevMoveDir = selectedShip.moveDir;
             HexCell cell = hexGrid.GetCellAtPos(ship.pos);
             cell.ColorSelectShip();
-            camMover.MoveTo(cell.transform.position);
+
             if (lastSelectedCell != null && lastSelectedCell.coordinates != cell.coordinates) lastSelectedCell.ColorDefault();
             lastSelectedCell = cell;
             shipList.UpdateCards();
-            hexGrid.hexMesh.RecolorMesh();
-            weaponList.DisplayWeapons(ship);
+
+            GameEvents.instance.CamMoveTo(cell.transform.position);
+
+            GameEvents.instance.RecolorMesh();
+
+            GameEvents.instance.DisplayWeapons(ship);
         }
     }
 
@@ -267,7 +270,7 @@ public class PlayerControl : MonoBehaviour
         //if (actions > 0 && ship.speed > 0) camMover.Track(selectedShip.transform);
 
         lastSelectedCell = hexGrid.GetCellAtPos(ship.pos);
-        hexGrid.hexMesh.RecolorMesh();
+        GameEvents.instance.RecolorMesh();
         
     }
 

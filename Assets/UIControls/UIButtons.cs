@@ -7,12 +7,10 @@ public class UIButtons : MonoBehaviour
 
     public PlayerControl playerControl;
     public Canvas gridCanvas;
-    public TurnHandler turnHandler;
 
     private void Awake()
     {
         playerControl = PlayerControl.Instance;
-        turnHandler = FindObjectOfType<TurnHandler>();
     }
 
     public void Rotate()
@@ -57,7 +55,7 @@ public class UIButtons : MonoBehaviour
 
     public void EndTurn()
     {
-        turnHandler.CycleTeam();
+        GameEvents.instance.TurnEnd();
     }
 
     public void SelectWeapon(Weapon weapon)

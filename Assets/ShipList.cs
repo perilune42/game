@@ -39,7 +39,10 @@ public class ShipList : MonoBehaviour
                 i++;
             }
         }
-        playerControl.turnHandler.Init();
+
+        GameEvents.instance.TurnHandlerInit();
+
+        GameEvents.instance.onUpdateShipCards += UpdateCards;
     }
 
     public void UpdateCards()

@@ -29,11 +29,6 @@ public class HexGrid : MonoBehaviour
 		hexMesh.Triangulate();
 		hexLines.DrawGrid(this);
 	}
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
 	
 
