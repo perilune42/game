@@ -18,7 +18,7 @@ public class ShipList : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     { 
-        playerControl = PlayerControl.Instance;
+        playerControl = PlayerControl.instance;
         allShips = FindObjectsOfType<Ship>().ToList<Ship>();
         int i = 0;
         foreach (Ship ship in allShips)
@@ -42,7 +42,7 @@ public class ShipList : MonoBehaviour
 
         GameEvents.instance.TurnHandlerInit();
 
-        GameEvents.instance.onUpdateShipCards += UpdateCards;
+        GameEvents.instance.onUpdateUI += UpdateCards;
     }
 
     public void UpdateCards()

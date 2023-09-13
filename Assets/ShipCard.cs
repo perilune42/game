@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class ShipCard : MonoBehaviour
 {
     public TMP_Text shipNameLabel;
-    public TMP_Text actionsLabel;
-    public TMP_Text healthLabel;
+    [SerializeField] TMP_Text actionsLabel;
+    [SerializeField] TMP_Text healthLabel;
     public Ship ship;
     public int vertSpacing = 10;
     public ShipList shipList;
@@ -33,7 +34,7 @@ public class ShipCard : MonoBehaviour
     public void UpdateLabels()
     {
         actionsLabel.text = ship.actions.ToString() + " / 4";
-        healthLabel.text = ship.shipHealth.health.ToString() + " / " + ship.shipHealth.maxHealth.ToString();
+        healthLabel.text = ship.shipStatus.health.ToString() + " / " + ship.shipStatus.maxHealth.ToString();
     }
     public void SetActive(bool active)
     {

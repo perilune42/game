@@ -10,7 +10,7 @@ public class UIButtons : MonoBehaviour
 
     private void Awake()
     {
-        playerControl = PlayerControl.Instance;
+        playerControl = PlayerControl.instance;
     }
 
     public void Rotate()

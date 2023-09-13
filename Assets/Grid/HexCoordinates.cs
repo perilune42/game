@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [System.Serializable]
@@ -118,4 +119,22 @@ public struct HexCoordinates {
 	public string ToStringOnSeparateLines () {
 		return X.ToString()+ "\n" + Y.ToString() + "\n" + Z.ToString();
 	}
+
+    public override bool Equals(object obj)
+    {
+        return obj is HexCoordinates coordinates &&
+               x == coordinates.x &&
+               z == coordinates.z;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(x, z);
+    }
+
+    public static float Distance(HexCoordinates A, HexCoordinates B)
+    {
+        HexCoordinates vector = A - B;
+        return (Math.Abs(vector.X) + Math.Abs(vector.Y) + Math.Abs(vector.Z)) / 2;
+    }
 }

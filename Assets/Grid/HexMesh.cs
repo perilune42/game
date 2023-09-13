@@ -15,7 +15,6 @@ public class HexMesh : MonoBehaviour {
 	List<Color> colors;
 	public PlayerControl playerControl;
 
-    int triggerCount = 0;
     void Awake () {
 		GetComponent<MeshFilter>().mesh = hexMesh = new Mesh();
         meshCollider = gameObject.AddComponent<MeshCollider>();

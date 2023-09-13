@@ -45,11 +45,16 @@ public class GameEvents : MonoBehaviour
         if (onDisplayWeapons != null) onDisplayWeapons(ship);
     }
 
-    public event Action onUpdateShipCards;
-    public void UpdateShipCards()
+    public event Action onUpdateUI;
+    public void UpdateUI()
     {
-        if(onUpdateShipCards != null) onUpdateShipCards();
+        if(onUpdateUI != null) onUpdateUI();
     }
 
+    public event Action<string> onDisplayPopup;
+    public void DisplayPopup(string message)
+    {
+        if(onDisplayPopup != null) onDisplayPopup(message);
+    }
 
 }

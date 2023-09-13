@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
 {
-    public static PlayerControl Instance;
+    public static PlayerControl instance;
 
     public PlayerAction currentAction = PlayerAction.None;
     //public PlayerAction pendingAction = PlayerAction.None;
@@ -19,7 +19,6 @@ public class PlayerControl : MonoBehaviour
     HexCell lastSelectedCell = null;
     List<HexCell> tempColoredCells = new List<HexCell>();
     public ShipList shipList;
-    WeaponList weaponList;
 
     Ship targetedShip;
     Weapon selectedWeapon;
@@ -31,14 +30,13 @@ public class PlayerControl : MonoBehaviour
 
     void Awake()
     {
-        if(Instance == null)
+        if(instance == null)
         {
-            Instance = this;
+            instance = this;
         }
         prevSpeed = selectedShip.speed;
         prevMoveDir = selectedShip.moveDir;
         //hexGrid = FindObjectOfType<HexGrid>();
-        weaponList = FindObjectOfType<WeaponList>();
     }
 
     public void Init()
@@ -203,7 +201,8 @@ public class PlayerControl : MonoBehaviour
                 break;
             
             case PlayerAction.DirectTargetShip:
-                selectedWeapon.Shoot(targetedShip);
+                if (selectedWeapon is LaserWeapon laser) laser.ShootShip(targetedShip);
+                else if (selectedWeapon is KineticWeapon kinetic) kinetic.ShootShip(targetedShip);
                 SetCurrentAction(PlayerAction.None, true);
                 //UpdateShipPos(selectedShip);
                 break;
@@ -218,7 +217,7 @@ public class PlayerControl : MonoBehaviour
 
        
         //GameEvents.instance.RecolorMesh();
-        GameEvents.instance.UpdateShipCards();
+        GameEvents.instance.UpdateUI();
     }
 
     public void CycleShip()
@@ -244,8 +243,8 @@ public class PlayerControl : MonoBehaviour
             GameEvents.instance.CamMoveTo(cell.transform.position);
 
             GameEvents.instance.RecolorMesh();
-
             GameEvents.instance.DisplayWeapons(ship);
+            GameEvents.instance.UpdateUI();
         }
     }
 

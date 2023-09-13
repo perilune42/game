@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class TurnHandler : MonoBehaviour
@@ -11,12 +12,18 @@ public class TurnHandler : MonoBehaviour
     public TMP_Text teamLabel;
     PlayerControl playerControl;
     ShipList[] shipLists;
+    public static TurnHandler instance;
     private void Start()
     {
-        playerControl = PlayerControl.Instance;
+        playerControl = PlayerControl.instance;
         shipLists = FindObjectsOfType<ShipList>();
+
+        instance = this;
+
         GameEvents.instance.onTurnEnd += CycleTeam;
         GameEvents.instance.onTurnHandlerInit += Init;
+
+        GameEvents.instance.UpdateUI();
     }
 
     public void CycleTeam()

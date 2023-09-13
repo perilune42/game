@@ -20,9 +20,12 @@ public class Ship : MonoBehaviour
     public int uid;
     public bool isSelected = false;
 
-    public ShipHealth shipHealth;
+    public ShipStatus shipStatus;
 
     public Weapon[] weapons;
+
+    
+    
 
     HexGrid hexGrid;
     [HideInInspector]
@@ -41,7 +44,7 @@ public class Ship : MonoBehaviour
         pathShower = GetComponentInChildren<PathShower>();
         positionPreview = GetComponentInChildren<PositionPreview>();
         objectMover = GetComponent<ObjectMover>();
-        shipHealth = GetComponent<ShipHealth>();
+        shipStatus = GetComponent<ShipStatus>();
         weapons = GetComponentsInChildren<Weapon>();
     }
 
@@ -168,6 +171,11 @@ public class Ship : MonoBehaviour
         cell = hexGrid.GetCellAtPos(pos);
         cell.containedShip = this;
 
+        if(actions == 4)
+        {
+            shipStatus.HitProjectiles();
+        }
+
         Debug.Log("Ship Moved");
         //transform.position = cell.transform.position;
         objectMover.MoveTo(pos);
@@ -221,4 +229,6 @@ public class Ship : MonoBehaviour
         //Rotate(HexDirection.SE);
         //Debug.Log("Hello");
     }
+
+
 }

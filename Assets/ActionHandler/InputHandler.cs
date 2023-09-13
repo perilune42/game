@@ -19,9 +19,9 @@ public class InputHandler : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        playerControl = PlayerControl.Instance;
+        playerControl = PlayerControl.instance;
         ship = playerControl.selectedShip;
-        turnHandler = FindObjectOfType<TurnHandler>();
+        turnHandler = TurnHandler.instance;
         
     }
 
