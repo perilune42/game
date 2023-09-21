@@ -240,6 +240,8 @@ public class PlayerControl : MonoBehaviour
             lastSelectedCell = cell;
             shipList.UpdateCards();
 
+            SetCurrentAction(PlayerAction.None);
+
             GameEvents.instance.CamMoveTo(cell.transform.position);
 
             GameEvents.instance.RecolorMesh();

@@ -173,7 +173,7 @@ public class Ship : MonoBehaviour
 
         if(actions == 4)
         {
-            shipStatus.HitProjectiles();
+            shipStatus.RollProjectiles();
         }
 
         Debug.Log("Ship Moved");

@@ -60,9 +60,11 @@
   <ItemGroup>
     <Compile Include="Assets\Weapons\LaserWeapon.cs" />
     <Compile Include="Assets\GameEvents.cs" />
+    <Compile Include="Assets\ProjDisplayElement.cs" />
     <Compile Include="Assets\Grid\HexMesh.cs" />
     <Compile Include="Assets\ObjectMover.cs" />
     <Compile Include="Assets\Ship\TargetType.cs" />
+    <Compile Include="Assets\UIUtils.cs" />
     <Compile Include="Assets\AllUnitList.cs" />
     <Compile Include="Assets\AnimConfig.cs" />
     <Compile Include="Assets\WeaponButton.cs" />
@@ -81,6 +83,7 @@
     <Compile Include="Assets\Weapons\LaserWeaponSO.cs" />
     <Compile Include="Assets\ActionHandler\InputHandler.cs" />
     <Compile Include="Assets\ShipCard.cs" />
+    <Compile Include="Assets\IncomingProjectileDisplay.cs" />
     <Compile Include="Assets\ShipList.cs" />
     <Compile Include="Assets\Grid\HexCell.cs" />
     <Compile Include="Assets\UIControls\UIButtons.cs" />

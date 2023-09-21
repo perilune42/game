@@ -57,4 +57,16 @@ public class GameEvents : MonoBehaviour
         if(onDisplayPopup != null) onDisplayPopup(message);
     }
 
+    public event Action<bool> onFreezeProjDisplay;
+    public void FreezeProjDisplay(bool freeze)
+    {
+        if (onFreezeProjDisplay != null) onFreezeProjDisplay(freeze);
+    }
+
+    public event Action<KineticProjectile, bool> onUpdateProjDisplay;
+    public void UpdateProjDisplay(KineticProjectile projectile, bool hit)
+    {
+        if (onUpdateProjDisplay != null) onUpdateProjDisplay(projectile, hit);
+    }
+
 }

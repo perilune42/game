@@ -25,14 +25,11 @@ public class ShipStatus : MonoBehaviour
         incomingProjectiles.Add(projectile);
     }
 
-    public void HitProjectiles()
+    public void RollProjectiles()
     {
         foreach (KineticProjectile projectile in incomingProjectiles) {
-            if(projectile.RollForHit())
-            {
-                GameEvents.instance.DisplayPopup("Hit target");
-                projectile.Hit();
-            }
+            bool hit = projectile.RollForHit();
+            GameEvents.instance.UpdateProjDisplay(projectile, hit);
         }
         incomingProjectiles.Clear();
     }

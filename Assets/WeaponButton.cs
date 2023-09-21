@@ -25,7 +25,7 @@ public class WeaponButton : MonoBehaviour
 
     public void SetPosition(int pos)
     {
-        rectTransform.anchoredPosition = new Vector2( horizSpacing + (rectTransform.rect.width + horizSpacing) * pos, 0);
+        UIUtils.List(gameObject, pos, horizSpacing, Vector2.right, horizSpacing);
     }
 
     public void Init()

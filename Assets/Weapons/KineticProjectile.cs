@@ -1,17 +1,17 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class KineticProjectile
+public class KineticProjectile: MonoBehaviour
 {
     public int damage;
     public float accuracy;
     public float distance;
     Ship target;
 
-    public KineticProjectile (KineticWeapon origin, Ship target) 
+    public void Init (KineticWeapon origin, Ship target) 
     {
-        damage = origin.weaponData.damage;
-        accuracy = origin.weaponData.accuracy;
+        damage = origin.damage;
+        accuracy = origin.accuracy;
         distance = HexCoordinates.Distance(origin.ship.pos, target.pos);
         this.target = target;
     }
@@ -22,12 +22,15 @@ public class KineticProjectile
     }
     public bool RollForHit() 
     {
-        return Random.value <= ChanceToHit();
+        bool hit = Random.value <= ChanceToHit();
+        if (hit) Hit();
+        return hit;
     }
 
     public void Hit()
     {
-        target.shipStatus.Damage(damage);
-        //Destroyself
+        target.shipStatus.Damage(damage); 
+        
+        
     }
 }

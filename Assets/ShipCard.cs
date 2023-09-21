@@ -11,15 +11,9 @@ public class ShipCard : MonoBehaviour
     [SerializeField] TMP_Text actionsLabel;
     [SerializeField] TMP_Text healthLabel;
     public Ship ship;
-    public int vertSpacing = 10;
     public ShipList shipList;
     public Image image;
 
-    public void SetPosition(int pos)
-    {
-        RectTransform rectTransform = GetComponent<RectTransform>();
-        rectTransform.anchoredPosition = new Vector2(0, -(gameObject.GetComponent<RectTransform>().rect.height + vertSpacing) * pos);
-    }
 
     // Start is called before the first frame update
     void Start()

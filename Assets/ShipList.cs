@@ -31,7 +31,7 @@ public class ShipList : MonoBehaviour
                 card.transform.SetParent(transform, false);
                 card.ship = ship;
                 card.shipList = this;
-                card.SetPosition(i);
+                UIUtils.List(card.gameObject, i, 10, Vector2.down);
                 card.Init();
                 shipCards.Add(card);
                 
