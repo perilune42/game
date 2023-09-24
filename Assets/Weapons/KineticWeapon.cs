@@ -6,6 +6,8 @@ public class KineticWeapon : Weapon
     public KineticWeaponSO weaponData;
     public int damage, idealRange;
     public float accuracy;
+    ProjectileRenderer projectileAnimHandler;
+
     public override void Init()
     {
         type = TargetType.Kinetic;
@@ -13,6 +15,7 @@ public class KineticWeapon : Weapon
         damage = weaponData.damage;
         idealRange = weaponData.idealRange;
         accuracy = weaponData.accuracy;
+        projectileAnimHandler = GetComponent<ProjectileRenderer>();
     }
     public void ShootShip(Ship targetShip)
     {
@@ -33,6 +36,13 @@ public class KineticWeapon : Weapon
         {
             targetShip.shipStatus.AddProjectile(projectile);
         }
+        projectileAnimHandler.Shoot(targetShip.transform.position,weaponData.visualProjectilePrefab);
+        
+    }
+
+    public float ChanceToHit(Ship target)
+    {
+        return accuracy; //modifiers, range penalties
     }
 
 

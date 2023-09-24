@@ -16,3 +16,4 @@ MonoBehaviour:
   idealRange: 5
   accuracy: 0.9
   weaponName: Coilgun
+  visualProjectilePrefab: {fileID: 837092916497042348, guid: 2015fd137a790264c994cebbaf661755, type: 3}

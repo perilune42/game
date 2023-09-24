@@ -9,4 +9,5 @@ public class KineticWeaponSO : ScriptableObject
     public int idealRange = 5;
     public float accuracy = 0.9f;
     public string weaponName = "Kinetic";
+    public ProjectileTrail visualProjectilePrefab;
 }

@@ -7,18 +7,21 @@ public class KineticProjectile: MonoBehaviour
     public float accuracy;
     public float distance;
     Ship target;
+    KineticWeapon weapon;
 
     public void Init (KineticWeapon origin, Ship target) 
     {
+        this.weapon = origin;
         damage = origin.damage;
         accuracy = origin.accuracy;
         distance = HexCoordinates.Distance(origin.ship.pos, target.pos);
         this.target = target;
+        
     }
     
     public float ChanceToHit() //modifier 
     {
-        return accuracy;
+        return weapon.ChanceToHit(target);
     }
     public bool RollForHit() 
     {
