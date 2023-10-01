@@ -25,9 +25,12 @@ public class HexGrid : MonoBehaviour
     [HideInInspector]
     public HexCell[] cells;
 
+	public static HexGrid instance;
+
     void Start () {
 		hexMesh.Triangulate();
 		hexLines.DrawGrid(this);
+		instance = this;
 	}
 
 	

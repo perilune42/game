@@ -64,6 +64,7 @@ public class Ship : MonoBehaviour
     {
         headingDir = newHeading;
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, 60 * (int)headingDir, transform.rotation.eulerAngles.z);
+        UseAction(rotateSpeed);
     }
     public void Rotate(int newHeading)
     {
@@ -146,7 +147,7 @@ public class Ship : MonoBehaviour
 
     public HexCoordinates GetNextTile(int actions)
     {
-        nextTile = pos + HexVector.FromDirection(moveDir) * speed * actions;
+        nextTile = pos + HexCoordinates.FromDirection(moveDir) * speed * actions;
         pathShower.Show(nextTile);
         return nextTile;
     }
@@ -163,9 +164,14 @@ public class Ship : MonoBehaviour
         else return 3;
     }
 
-    public void UseAction()
+    public void Pass(int actions)
     {
-        pos = pos + HexVector.FromDirection(moveDir) * speed;
+        UseAction(actions);
+    }
+
+    void UseAction()
+    {
+        pos = pos + HexCoordinates.FromDirection(moveDir) * speed;
 
         cell.containedShip = null;
         cell = hexGrid.GetCellAtPos(pos);
@@ -178,9 +184,15 @@ public class Ship : MonoBehaviour
 
         Debug.Log("Ship Moved");
         //transform.position = cell.transform.position;
-        objectMover.MoveTo(pos);
+        
         GetNextTile();
+        pathShower.Hide();
         actions--;
+    }
+
+    public void TriggerMoveAnim()
+    {
+        objectMover.MoveTo(pos);
     }
     public void UseAction(int actions)
     {
@@ -189,6 +201,8 @@ public class Ship : MonoBehaviour
             UseAction();
         }
     }
+
+
 
     public bool ActionAvailable(PlayerAction action)
     {

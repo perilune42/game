@@ -16,4 +16,13 @@ public static class HexMetrics {
 		new Vector3(-outerRadius, 0f, 0),
 		new Vector3(-0.5f * outerRadius, 0f, innerRadius)
 	};
+
+    public static Vector3[] vectors = {
+        new Vector3(0f, 0f,innerRadius * 2), //N edge, clockwise
+		new Vector3(0.866025404f * innerRadius * 2, 0f, innerRadius),
+        new Vector3(0.866025404f * innerRadius * 2, 0f, -innerRadius),
+        new Vector3(0f, 0f, -innerRadius * 2),
+        new Vector3(-0.866025404f * innerRadius * 2, 0f, -innerRadius),
+        new Vector3(-0.866025404f * innerRadius * 2, 0f, innerRadius)
+    };
 }

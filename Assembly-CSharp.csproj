@@ -89,6 +89,7 @@
     <Compile Include="Assets\Grid\HexLines.cs" />
     <Compile Include="Assets\UI\ProjDisplayCard.cs" />
     <Compile Include="Assets\UI\FaceCamera.cs" />
+    <Compile Include="Assets\Grid\HexPatch.cs" />
     <Compile Include="Assets\ProjectileTrail.cs" />
     <Compile Include="Assets\Ship\ShipStatus.cs" />
     <Compile Include="Assets\UI\WeaponButton.cs" />

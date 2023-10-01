@@ -45,7 +45,6 @@ public class ObjectMover : MonoBehaviour
     {
         isMoving = true;
         destination = pos;
-        pathShower.Hide();
         //Debug.Log("moving to"  + pos.ToString());
     }
 

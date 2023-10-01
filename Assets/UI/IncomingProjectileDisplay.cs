@@ -28,7 +28,7 @@ public class IncomingProjectileDisplay : MonoBehaviour
             foreach (ProjDisplayCard card in cards)
             {
                 card.gameObject.SetActive(false);
-                Destroy(card.gameObject, 0.5f);
+                Destroy(card.gameObject, 2f);
             }
             cards.Clear();
             if (ship.shipStatus.incomingProjectiles.Count == 0)

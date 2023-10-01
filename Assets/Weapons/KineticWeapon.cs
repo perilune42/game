@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 public class KineticWeapon : Weapon
 {
@@ -7,6 +8,8 @@ public class KineticWeapon : Weapon
     public int damage, idealRange;
     public float accuracy;
     ProjectileRenderer projectileAnimHandler;
+
+    public LineRenderer lineRenderer;
 
     public override void Init()
     {
@@ -37,7 +40,6 @@ public class KineticWeapon : Weapon
             targetShip.shipStatus.AddProjectile(projectile);
         }
         projectileAnimHandler.Shoot(targetShip.transform.position,weaponData.visualProjectilePrefab);
-        
     }
 
     public float ChanceToHit(Ship target)
@@ -45,5 +47,17 @@ public class KineticWeapon : Weapon
         return accuracy; //modifiers, range penalties
     }
 
+    public void DisplayRange()
+    {
+        lineRenderer.positionCount = 0;
+        HexPatch rangeArea = new HexPatch(ship.pos, 5);
+        foreach (Vector3 vertex in rangeArea.GetRelativeOuterVertices())
+
+        {
+            lineRenderer.positionCount++;
+            lineRenderer.SetPosition(lineRenderer.positionCount - 1, vertex + ship.transform.position);
+        }
+
+    }
 
 }

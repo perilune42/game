@@ -40,10 +40,6 @@ public class InputHandler : MonoBehaviour
                 InputClick(hit.point);
             }
         }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            ship.UseAction();
-        }
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
             ship._Debug();

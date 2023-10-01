@@ -80,12 +80,12 @@ public class PlayerControl : MonoBehaviour
             {
                 actionLabel.text = "Rotate";
 
-                tempColoredCells.Add(hexGrid.GetCellAtPos(HexVector.FromDirection(HexDirection.N) + selectedShip.pos));
-                tempColoredCells.Add(hexGrid.GetCellAtPos(HexVector.FromDirection(HexDirection.NE) + selectedShip.pos));
-                tempColoredCells.Add(hexGrid.GetCellAtPos(HexVector.FromDirection(HexDirection.SE) + selectedShip.pos));
-                tempColoredCells.Add(hexGrid.GetCellAtPos(HexVector.FromDirection(HexDirection.S) + selectedShip.pos));
-                tempColoredCells.Add(hexGrid.GetCellAtPos(HexVector.FromDirection(HexDirection.SW) + selectedShip.pos));
-                tempColoredCells.Add(hexGrid.GetCellAtPos(HexVector.FromDirection(HexDirection.NW) + selectedShip.pos));
+                tempColoredCells.Add(hexGrid.GetCellAtPos(HexCoordinates.FromDirection(HexDirection.N) + selectedShip.pos));
+                tempColoredCells.Add(hexGrid.GetCellAtPos(HexCoordinates.FromDirection(HexDirection.NE) + selectedShip.pos));
+                tempColoredCells.Add(hexGrid.GetCellAtPos(HexCoordinates.FromDirection(HexDirection.SE) + selectedShip.pos));
+                tempColoredCells.Add(hexGrid.GetCellAtPos(HexCoordinates.FromDirection(HexDirection.S) + selectedShip.pos));
+                tempColoredCells.Add(hexGrid.GetCellAtPos(HexCoordinates.FromDirection(HexDirection.SW) + selectedShip.pos));
+                tempColoredCells.Add(hexGrid.GetCellAtPos(HexCoordinates.FromDirection(HexDirection.NW) + selectedShip.pos));
 
                 foreach (var cell in tempColoredCells)
                 {
@@ -131,12 +131,12 @@ public class PlayerControl : MonoBehaviour
 
                     HexCoordinates selectedDirection = coordinates - selectedShip.pos;
                     HexDirection? targetDirection;
-                    if (selectedDirection == HexVector.FromDirection(HexDirection.N)) targetDirection = HexDirection.N;
-                    else if (selectedDirection == HexVector.FromDirection(HexDirection.NE)) targetDirection = HexDirection.NE;
-                    else if (selectedDirection == HexVector.FromDirection(HexDirection.SE)) targetDirection = HexDirection.SE;
-                    else if (selectedDirection == HexVector.FromDirection(HexDirection.S)) targetDirection = HexDirection.S;
-                    else if (selectedDirection == HexVector.FromDirection(HexDirection.SW)) targetDirection = HexDirection.SW;
-                    else if (selectedDirection == HexVector.FromDirection(HexDirection.NW)) targetDirection = HexDirection.NW;
+                    if (selectedDirection == HexCoordinates.FromDirection(HexDirection.N)) targetDirection = HexDirection.N;
+                    else if (selectedDirection == HexCoordinates.FromDirection(HexDirection.NE)) targetDirection = HexDirection.NE;
+                    else if (selectedDirection == HexCoordinates.FromDirection(HexDirection.SE)) targetDirection = HexDirection.SE;
+                    else if (selectedDirection == HexCoordinates.FromDirection(HexDirection.S)) targetDirection = HexDirection.S;
+                    else if (selectedDirection == HexCoordinates.FromDirection(HexDirection.SW)) targetDirection = HexDirection.SW;
+                    else if (selectedDirection == HexCoordinates.FromDirection(HexDirection.NW)) targetDirection = HexDirection.NW;
                     else targetDirection = null;
 
                     if (targetDirection == pendingDirection && targetDirection != null) Confirm();
@@ -180,6 +180,7 @@ public class PlayerControl : MonoBehaviour
         switch (currentAction) {
             case PlayerAction.Pass:
                 {
+                    selectedShip.Pass(1);
                     UpdateShipPos(selectedShip);
                     SetCurrentAction(PlayerAction.None);
 
@@ -191,12 +192,13 @@ public class PlayerControl : MonoBehaviour
                 if (pendingDirection != null)
                 {
                     selectedShip.Rotate(pendingDirection ?? HexDirection.N);
-                    UpdateShipPos(selectedShip, selectedShip.rotateSpeed);
+                    UpdateShipPos(selectedShip);
                     SetCurrentAction(PlayerAction.None, true);
                 }
                 break;
 
             case PlayerAction.Boost:
+                selectedShip.Pass(1);
                 UpdateShipPos(selectedShip);
                 SetCurrentAction(PlayerAction.None, true);
                 break;
@@ -205,7 +207,8 @@ public class PlayerControl : MonoBehaviour
                 if (selectedWeapon is LaserWeapon laser) laser.ShootShip(targetedShip);
                 else if (selectedWeapon is KineticWeapon kinetic) kinetic.ShootShip(targetedShip);
                 SetCurrentAction(PlayerAction.None, true);
-                //UpdateShipPos(selectedShip);
+                selectedShip.Pass(1);
+                UpdateShipPos(selectedShip,0.3f);
                 break;
 
             
@@ -265,17 +268,24 @@ public class PlayerControl : MonoBehaviour
     }
 
 
-    void UpdateShipPos(Ship ship, int actions = 1)
+    void UpdateShipPos(Ship ship)
     {
-        hexGrid.GetCellAtPos(ship.pos).ColorDefault();
-        ship.UseAction(actions);
-        //if (actions > 0 && ship.speed > 0) camMover.Track(selectedShip.transform);
-
+        ship.TriggerMoveAnim();
+        lastSelectedCell.ColorDefault();
         lastSelectedCell = hexGrid.GetCellAtPos(ship.pos);
         GameEvents.instance.RecolorMesh();
-        
     }
 
+    void UpdateShipPos(Ship ship, float delay)
+    {
+        StartCoroutine(DelayUpdateShipPos(ship, delay));
+    }
+
+    IEnumerator DelayUpdateShipPos(Ship ship, float time)
+    {
+        yield return new WaitForSeconds(time);
+        UpdateShipPos(ship);
+    }
     // Start is called before the first frame update
 
     // Update is called once per frame
