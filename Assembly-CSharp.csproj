@@ -64,8 +64,10 @@
     <Compile Include="Assets\ObjectMover.cs" />
     <Compile Include="Assets\UI\ShipHud.cs" />
     <Compile Include="Assets\UI\ShipList.cs" />
+    <Compile Include="Assets\Weapons\WeaponInterfaces.cs" />
     <Compile Include="Assets\Ship\TargetType.cs" />
     <Compile Include="Assets\ProjectileRenderer.cs" />
+    <Compile Include="Assets\ProgressBar.cs" />
     <Compile Include="Assets\AnimConfig.cs" />
     <Compile Include="Assets\UI\Popup.cs" />
     <Compile Include="Assets\Starfield Skybox\Demo\Script\LookCamera.cs" />

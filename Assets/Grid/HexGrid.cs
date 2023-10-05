@@ -20,6 +20,9 @@ public class HexGrid : MonoBehaviour
     public Canvas gridCanvas;
 	[HideInInspector]
     public HexMesh hexMesh;
+
+	public LineRenderer weaponRangeDisplay;
+
 	HexLines hexLines;
 
     [HideInInspector]

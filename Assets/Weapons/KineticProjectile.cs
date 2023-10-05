@@ -12,7 +12,7 @@ public class KineticProjectile: MonoBehaviour
     public void Init (KineticWeapon origin, Ship target) 
     {
         this.weapon = origin;
-        damage = origin.damage;
+        damage = origin.CalculateDamage(target);
         accuracy = origin.accuracy;
         distance = HexCoordinates.Distance(origin.ship.pos, target.pos);
         this.target = target;

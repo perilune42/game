@@ -12,7 +12,7 @@ public abstract class Weapon : MonoBehaviour
     public TargetType type;
     
     public abstract void Init();
-    private void Awake()
+    private void Start()
     {
         Init();
         ship = GetComponentInParent<Ship>();

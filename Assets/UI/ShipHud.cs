@@ -14,6 +14,7 @@ public class ShipHud : MonoBehaviour
 
     [SerializeField] Color activeColor, inactiveColor, enemyColor;
     [SerializeField] Image hudBackground;
+    [SerializeField] ProgressBar healthBar;
 
     private void Start()
     {
@@ -35,6 +36,7 @@ public class ShipHud : MonoBehaviour
     void UpdateLabels()
     {
         healthLabel.text = ship.shipStatus.health.ToString() + "/" + ship.shipStatus.maxHealth;
+        healthBar.SetLevel((float)ship.shipStatus.health / ship.shipStatus.maxHealth);
         actionLabel.text = ship.actions.ToString();
 
         if (ship.team == TurnHandler.instance.currentTeam)

@@ -62,7 +62,7 @@ public struct HexPatch
                 outerVertices.Add(HexMetrics.vectors[dir] * radius + HexMetrics.vectors[(dir + 2) % 6] * i + HexMetrics.corners[(dir + 1) % 6]);
             }
         }
-
+        outerVertices.Add(HexMetrics.vectors[0] * radius + HexMetrics.corners[5]);
         return outerVertices.ToArray();
         
     }

@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79ad71ada2f18df4f9acff2d0ee2d1d4, type: 3}
   m_Name: IR Laser
   m_EditorClassIdentifier: 
-  damage: 1
-  fallOffRange: 1
+  damage: 5
+  fallOffRange: 3
+  fallOffRate: 0.5
   weaponName: Laser
+  visualProjectilePrefab: {fileID: 837092916497042348, guid: 8f4d60cede5faf3479980a97afb125db, type: 3}

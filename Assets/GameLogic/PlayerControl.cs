@@ -48,6 +48,8 @@ public class PlayerControl : MonoBehaviour
     {
         if ((newAction != currentAction || weapon != null))
         {
+            if (selectedWeapon is IRanged k) k.HideRange();
+            selectedWeapon = null;
             pendingDirection = null;
             selectedShip.positionPreview.Hide();
             if (tempColoredCells != null)
@@ -68,6 +70,8 @@ public class PlayerControl : MonoBehaviour
             if (newAction == PlayerAction.None)
             {
                 actionLabel.text = "";
+
+                
 
             }
             if (newAction == PlayerAction.Pass)
@@ -110,7 +114,7 @@ public class PlayerControl : MonoBehaviour
             {
                 actionLabel.text = "Firing " + weapon.weaponName;
                 selectedWeapon = weapon;
-
+                if (weapon is IRanged w) w.DisplayRange();
             }
 
             GameEvents.instance.RecolorMesh();
@@ -204,8 +208,7 @@ public class PlayerControl : MonoBehaviour
                 break;
             
             case PlayerAction.DirectTargetShip:
-                if (selectedWeapon is LaserWeapon laser) laser.ShootShip(targetedShip);
-                else if (selectedWeapon is KineticWeapon kinetic) kinetic.ShootShip(targetedShip);
+                if (selectedWeapon is ITargetsShip w) w.ShootShip(targetedShip);
                 SetCurrentAction(PlayerAction.None, true);
                 selectedShip.Pass(1);
                 UpdateShipPos(selectedShip,0.3f);

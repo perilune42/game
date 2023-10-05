@@ -63,7 +63,7 @@ public class UIButtons : MonoBehaviour
         if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(PlayerAction.DirectTargetShip))
         {
             playerControl.SetCurrentAction(PlayerAction.DirectTargetShip, false, weapon);
-            if (weapon is KineticWeapon kinetic) kinetic.DisplayRange();
+            
         }
     }
 

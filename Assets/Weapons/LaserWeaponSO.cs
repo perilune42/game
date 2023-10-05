@@ -7,5 +7,7 @@ public class LaserWeaponSO : ScriptableObject
 {
     public int damage = 1;
     public int fallOffRange = 1;
+    public float fallOffRate = 0.1f;
     public string weaponName = "Laser";
+    public ProjectileTrail visualProjectilePrefab;
 }
