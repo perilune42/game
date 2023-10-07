@@ -14,8 +14,6 @@ public class ProgressBar : MonoBehaviour
 
     public void SetLevel(float level)
     {
-        Debug.Log("Set Level To " + level);
-        Debug.Log("width = " + level * initialWidth);
         rectTransform.sizeDelta = new Vector2(level * initialWidth, rectTransform.rect.height);
     }
 }

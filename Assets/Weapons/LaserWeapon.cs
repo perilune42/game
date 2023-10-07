@@ -27,6 +27,7 @@ public class LaserWeapon : Weapon, IRanged, ITargetsShip
     public void ShootShip(Ship targetShip)
     {
         targetShip.shipStatus.Damage(CalculateDamage(targetShip));
+        GameEvents.instance.HitShip(targetShip, HitType.Hit, CalculateDamage(targetShip));
         projectileAnimHandler.Shoot(targetShip.transform.position, weaponData.visualProjectilePrefab);
     }
 

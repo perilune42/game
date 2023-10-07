@@ -27,13 +27,18 @@ public class KineticProjectile: MonoBehaviour
     {
         bool hit = Random.value <= ChanceToHit();
         if (hit) Hit();
+        else Miss();
         return hit;
     }
 
-    public void Hit()
+    private void Hit()
     {
-        target.shipStatus.Damage(damage); 
-        
-        
+        target.shipStatus.Damage(damage);
+        GameEvents.instance.HitShip(target, HitType.Hit, damage);
+    }
+
+    private void Miss()
+    {
+        GameEvents.instance.HitShip(target, HitType.Miss, 0);
     }
 }

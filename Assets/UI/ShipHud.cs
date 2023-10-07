@@ -11,8 +11,12 @@ public class ShipHud : MonoBehaviour
     TMP_Text healthLabel;
     [SerializeField]
     TMP_Text actionLabel;
+    [SerializeField]
+    TMP_Text damageLabel;
+    [SerializeField]
+    DamagePopupContainer damagePopupContainer;
 
-    [SerializeField] Color activeColor, inactiveColor, enemyColor;
+    [SerializeField] Color activeColor, inactiveColor, enemyActiveColor, enemyInactiveColor;
     [SerializeField] Image hudBackground;
     [SerializeField] ProgressBar healthBar;
 
@@ -20,6 +24,8 @@ public class ShipHud : MonoBehaviour
     {
         ship = GetComponentInParent<Ship>();
         GameEvents.instance.onUpdateUI += UpdateLabels;
+        GameEvents.instance.onPreviewDamage += PreviewDamage;
+        GameEvents.instance.onHitShip += DamagePopup;
     }
 
     /*private void Update()
@@ -33,6 +39,30 @@ public class ShipHud : MonoBehaviour
             hudBackground.enabled = true;
         }
     }*/
+    void DamagePopup(Ship ship, HitType hitType ,int value)
+    {
+        if (ship == this.ship)
+        {
+            damagePopupContainer.AddPopup(hitType, value);
+        }
+    }
+
+    void PreviewDamage(Ship ship, int damage)
+    {
+        if (ship == this.ship || ship == null)
+        {
+            if (damage > 0)
+            {
+                damageLabel.enabled = true;
+                damageLabel.text = (-damage).ToString();
+            }
+            else if (damage == 0)
+            {
+                damageLabel.enabled = false;
+            }
+        }
+    }
+
     void UpdateLabels()
     {
         healthLabel.text = ship.shipStatus.health.ToString() + "/" + ship.shipStatus.maxHealth;
@@ -44,7 +74,7 @@ public class ShipHud : MonoBehaviour
             if (ship.isSelected) hudBackground.color = activeColor;
             else hudBackground.color = inactiveColor;
         }
-        else { hudBackground.color = enemyColor; }
+        else { hudBackground.color = enemyInactiveColor; }
 
     }
 }

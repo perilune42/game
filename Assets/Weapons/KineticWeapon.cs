@@ -30,7 +30,6 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged
     {
         
         float distance = HexCoordinates.Distance(ship.pos, targetShip.pos);
-        Debug.Log(distance);
         GameObject projObject = new GameObject(weaponName + " projectile");
         KineticProjectile projectile = projObject.AddComponent<KineticProjectile>();
         projObject.transform.parent = targetShip.transform;

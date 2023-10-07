@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.UIElements;
 using UnityEngine;
 
 public class GameEvents : MonoBehaviour
@@ -13,6 +14,13 @@ public class GameEvents : MonoBehaviour
     {
         instance = this; 
     }
+
+    public event Action onDebug;
+    public void Debug()
+    {
+        if (onDebug != null) onDebug();
+    }
+
 
     public event Action onTurnEnd;
     public void TurnEnd()
@@ -69,4 +77,16 @@ public class GameEvents : MonoBehaviour
         if (onUpdateProjDisplay != null) onUpdateProjDisplay(projectile, hit);
     }
 
+    public event Action<Ship, int> onPreviewDamage;
+    public void PreviewDamage(Ship ship, int damage)
+    {
+        if (onPreviewDamage != null) onPreviewDamage(ship, damage);
+    }
+
+    public event Action<Ship, HitType, int> onHitShip;
+    public void HitShip(Ship ship, HitType hitType, int damage)
+    {
+        if (onHitShip != null) onHitShip(ship, hitType, damage);  
+    }
+    
 }

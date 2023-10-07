@@ -103,6 +103,7 @@
     <Compile Include="Assets\DestroySelf.cs" />
     <Compile Include="Assets\Grid\HexCoordinates.cs" />
     <Compile Include="Assets\Grid\HexGrid.cs" />
+    <Compile Include="Assets\DamagePopupContainer.cs" />
     <Compile Include="Assets\UI\WeaponList.cs" />
     <Compile Include="Assets\Weapons\KineticWeapon.cs" />
     <Compile Include="Assets\GameLogic\TurnHandler.cs" />

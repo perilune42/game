@@ -46,6 +46,7 @@ public class PlayerControl : MonoBehaviour
     }
     public void SetCurrentAction(PlayerAction newAction, bool keep = false, Weapon weapon = null) //keep: keeping any changes to speed and direction
     {
+        GameEvents.instance.PreviewDamage(null, 0);
         if ((newAction != currentAction || weapon != null))
         {
             if (selectedWeapon is IRanged k) k.HideRange();
@@ -168,9 +169,11 @@ public class PlayerControl : MonoBehaviour
             case PlayerAction.DirectTargetShip:
                 if (coordinates != selectedShip.pos && hexGrid.GetCellAtPos(coordinates).containedShip != null)
                 {
+                    GameEvents.instance.PreviewDamage(null, 0);
                     targetedShip = hexGrid.GetCellAtPos(coordinates).containedShip;
                     actionLabel.text = "Targeting " + targetedShip.shipName;
                     if (selectedWeapon is KineticWeapon kinetic) actionLabel.text += "\n" + UIUtils.ToPercent(kinetic.ChanceToHit(targetedShip));
+                    if (selectedWeapon is ITargetsShip w2) GameEvents.instance.PreviewDamage(targetedShip, w2.CalculateDamage(targetedShip));
                 }
                 break;
 

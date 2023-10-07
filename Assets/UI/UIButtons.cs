@@ -67,5 +67,9 @@ public class UIButtons : MonoBehaviour
         }
     }
 
+    public void Debug()
+    {
+        GameEvents.instance.Debug();
+    }
     
 }
