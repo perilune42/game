@@ -18,7 +18,7 @@ public class ShipHud : MonoBehaviour
 
     [SerializeField] Color activeColor, inactiveColor, enemyActiveColor, enemyInactiveColor;
     [SerializeField] Image hudBackground;
-    [SerializeField] ProgressBar healthBar;
+    [SerializeField] ProgressBar healthBar, healthBarPreview;
 
     private void Start()
     {
@@ -53,12 +53,15 @@ public class ShipHud : MonoBehaviour
         {
             if (damage > 0)
             {
+                healthBar.SetLevel(((float)ship.shipStatus.health - damage) / ship.shipStatus.maxHealth);
                 damageLabel.enabled = true;
                 damageLabel.text = (-damage).ToString();
             }
             else if (damage == 0)
             {
+                healthBar.SetLevel(((float)this.ship.shipStatus.health) / this.ship.shipStatus.maxHealth);
                 damageLabel.enabled = false;
+
             }
         }
     }
@@ -67,6 +70,7 @@ public class ShipHud : MonoBehaviour
     {
         healthLabel.text = ship.shipStatus.health.ToString() + "/" + ship.shipStatus.maxHealth;
         healthBar.SetLevel((float)ship.shipStatus.health / ship.shipStatus.maxHealth);
+        healthBarPreview.SetLevel((float)ship.shipStatus.health / ship.shipStatus.maxHealth);
         actionLabel.text = ship.actions.ToString();
 
         if (ship.team == TurnHandler.instance.currentTeam)

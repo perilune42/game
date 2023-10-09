@@ -67,6 +67,14 @@ public class UIButtons : MonoBehaviour
         }
     }
 
+    public void Evade()
+    {
+        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(PlayerAction.Evade))
+        {
+            playerControl.SetCurrentAction(PlayerAction.Evade);
+        }
+    }
+
     public void Debug()
     {
         GameEvents.instance.Debug();

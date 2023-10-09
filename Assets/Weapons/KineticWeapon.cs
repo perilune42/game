@@ -10,7 +10,7 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged
 
     public KineticWeaponSO weaponData;
     public int damage, idealRange;
-    public float accuracy;
+    public float accuracy, evasionPenaltyPerCell;
     ProjectileRenderer projectileAnimHandler;
     LineRenderer lineRenderer;
 
@@ -23,6 +23,7 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged
         damage = weaponData.damage;
         idealRange = weaponData.idealRange;
         accuracy = weaponData.accuracy;
+        evasionPenaltyPerCell = weaponData.evasionPenaltyPerCell;
         projectileAnimHandler = GetComponent<ProjectileRenderer>();
         lineRenderer = HexGrid.instance.weaponRangeDisplay;
     }

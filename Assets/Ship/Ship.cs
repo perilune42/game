@@ -217,6 +217,8 @@ public class Ship : MonoBehaviour
                 return actions > 0;
             case PlayerAction.DirectTargetShip:
                 return actions > 0;
+            case PlayerAction.Evade:
+                return actions == 4;
             default:
                 return false;
         }

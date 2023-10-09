@@ -34,5 +34,6 @@ public class ProjDisplayCard : MonoBehaviour
 
         GameEvents.instance.FreezeProjDisplay(false);
         GameEvents.instance.UpdateUI();
+        Destroy(gameObject);
     }
 }

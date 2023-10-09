@@ -1,4 +1,4 @@
 public enum PlayerAction
 {
-    None, Rotate, Boost, Pass, DirectTargetShip
+    None, Rotate, Boost, Pass, Evade, DirectTargetShip
 }

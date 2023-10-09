@@ -283,7 +283,7 @@ GameObject:
   - component: {fileID: 3343982759218219628}
   - component: {fileID: 8852647280287744100}
   m_Layer: 5
-  m_Name: Projectile Instance
+  m_Name: Projectile Card
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

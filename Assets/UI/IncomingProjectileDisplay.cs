@@ -27,7 +27,7 @@ public class IncomingProjectileDisplay : MonoBehaviour
             ship = PlayerControl.instance.selectedShip;
             foreach (ProjDisplayCard card in cards)
             {
-                card.gameObject.SetActive(false);
+                card.enabled = false;
                 Destroy(card.gameObject, 2f);
             }
             cards.Clear();
@@ -37,11 +37,6 @@ public class IncomingProjectileDisplay : MonoBehaviour
                 return;
             }
             gameObject.SetActive(true);
-
-
-            
-            
-
 
 
             int i = 0;

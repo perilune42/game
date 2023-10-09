@@ -9,6 +9,8 @@ public class ShipStatus : MonoBehaviour
     public int health = 20;
     public int maxHealth = 20;
 
+    public bool isEvading = false;
+
     public List<KineticProjectile> incomingProjectiles = new List<KineticProjectile>();
     void Awake()
     {
@@ -33,4 +35,6 @@ public class ShipStatus : MonoBehaviour
         }
         incomingProjectiles.Clear();
     }
+
+    
 }

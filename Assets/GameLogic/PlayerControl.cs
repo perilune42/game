@@ -47,6 +47,8 @@ public class PlayerControl : MonoBehaviour
     public void SetCurrentAction(PlayerAction newAction, bool keep = false, Weapon weapon = null) //keep: keeping any changes to speed and direction
     {
         GameEvents.instance.PreviewDamage(null, 0);
+        selectedShip.shipStatus.isEvading = false;
+
         if ((newAction != currentAction || weapon != null))
         {
             if (selectedWeapon is IRanged k) k.HideRange();
@@ -104,12 +106,20 @@ public class PlayerControl : MonoBehaviour
                 selectedShip.Boost(selectedShip.accel);  //event
                 selectedShip.positionPreview.PreviewAt(selectedShip.GetNextTile(), selectedShip.headingDir);
                 tempColoredCells.Add(hexGrid.GetCellAtPos(selectedShip.GetNextTile()));
+
+                selectedShip.shipStatus.isEvading = true;
+
                 foreach (var cell in tempColoredCells)
                 {
                     cell.ColorHighlight();
                 }
+
             }
 
+            if (newAction == PlayerAction.Evade)
+            {
+                selectedShip.shipStatus.isEvading = true;
+            }
 
             if (newAction == PlayerAction.DirectTargetShip)
             {
@@ -118,6 +128,7 @@ public class PlayerControl : MonoBehaviour
                 if (weapon is IRanged w) w.DisplayRange();
             }
 
+            GameEvents.instance.UpdateUI();
             GameEvents.instance.RecolorMesh();
             currentAction = newAction;
         }
@@ -209,6 +220,12 @@ public class PlayerControl : MonoBehaviour
                 UpdateShipPos(selectedShip);
                 SetCurrentAction(PlayerAction.None, true);
                 break;
+
+            case PlayerAction.Evade:
+                selectedShip.Pass(1);
+                UpdateShipPos(selectedShip);
+                SetCurrentAction(PlayerAction.None);
+                break;
             
             case PlayerAction.DirectTargetShip:
                 if (selectedWeapon is ITargetsShip w) w.ShootShip(targetedShip);
@@ -220,6 +237,7 @@ public class PlayerControl : MonoBehaviour
             
         }
         
+        selectedShip.shipStatus.isEvading = false;
         prevSpeed = selectedShip.speed;
         prevMoveDir = selectedShip.moveDir;
         selectedShip.positionPreview.Hide();
@@ -238,6 +256,7 @@ public class PlayerControl : MonoBehaviour
     {
         if (ship.team == shipList.team)
         {
+            selectedShip.shipStatus.isEvading = false;
             selectedShip.isSelected = false;
             selectedShip = ship;
             ship.isSelected = true;

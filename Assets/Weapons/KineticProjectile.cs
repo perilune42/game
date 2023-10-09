@@ -21,7 +21,11 @@ public class KineticProjectile: MonoBehaviour
     
     public float ChanceToHit() //modifier 
     {
-        return weapon.ChanceToHit(target);
+        if(target.shipStatus.isEvading)
+        {
+            return Mathf.Max(0, weapon.ChanceToHit(target) * (1 - distance * weapon.evasionPenaltyPerCell));
+        }
+        else return weapon.ChanceToHit(target);
     }
     public bool RollForHit() 
     {
