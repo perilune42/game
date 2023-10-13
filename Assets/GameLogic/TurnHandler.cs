@@ -12,6 +12,9 @@ public class TurnHandler : MonoBehaviour
     public TMP_Text teamLabel;
     PlayerControl playerControl;
     ShipList[] shipLists;
+
+    public bool AIControl = false;
+
     public static TurnHandler instance;
     private void Start()
     {
@@ -51,6 +54,15 @@ public class TurnHandler : MonoBehaviour
             list.UpdateCards();
         }
         teamLabel.text = currentTeam.ToString();
+
+        if (currentTeam == Team.Enemy && AIControl)
+        {
+            UIButtons.instance.LockPlayerControls(true);
+        }
+        else if (currentTeam == Team.Player)
+        {
+            UIButtons.instance.LockPlayerControls(false);
+        }
     }
 
     public void Init()
@@ -81,9 +93,9 @@ public class TurnHandler : MonoBehaviour
         teamLabel.text = currentTeam.ToString();
     }
 
-    // Update is called once per frame
-    void Update()
+    public bool IsAITurn()
     {
-        
+        return (currentTeam == Team.Enemy && AIControl);
     }
+
 }

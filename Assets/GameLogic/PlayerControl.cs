@@ -19,6 +19,7 @@ public class PlayerControl : MonoBehaviour
     HexCell lastSelectedCell = null;
     List<HexCell> tempColoredCells = new List<HexCell>();
     public ShipList shipList;
+    
 
     Ship targetedShip;
     Weapon selectedWeapon;
@@ -27,6 +28,8 @@ public class PlayerControl : MonoBehaviour
     HexDirection? pendingDirection;
     int prevSpeed;
     HexDirection prevMoveDir;
+
+    
 
     void Awake()
     {
@@ -44,8 +47,11 @@ public class PlayerControl : MonoBehaviour
         SwitchShip(0);
         //turnHandler.Init();
     }
+
+
     public void SetCurrentAction(PlayerAction newAction, bool keep = false, Weapon weapon = null) //keep: keeping any changes to speed and direction
     {
+        if (TurnHandler.instance.IsAITurn()) return;
         GameEvents.instance.PreviewDamage(null, 0);
         selectedShip.shipStatus.isEvading = false;
 
@@ -118,6 +124,7 @@ public class PlayerControl : MonoBehaviour
 
             if (newAction == PlayerAction.Evade)
             {
+                actionLabel.text = "Evade";
                 selectedShip.shipStatus.isEvading = true;
             }
 
@@ -137,10 +144,8 @@ public class PlayerControl : MonoBehaviour
 
     public void InteractCell(HexCoordinates coordinates)
     {
+
         switch (currentAction) {
-            case PlayerAction.None:
-                SwitchShipAtPos(coordinates);
-                break;
             case PlayerAction.Rotate:
                 if (currentAction == PlayerAction.Rotate)
                 {
@@ -169,28 +174,43 @@ public class PlayerControl : MonoBehaviour
 
 
                 }
-                break;
+                return;
             case PlayerAction.Boost:
                 if (coordinates == selectedShip.GetNextTile())
                 {
                     Confirm();
                 }
-                break;
-
-            case PlayerAction.DirectTargetShip:
-                if (coordinates != selectedShip.pos && hexGrid.GetCellAtPos(coordinates).containedShip != null)
-                {
-                    GameEvents.instance.PreviewDamage(null, 0);
-                    targetedShip = hexGrid.GetCellAtPos(coordinates).containedShip;
-                    actionLabel.text = "Targeting " + targetedShip.shipName;
-                    if (selectedWeapon is KineticWeapon kinetic) actionLabel.text += "\n" + UIUtils.ToPercent(kinetic.ChanceToHit(targetedShip));
-                    if (selectedWeapon is ITargetsShip w2) GameEvents.instance.PreviewDamage(targetedShip, w2.CalculateDamage(targetedShip));
-                }
-                break;
-
-    }
+                return;
+        }
+        if (coordinates != selectedShip.pos && hexGrid.GetCellAtPos(coordinates).containedShip != null)
+        {
+            targetedShip = hexGrid.GetCellAtPos(coordinates).containedShip;
+            TargetShip(targetedShip);
+        }
     }
 
+    public void TargetShip(Ship targetedShip)
+    {
+        if (TurnHandler.instance.IsAITurn()) return;
+        if (currentAction == PlayerAction.DirectTargetShip)
+        { 
+            if (targetedShip != selectedShip)
+            {
+                GameEvents.instance.PreviewDamage(null, 0);
+                actionLabel.text = "Targeting " + targetedShip.shipName;
+                if (selectedWeapon is KineticWeapon kinetic) actionLabel.text += "\n" + UIUtils.ToPercent(kinetic.ChanceToHit(targetedShip));
+                if (selectedWeapon is ITargetsShip w2) GameEvents.instance.PreviewDamage(targetedShip, w2.CalculateDamage(targetedShip));
+                
+            }
+            GameEvents.instance.CamMoveTo(targetedShip.transform.position);
+
+        }
+        else if (currentAction == PlayerAction.None)
+        {
+            if(TurnHandler.instance.currentTeam == targetedShip.team)
+            SwitchShip(targetedShip);
+        }
+    }
 
     public void Confirm()
     {
@@ -228,6 +248,7 @@ public class PlayerControl : MonoBehaviour
                 break;
             
             case PlayerAction.DirectTargetShip:
+                if (targetedShip == null || targetedShip == selectedShip) return;
                 if (selectedWeapon is ITargetsShip w) w.ShootShip(targetedShip);
                 SetCurrentAction(PlayerAction.None, true);
                 selectedShip.Pass(1);
@@ -276,6 +297,10 @@ public class PlayerControl : MonoBehaviour
             GameEvents.instance.RecolorMesh();
             GameEvents.instance.DisplayWeapons(ship);
             GameEvents.instance.UpdateUI();
+        }
+        else
+        {
+            GameEvents.instance.CamMoveTo(ship.transform.position);
         }
     }
 

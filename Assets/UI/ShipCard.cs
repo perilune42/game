@@ -43,6 +43,11 @@ public class ShipCard : MonoBehaviour
         }
     }
 
+    public void ClickShip()
+    {
+        PlayerControl.instance.TargetShip(ship);
+    }
+
     // Update is called once per frame
     void Update()
     {

@@ -19,12 +19,16 @@ public class ProjDisplayCard : MonoBehaviour
 
     void ShowHit(KineticProjectile projectile, bool hit)
     {
-        if(projectile == this.projectile) { StartCoroutine(_ShowHit(hit));  }
+        if(projectile == this.projectile && this != null)
+        {
+            GameEvents.instance.FreezeProjDisplay(true);
+            StartCoroutine(_ShowHit(hit));  
+        }
         
     }
     IEnumerator _ShowHit(bool hit)
     {
-        GameEvents.instance.FreezeProjDisplay(true);
+        
         if (hit) hitChanceLabel.text = "HIT";
         else hitChanceLabel.text = "MISS";
         yield return new WaitForSeconds(1);
@@ -34,6 +38,5 @@ public class ProjDisplayCard : MonoBehaviour
 
         GameEvents.instance.FreezeProjDisplay(false);
         GameEvents.instance.UpdateUI();
-        Destroy(gameObject);
     }
 }

@@ -1,16 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class UIButtons : MonoBehaviour
 {
 
     public PlayerControl playerControl;
     public Canvas gridCanvas;
+    public Button[] buttons;
+
+    public static UIButtons instance;
 
     private void Awake()
     {
         playerControl = PlayerControl.instance;
+        instance = this;
     }
 
     public void Rotate()
@@ -64,6 +70,21 @@ public class UIButtons : MonoBehaviour
         {
             playerControl.SetCurrentAction(PlayerAction.DirectTargetShip, false, weapon);
             
+        }
+    }
+
+    public void ToggleAI(TMP_Dropdown dropdown)
+    {
+        if (dropdown.value == 0) TurnHandler.instance.AIControl = false;
+        else TurnHandler.instance.AIControl = true;
+
+    }
+
+    public void LockPlayerControls(bool toggle)
+    {
+        foreach (Button button in buttons)
+        {
+            button.interactable = !toggle;
         }
     }
 
