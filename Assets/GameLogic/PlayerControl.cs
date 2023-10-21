@@ -16,7 +16,6 @@ public class PlayerControl : MonoBehaviour
     TMP_Text actionLabel;  //event
     [SerializeField]
     HexGrid hexGrid;
-    HexCell lastSelectedCell = null;
     //List<HexCell> tempColoredCells = new List<HexCell>();
     public ShipList shipList;
     
@@ -279,8 +278,8 @@ public class PlayerControl : MonoBehaviour
             HexCell cell = hexGrid.GetCellAtPos(ship.pos);
             GridController.instance.SetActiveCell(cell);
 
-            //if (lastSelectedCell != null && lastSelectedCell.coordinates != cell.coordinates) lastSelectedCell.ColorDefault();
-            lastSelectedCell = cell;
+
+
             shipList.UpdateCards();
 
             SetCurrentAction(ShipAction.None);

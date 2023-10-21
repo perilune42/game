@@ -22,7 +22,6 @@ public class GridController : MonoBehaviour
     public void UpdateShipPos(Ship ship)
     {
         ship.TriggerMoveAnim();
-        activeCell.ColorDefault();
         SetActiveCell(HexGrid.instance.GetCellAtPos(ship.pos));
         
     }
