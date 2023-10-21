@@ -21,21 +21,21 @@ public class UIButtons : MonoBehaviour
 
     public void Rotate()
     {
-        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(PlayerAction.Rotate))
-        playerControl.SetCurrentAction(PlayerAction.Rotate);
+        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(ShipAction.Rotate))
+        playerControl.SetCurrentAction(ShipAction.Rotate);
         
     }
     public void Confirm()
     {
-        if ( playerControl.selectedShip != null && playerControl.currentAction != PlayerAction.None)
+        if ( playerControl.selectedShip != null && playerControl.currentAction != ShipAction.None)
         {
             playerControl.Confirm(); //should change to pass
         }
     }
     public void Pass()
     {
-        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(PlayerAction.Pass))
-            playerControl.SetCurrentAction(PlayerAction.Pass);
+        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(ShipAction.Pass))
+            playerControl.SetCurrentAction(ShipAction.Pass);
 
     }
     public void ToggleCoords()
@@ -45,17 +45,17 @@ public class UIButtons : MonoBehaviour
 
     public void Boost()
     {
-        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(PlayerAction.Boost))
+        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(ShipAction.Boost))
         {
-            playerControl.SetCurrentAction(PlayerAction.Boost);
+            playerControl.SetCurrentAction(ShipAction.Boost);
         }
     }
 
     public void Fire()
     {
-        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(PlayerAction.DirectTargetShip))
+        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(ShipAction.DirectTargetShip))
         {
-            playerControl.SetCurrentAction(PlayerAction.DirectTargetShip);
+            playerControl.SetCurrentAction(ShipAction.DirectTargetShip);
         }
     }
 
@@ -66,9 +66,9 @@ public class UIButtons : MonoBehaviour
 
     public void SelectWeapon(Weapon weapon)
     {
-        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(PlayerAction.DirectTargetShip))
+        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(ShipAction.DirectTargetShip))
         {
-            playerControl.SetCurrentAction(PlayerAction.DirectTargetShip, false, weapon);
+            playerControl.SetCurrentAction(ShipAction.DirectTargetShip, false, weapon);
             
         }
     }
@@ -90,9 +90,9 @@ public class UIButtons : MonoBehaviour
 
     public void Evade()
     {
-        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(PlayerAction.Evade))
+        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(ShipAction.Evade))
         {
-            playerControl.SetCurrentAction(PlayerAction.Evade);
+            playerControl.SetCurrentAction(ShipAction.Evade);
         }
     }
 

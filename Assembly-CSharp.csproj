@@ -77,6 +77,7 @@
     <Compile Include="Assets\CameraController.cs" />
     <Compile Include="Assets\GameLogic\Teams.cs" />
     <Compile Include="Assets\Grid\grid.cs" />
+    <Compile Include="Assets\GameLogic\AIController.cs" />
     <Compile Include="Assets\Weapons\Weapon.cs" />
     <Compile Include="Assets\Ship\Ship.cs" />
     <Compile Include="Assets\Grid\HexDirections.cs" />
@@ -95,11 +96,12 @@
     <Compile Include="Assets\ProjectileTrail.cs" />
     <Compile Include="Assets\Ship\ShipStatus.cs" />
     <Compile Include="Assets\UI\WeaponButton.cs" />
-    <Compile Include="Assets\GameLogic\PlayerAction.cs" />
     <Compile Include="Assets\UI\UIUtils.cs" />
     <Compile Include="Assets\Grid\HexMetrics.cs" />
     <Compile Include="Assets\CamMover.cs" />
     <Compile Include="Assets\UI\PositionPreview.cs" />
+    <Compile Include="Assets\GameLogic\GridController.cs" />
+    <Compile Include="Assets\GameLogic\ShipAction.cs" />
     <Compile Include="Assets\DestroySelf.cs" />
     <Compile Include="Assets\Grid\HexCoordinates.cs" />
     <Compile Include="Assets\Grid\HexGrid.cs" />

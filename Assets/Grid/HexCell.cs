@@ -12,6 +12,7 @@ public class HexCell : MonoBehaviour
     public Color color;
     Color originalColor;
     public Ship containedShip = null;
+    public bool isHovering, isHighlighting, isActive = false;
 
     public HexCell GetNeighbor (HexDirection direction) {
 		return neighbors[(int)direction];
@@ -26,15 +27,18 @@ public class HexCell : MonoBehaviour
         color = hexGrid.shipColor;
         originalColor = color;
     }
-    public void ColorHover()
-    {
-        color = hexGrid.hoverColor;
-        
-    }
+
     public void ColorDefault()
     {
         color = hexGrid.defaultColor;
         originalColor = color;
+    }
+
+    /*
+    public void ColorHover()
+    {
+        color = hexGrid.hoverColor;
+
     }
     public void ColorHighlight()
     {
@@ -45,6 +49,7 @@ public class HexCell : MonoBehaviour
     {
         color = originalColor;
     }
+    */
     private void Awake()
     {
         hexGrid = FindObjectOfType<HexGrid>();

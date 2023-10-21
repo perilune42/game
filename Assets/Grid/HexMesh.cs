@@ -14,6 +14,7 @@ public class HexMesh : MonoBehaviour {
 	public float vertOffset = -0.6f;
 	List<Color> colors;
 	public PlayerControl playerControl;
+    Color tempColor;
 
     void Awake () {
 		GetComponent<MeshFilter>().mesh = hexMesh = new Mesh();
@@ -98,10 +99,16 @@ public class HexMesh : MonoBehaviour {
         {
             for (int j = 0; j < 6; j++)
             {
-                // Check if hexGrid.cells[i] is null before accessing its color property
+
+                if (hexGrid.cells[i].isHighlighting) tempColor = hexGrid.highlightColor;
+                else if (hexGrid.cells[i].isActive) tempColor = hexGrid.shipColor;
+                else tempColor = hexGrid.cells[i].color;
+
+                if (hexGrid.cells[i].isHovering) tempColor += new Color(0.1f, 0.1f, 0.1f, 0.1f);
+
                 if (hexGrid.cells[i] != null)
                 {
-                    AddTriangleColor(hexGrid.cells[i].color);
+                    AddTriangleColor(tempColor);
                 }
                 else
                 {

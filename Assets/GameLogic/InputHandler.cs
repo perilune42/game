@@ -54,7 +54,7 @@ public class InputHandler : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            playerControl.SetCurrentAction(PlayerAction.None);
+            playerControl.SetCurrentAction(ShipAction.None);
         }
         if (Input.GetKeyDown(KeyCode.Tab))
         {
@@ -84,11 +84,11 @@ public class InputHandler : MonoBehaviour
     void HoverCell(HexCell cell)
     {
         //highlight hovered cell
-        if (cell.containedShip != playerControl.selectedShip) cell.ColorHover();
+        cell.isHovering = true;
 
         if (lastCellPos.ToOffsetCoordinates() != coordinates.ToOffsetCoordinates())
         {
-            if (hexGrid.GetCellAtPos(lastCellPos).color == hexGrid.hoverColor) hexGrid.GetCellAtPos(lastCellPos).RevertColor();
+            hexGrid.GetCellAtPos(lastCellPos).isHovering = false;
             lastCellPos = coordinates;
         }
         //hexMesh.RecolorMesh();

@@ -58,6 +58,7 @@ public class TurnHandler : MonoBehaviour
         if (currentTeam == Team.Enemy && AIControl)
         {
             UIButtons.instance.LockPlayerControls(true);
+            AIController.instance.PlayTurn();
         }
         else if (currentTeam == Team.Player)
         {

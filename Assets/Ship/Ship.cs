@@ -204,20 +204,20 @@ public class Ship : MonoBehaviour
 
 
 
-    public bool ActionAvailable(PlayerAction action)
+    public bool ActionAvailable(ShipAction action)
     {
         switch (action) {
-            case PlayerAction.Rotate:
+            case ShipAction.Rotate:
                 return actions >= rotateSpeed;
-            case PlayerAction.Boost:
+            case ShipAction.Boost:
                 return actions > 0;
-            case PlayerAction.None:
+            case ShipAction.None:
                 return actions > 0;
-            case PlayerAction.Pass:
+            case ShipAction.Pass:
                 return actions > 0;
-            case PlayerAction.DirectTargetShip:
+            case ShipAction.DirectTargetShip:
                 return actions > 0;
-            case PlayerAction.Evade:
+            case ShipAction.Evade:
                 return actions == 4;
             default:
                 return false;
@@ -230,7 +230,7 @@ public class Ship : MonoBehaviour
         pathShower.UnHide();
         pathShower.Show(GetNextTile());
         cell = hexGrid.GetCellAtPos(pos);
-        cell.ColorSelectShip();
+        GridController.instance.SetActiveCell(cell);
         GameEvents.instance.RecolorMesh();
     }
 
