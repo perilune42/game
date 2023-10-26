@@ -40,6 +40,12 @@ public class GameEvents : MonoBehaviour
         if(onCamMoveTo != null) onCamMoveTo(position);
     }
 
+    public event Action<Transform> onCamTrack;
+    public void CamTrack(Transform transform)
+    {
+        if (onCamTrack != null) onCamTrack(transform);
+    }
+
     public event Action onRecolorMesh;
     public void RecolorMesh()
     {

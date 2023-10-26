@@ -18,6 +18,7 @@ public class CamMover : MonoBehaviour
     void Awake()
     {
         GameEvents.instance.onCamMoveTo += MoveTo;
+        GameEvents.instance.onCamTrack += Track;
     }
 
     // Update is called once per frame
@@ -31,7 +32,8 @@ public class CamMover : MonoBehaviour
         }
         if (targetPos != null && isMoving)
         {
-            transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref velocity, AnimConfig.camAnimAccel * speedModifier);
+            transform.position = Vector3.SmoothDamp(transform.position, targetPos,
+                ref velocity, AnimConfig.camAnimAccel * speedModifier);
             delta = Mathf.Abs((transform.position - prevPos).magnitude);
         }
 
@@ -54,9 +56,9 @@ public class CamMover : MonoBehaviour
     {
         isTracking = true;
         trackTarget = transform;
-        speedModifier = 2;
+        speedModifier = 1.5f;
         trackCounter = 10;
-        Debug.Log("Tracking " + transform.gameObject.ToString());
+        //Debug.Log("Tracking " + transform.gameObject.ToString());
     }
 
     public void Stop()

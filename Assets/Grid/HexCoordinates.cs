@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using UnityEngine;
 
 [System.Serializable]
@@ -165,5 +166,13 @@ public struct HexCoordinates {
     {
         HexCoordinates vector = A - B;
         return (Math.Abs(vector.X) + Math.Abs(vector.Y) + Math.Abs(vector.Z)) / 2;
+    }
+
+    public Vector2 ToV2()
+    {
+        float x = (3.0f / 2 * X);
+        float y = (float)(-Math.Sqrt(3) / 2 * X - Math.Sqrt(3) * Y);
+
+        return new Vector2 (x, y).normalized;
     }
 }

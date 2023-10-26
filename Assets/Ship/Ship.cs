@@ -20,6 +20,7 @@ public class Ship : MonoBehaviour
     public int uid;
     public bool isSelected = false;
 
+    public AILogic AILogic = null;
     public ShipStatus shipStatus;
 
     public Weapon[] weapons;
@@ -46,6 +47,7 @@ public class Ship : MonoBehaviour
         objectMover = GetComponent<ObjectMover>();
         shipStatus = GetComponent<ShipStatus>();
         weapons = GetComponentsInChildren<Weapon>();
+        AILogic = GetComponent<AILogic>();
     }
 
     // Start is called before the first frame update
@@ -182,7 +184,6 @@ public class Ship : MonoBehaviour
             shipStatus.RollProjectiles();
         }
 
-        Debug.Log("Ship Moved");
         //transform.position = cell.transform.position;
         
         GetNextTile();

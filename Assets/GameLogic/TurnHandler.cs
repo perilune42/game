@@ -13,6 +13,8 @@ public class TurnHandler : MonoBehaviour
     PlayerControl playerControl;
     ShipList[] shipLists;
 
+    public ShipList playerShipList, enemyShipList;
+
     public bool AIControl = false;
 
     public static TurnHandler instance;
@@ -20,6 +22,11 @@ public class TurnHandler : MonoBehaviour
     {
         playerControl = PlayerControl.instance;
         shipLists = FindObjectsOfType<ShipList>();
+        foreach  (ShipList list in shipLists)
+        {
+            if (list.team == Team.Player) playerShipList = list;
+            else if (list.team == Team.Enemy) enemyShipList = list;
+        }
 
         instance = this;
 

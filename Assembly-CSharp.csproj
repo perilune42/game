@@ -96,6 +96,7 @@
     <Compile Include="Assets\ProjectileTrail.cs" />
     <Compile Include="Assets\Ship\ShipStatus.cs" />
     <Compile Include="Assets\UI\WeaponButton.cs" />
+    <Compile Include="Assets\GameLogic\AILogic.cs" />
     <Compile Include="Assets\UI\UIUtils.cs" />
     <Compile Include="Assets\Grid\HexMetrics.cs" />
     <Compile Include="Assets\CamMover.cs" />
