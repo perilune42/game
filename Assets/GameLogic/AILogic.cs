@@ -87,6 +87,26 @@ public class AIUtils
         return closest;
     }
 
+    public static bool WithinDeviationRange(HexDirection direction, HexCoordinates origin,
+                                            HexCoordinates destination, float maxAngle)
+    //returns whether deviation between moving direction and desired heading is within
+    //acceptable maxAngle range
+    {
+        HexCoordinates vector = destination - origin;
+        if (Vector2.Angle(direction.ToV2(), vector.ToV2()) <= maxAngle)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public static float DeviationAngle(HexDirection direction, HexCoordinates origin,
+                                  HexCoordinates destination)
+    {
+        HexCoordinates vector = destination - origin;
+        return Vector2.Angle(direction.ToV2(), vector.ToV2());
+    }
+
     public static HexDirection RotateManeuverBestHeading(Ship ship, HexDirection targetDirection)
     //best way to boost to start rotate to desired direction
     {

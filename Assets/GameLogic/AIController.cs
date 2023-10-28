@@ -37,12 +37,15 @@ public class AIController : MonoBehaviour
                     debugString += " " + a.targetShip.shipName;
                     debugString += " " + AIUtils.ClosestDirection(ship.pos, a.targetShip.pos);
                 }
-                Debug.Log(debugString);
+                
 
                 if (ship.AILogic.GetBestMoveRoutine() is AIIntercept routine)
                 {
                     HexDirection targetMoveDirection = AIUtils.ClosestDirection(ship.pos, routine.targetShip.pos);
-                    if (ship.moveDir != targetMoveDirection)
+                    float deviationAngle = AIUtils.DeviationAngle(ship.moveDir, ship.pos, routine.targetShip.pos);
+
+                    debugString += " Deviation: " + deviationAngle;
+                    if (ship.moveDir != targetMoveDirection && deviationAngle >= 45f)
                     {
                         HexDirection rotateManeuverDirection = AIUtils.RotateManeuverBestHeading(ship, targetMoveDirection);
                         if (ship.headingDir != rotateManeuverDirection)
@@ -62,7 +65,7 @@ public class AIController : MonoBehaviour
                     }
                 }
 
-
+                Debug.Log(debugString);
                 Pass(ship);
                 yield return new WaitForSeconds(1);
             }
@@ -90,9 +93,7 @@ public class AIController : MonoBehaviour
     void Boost(Ship ship)
     {
         ship.Boost(ship.accel);
-        GameEvents.instance.CamTrack(ship.transform);
-        GridController.instance.UpdateShipPos(ship);
-        GameEvents.instance.UpdateUI();
+        Pass(ship);
     }
     
 
