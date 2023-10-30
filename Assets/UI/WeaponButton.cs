@@ -7,7 +7,8 @@ using UnityEngine.UI;
 
 public class WeaponButton : MonoBehaviour
 {
-    public TMP_Text weaponNameLabel;
+    public TMP_Text weaponNameLabel, ammoLabel, reloadLabel;
+
     public int horizSpacing = 10;
     public Weapon weapon;
     RectTransform rectTransform;
@@ -21,6 +22,7 @@ public class WeaponButton : MonoBehaviour
         rectTransform = GetComponent<RectTransform>();
         buttonController = FindObjectOfType<UIButtons>();
         button = GetComponent<Button>();
+        GameEvents.instance.onUpdateUI += UpdateLabels;
     }
 
     public void SetPosition(int pos)
@@ -32,25 +34,17 @@ public class WeaponButton : MonoBehaviour
     {
         weaponNameLabel.text = weapon.weaponName;
         button.onClick.AddListener(() => buttonController.SelectWeapon(weapon));
+        UpdateLabels();
     }
 
-
-   /* public void SetActive(bool active)
+    public void UpdateLabels()
     {
-        if (active)
+        if (weapon == null) return;
+        if (weapon is KineticWeapon k ) //change to interface IUsesAmmo
         {
-            image.color = shipList.activeColor;
-
+            ammoLabel.text = k.ammoCount + " / " + k.ammoCapacity;
         }
-        else
-        {
-            image.color = shipList.defaultColor;
-        }
+        button.interactable = weapon.CanFire();
     }
-   */
-    // Update is called once per frame
-    void Update()
-    {
 
-    }
 }

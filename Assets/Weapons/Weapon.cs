@@ -12,6 +12,7 @@ public abstract class Weapon : MonoBehaviour
     public TargetType type;
     
     public abstract void Init();
+    public abstract bool CanFire();
     private void Start()
     {
         Init();

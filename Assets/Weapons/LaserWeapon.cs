@@ -5,7 +5,7 @@ public class LaserWeapon : Weapon, IRanged, ITargetsShip
 {
 
     public LaserWeaponSO weaponData;
-    public int damage, fallOffRange; //fallOffRange = damage starts to drop linearly
+    public int damage, fallOffRange, reloadActions; //fallOffRange = damage starts to drop linearly
     public float fallOffRate; //damage per tile after fallOffRange
 
     ProjectileRenderer projectileAnimHandler;
@@ -18,6 +18,7 @@ public class LaserWeapon : Weapon, IRanged, ITargetsShip
         damage = weaponData.damage;
         fallOffRange = weaponData.fallOffRange;
         fallOffRate = weaponData.fallOffRate;
+        reloadActions = weaponData.reloadActions;
 
         projectileAnimHandler = GetComponent<ProjectileRenderer>();
         lineRenderer = HexGrid.instance.weaponRangeDisplay;
@@ -47,6 +48,11 @@ public class LaserWeapon : Weapon, IRanged, ITargetsShip
         else {
             return Mathf.Max(Mathf.CeilToInt( damage - (dist - fallOffRange) * fallOffRate), 1);
         }
+    }
+
+    public override bool CanFire()
+    {
+        return true;
     }
 
     public void DisplayRange()

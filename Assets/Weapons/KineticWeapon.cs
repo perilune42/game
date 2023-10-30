@@ -9,10 +9,14 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged
     
 
     public KineticWeaponSO weaponData;
-    public int damage, idealRange;
+    public int damage, idealRange, ammoCapacity, reloadActions, ammoCount;
     public float accuracy, evasionPenaltyPerCell;
+    public int cooldown;
+
     ProjectileRenderer projectileAnimHandler;
     LineRenderer lineRenderer;
+
+
 
     public override void Init()
     {
@@ -24,6 +28,11 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged
         idealRange = weaponData.idealRange;
         accuracy = weaponData.accuracy;
         evasionPenaltyPerCell = weaponData.evasionPenaltyPerCell;
+        ammoCapacity = weaponData.ammoCapacity;
+        reloadActions = weaponData.reloadActions;
+
+        ammoCount = ammoCapacity;
+
         projectileAnimHandler = GetComponent<ProjectileRenderer>();
         lineRenderer = HexGrid.instance.weaponRangeDisplay;
     }
@@ -46,6 +55,9 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged
             targetShip.shipStatus.AddProjectile(projectile);
         }
         projectileAnimHandler.Shoot(targetShip.transform.position,weaponData.visualProjectilePrefab);
+
+        ammoCount--;
+        GameEvents.instance.UpdateUI();
     }
 
     public int CalculateDamage(Ship targetShip)
@@ -56,6 +68,11 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged
     public float ChanceToHit(Ship target)
     {
         return accuracy; //modifiers, range penalties
+    }
+    
+    public override bool CanFire()
+    {
+        return ammoCount > 0;
     }
 
     public void DisplayRange()

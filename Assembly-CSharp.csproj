@@ -71,6 +71,7 @@
     <Compile Include="Assets\AnimConfig.cs" />
     <Compile Include="Assets\UI\Popup.cs" />
     <Compile Include="Assets\Starfield Skybox\Demo\Script\LookCamera.cs" />
+    <Compile Include="Assets\FinalInit.cs" />
     <Compile Include="Assets\UI\IncomingProjectileDisplay.cs" />
     <Compile Include="Assets\Ship\ShowPath.cs" />
     <Compile Include="Assets\DebugScript.cs" />
