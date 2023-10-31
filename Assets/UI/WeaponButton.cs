@@ -39,10 +39,20 @@ public class WeaponButton : MonoBehaviour
 
     public void UpdateLabels()
     {
-        if (weapon == null) return;
+        if (weapon == null || button == null) return;
         if (weapon is KineticWeapon k ) //change to interface IUsesAmmo
         {
             ammoLabel.text = k.ammoCount + " / " + k.ammoCapacity;
+
+        }
+        if (weapon is IHasCooldown c)
+        {
+            if (c.GetCooldown() > 0)
+            {
+                reloadLabel.gameObject.SetActive(true);
+                reloadLabel.text = c.GetCooldown().ToString();
+            }
+            else reloadLabel.gameObject.SetActive(false);
         }
         button.interactable = weapon.CanFire();
     }

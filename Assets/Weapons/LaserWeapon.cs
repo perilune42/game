@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(ProjectileRenderer))]
-public class LaserWeapon : Weapon, IRanged, ITargetsShip
+public class LaserWeapon : Weapon, IRanged, ITargetsShip, IHasCooldown
 {
 
     public LaserWeaponSO weaponData;
     public int damage, fallOffRange, reloadActions; //fallOffRange = damage starts to drop linearly
     public float fallOffRate; //damage per tile after fallOffRange
+    int cooldownTimer;
 
     ProjectileRenderer projectileAnimHandler;
     LineRenderer lineRenderer;
@@ -30,6 +31,8 @@ public class LaserWeapon : Weapon, IRanged, ITargetsShip
         targetShip.shipStatus.Damage(CalculateDamage(targetShip));
         GameEvents.instance.HitShip(targetShip, HitType.Hit, CalculateDamage(targetShip));
         projectileAnimHandler.Shoot(targetShip.transform.position, weaponData.visualProjectilePrefab);
+
+        cooldownTimer = reloadActions + 1;
     }
 
     public int CalculateDamage(Ship targetShip)
@@ -52,9 +55,21 @@ public class LaserWeapon : Weapon, IRanged, ITargetsShip
 
     public override bool CanFire()
     {
-        return true;
+        return cooldownTimer == 0;
     }
 
+    public override void PassAction()
+    {
+        if (cooldownTimer > 0)
+        {
+            cooldownTimer--;
+        }
+    }
+
+    public int GetCooldown()
+    {
+        return cooldownTimer;
+    }
     public void DisplayRange()
     {
         lineRenderer.enabled = true;

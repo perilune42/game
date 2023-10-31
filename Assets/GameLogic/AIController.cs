@@ -51,15 +51,13 @@ public class AIController : MonoBehaviour
                         if (ship.headingDir != rotateManeuverDirection)
                         {
                             Rotate(ship, rotateManeuverDirection); 
-                            //zigzagging fix: cooldown before next rotate is allowed?
-                            //or implement "close enough" condition for leniency
-                            yield return new WaitForSeconds(1);
+                            yield return new WaitForSeconds(1.5f);
                             continue;
                         }
                         else
                         {
-                            Boost(ship);
-                            yield return new WaitForSeconds(1);
+                            StartCoroutine(Boost(ship));
+                            yield return new WaitForSeconds(1.5f);
                             continue;
                         }
                     }
@@ -67,7 +65,7 @@ public class AIController : MonoBehaviour
 
                 Debug.Log(debugString);
                 Pass(ship);
-                yield return new WaitForSeconds(1);
+                yield return new WaitForSeconds(1.5f);
             }
             
         }
@@ -90,9 +88,10 @@ public class AIController : MonoBehaviour
         GameEvents.instance.UpdateUI();
     }
 
-    void Boost(Ship ship)
+    IEnumerator Boost(Ship ship)
     {
         ship.Boost(ship.accel);
+        yield return new WaitForSeconds(0.5f);
         Pass(ship);
     }
     

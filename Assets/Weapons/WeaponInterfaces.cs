@@ -10,3 +10,13 @@ interface ITargetsShip
     public int CalculateDamage(Ship targetShip);
 
 }
+
+interface IUsesAmmo
+{
+
+}
+
+interface IHasCooldown
+{
+    public int GetCooldown();
+}

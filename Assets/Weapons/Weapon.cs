@@ -13,6 +13,7 @@ public abstract class Weapon : MonoBehaviour
     
     public abstract void Init();
     public abstract bool CanFire();
+    public abstract void PassAction();
     private void Start()
     {
         Init();

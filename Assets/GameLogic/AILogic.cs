@@ -23,6 +23,20 @@ public struct AIIntercept: IAIMoveRoutine
     }
 }
 
+//fast pursuit: if deviation < 15, and moving right dir, boost to high speed
+//retreat: drift until far enough away from target/for x actions
+//guard: stay with friendly ships
+//charge: move at speed 2 towards center of all enemy ships
+
+//AttackRoutine
+//focus fire: use all attacks on 1 ship
+//attack closest: attacks closest/highest chance to hit
+//defense: attack ships threatening friendlies
+//brace: do not attack, defensive actions
+
+//score rank all available routines
+//add randomness
+
 public struct AIFollow: IAIMoveRoutine
 {
     public Ship targetShip;

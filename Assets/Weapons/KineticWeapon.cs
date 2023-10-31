@@ -3,7 +3,7 @@ using UnityEngine;
 
 
 [RequireComponent(typeof(ProjectileRenderer))]
-public class KineticWeapon : Weapon, ITargetsShip, IRanged
+public class KineticWeapon : Weapon, ITargetsShip, IRanged, IUsesAmmo, IHasCooldown
 {
     
     
@@ -11,10 +11,10 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged
     public KineticWeaponSO weaponData;
     public int damage, idealRange, ammoCapacity, reloadActions, ammoCount;
     public float accuracy, evasionPenaltyPerCell;
-    public int cooldown;
+    public int cooldownTimer;
 
     ProjectileRenderer projectileAnimHandler;
-    LineRenderer lineRenderer;
+    LineRenderer rangeLineRenderer;
 
 
 
@@ -32,9 +32,10 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged
         reloadActions = weaponData.reloadActions;
 
         ammoCount = ammoCapacity;
+        cooldownTimer = 0;
 
         projectileAnimHandler = GetComponent<ProjectileRenderer>();
-        lineRenderer = HexGrid.instance.weaponRangeDisplay;
+        rangeLineRenderer = HexGrid.instance.weaponRangeDisplay;
     }
     public void ShootShip(Ship targetShip)
     {
@@ -57,6 +58,10 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged
         projectileAnimHandler.Shoot(targetShip.transform.position,weaponData.visualProjectilePrefab);
 
         ammoCount--;
+        if (ammoCount == 0)
+        {
+            cooldownTimer = reloadActions + 1;
+        }
         GameEvents.instance.UpdateUI();
     }
 
@@ -72,26 +77,48 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged
     
     public override bool CanFire()
     {
-        return ammoCount > 0;
+        return cooldownTimer == 0;
     }
+
+    public override void PassAction()
+    {
+        if (cooldownTimer > 0)
+        {
+            cooldownTimer--;
+            if (cooldownTimer == 0) Reload();
+        }
+    }
+    public int GetCooldown()
+    {
+        return cooldownTimer;
+    }
+
+
 
     public void DisplayRange()
     {
-        lineRenderer.enabled = true;
-        lineRenderer.positionCount = 0;
+        rangeLineRenderer.enabled = true;
+        rangeLineRenderer.positionCount = 0;
         HexPatch rangeArea = new HexPatch(ship.pos, idealRange);
         foreach (Vector3 vertex in rangeArea.GetRelativeOuterVertices())
 
         {
-            lineRenderer.positionCount++;
-            lineRenderer.SetPosition(lineRenderer.positionCount - 1, vertex + ship.transform.position);
+            rangeLineRenderer.positionCount++;
+            rangeLineRenderer.SetPosition(rangeLineRenderer.positionCount - 1, vertex + ship.transform.position);
         }
 
     }
 
+
+
+    void Reload()
+    {
+        ammoCount = ammoCapacity;
+    }
+
     public void HideRange()
     {
-        lineRenderer.enabled = false;
+        rangeLineRenderer.enabled = false;
     }
 
 }

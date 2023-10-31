@@ -179,6 +179,11 @@ public class Ship : MonoBehaviour
         cell = hexGrid.GetCellAtPos(pos);
         cell.containedShip = this;
 
+        foreach (Weapon weapon in weapons)
+        {
+            weapon.PassAction();
+        }
+
         if(actions == 4)
         {
             shipStatus.RollProjectiles();
