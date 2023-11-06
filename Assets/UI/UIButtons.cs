@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.ComponentModel;
 
 public class UIButtons : MonoBehaviour
 {
@@ -11,12 +12,45 @@ public class UIButtons : MonoBehaviour
     public Canvas gridCanvas;
     public Button[] buttons;
 
+    [SerializeField] Button confirmButton, fireButton, guardButton;
+
     public static UIButtons instance;
 
     private void Awake()
     {
         playerControl = PlayerControl.instance;
         instance = this;
+        GameEvents.instance.onUpdateUI += UpdateButtonsVisibility;
+    }
+
+    public void UpdateButtonsVisibility()
+    {
+        if (playerControl.currentAction != ShipAction.None && playerControl.currentAction != ShipAction.DirectTargetShip)
+        {
+            if (playerControl.currentAction == ShipAction.Rotate && playerControl.pendingDirection == null) ToggleConfirmButton(false);
+            else ToggleConfirmButton(true);
+        }
+        else ToggleConfirmButton(false);
+        if (playerControl.currentAction == ShipAction.DirectTargetShip)
+        {
+            ToggleFireButtons(true);
+            if (playerControl.targetedShip != null)
+            {
+                fireButton.interactable = true;
+                guardButton.interactable = false;
+            }
+            else
+            {
+                fireButton.interactable = false;
+                guardButton.interactable = true;
+            }
+        }
+        else
+        {
+            fireButton.interactable = false;
+            guardButton.interactable = false;
+            ToggleFireButtons(false);
+        }
     }
 
     public void Rotate()
@@ -101,4 +135,14 @@ public class UIButtons : MonoBehaviour
         GameEvents.instance.Debug();
     }
     
+    public void ToggleConfirmButton(bool toggle)
+    {
+        confirmButton.gameObject.SetActive(toggle);
+    }
+    public void ToggleFireButtons(bool toggle)
+    {
+        fireButton.gameObject.SetActive(toggle);
+        guardButton.gameObject.SetActive(toggle);
+    }
+
 }

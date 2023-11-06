@@ -54,6 +54,7 @@ public class ShipHud : MonoBehaviour
             if (damage > 0)
             {
                 healthBar.SetLevel(((float)ship.shipStatus.health - damage) / ship.shipStatus.maxHealth);
+                
                 damageLabel.enabled = true;
                 damageLabel.text = (-damage).ToString();
             }
@@ -69,8 +70,11 @@ public class ShipHud : MonoBehaviour
     void UpdateLabels()
     {
         healthLabel.text = ship.shipStatus.health.ToString() + "/" + ship.shipStatus.maxHealth;
-        healthBar.SetLevel((float)ship.shipStatus.health / ship.shipStatus.maxHealth);
-        healthBarPreview.SetLevel((float)ship.shipStatus.health / ship.shipStatus.maxHealth);
+        if (healthBar.GetLevel() == healthBarPreview.GetLevel())
+        {
+            healthBar.SetLevel((float)ship.shipStatus.health / ship.shipStatus.maxHealth);
+            healthBarPreview.SetLevel((float)ship.shipStatus.health / ship.shipStatus.maxHealth);
+        }
         actionLabel.text = ship.actions.ToString();
 
         if (ship.team == TurnHandler.instance.currentTeam)

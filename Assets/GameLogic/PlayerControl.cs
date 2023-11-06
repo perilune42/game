@@ -20,11 +20,11 @@ public class PlayerControl : MonoBehaviour
     public ShipList shipList;
     
 
-    Ship targetedShip;
+    public Ship targetedShip;
     Weapon selectedWeapon;
 
 
-    HexDirection? pendingDirection;
+    public HexDirection? pendingDirection;
     int prevSpeed;
     HexDirection prevMoveDir;
 
@@ -124,11 +124,13 @@ public class PlayerControl : MonoBehaviour
                 selectedWeapon = weapon;
                 if (weapon is IRanged w) w.DisplayRange();
             }
-
+            currentAction = newAction;
+            targetedShip = null;
             GameEvents.instance.UpdateUI();
             GameEvents.instance.RecolorMesh();
-            currentAction = newAction;
+            
         }
+
     }
 
 
@@ -159,24 +161,27 @@ public class PlayerControl : MonoBehaviour
                         {
                             selectedShip.positionPreview.PreviewAt(selectedShip.GetNextTile(selectedShip.rotateSpeed), targetDirection ?? HexDirection.N);
                         }
-                        
+                        GameEvents.instance.UpdateUI();
                     }
 
 
                 }
                 return;
+            case ShipAction.Pass:
             case ShipAction.Boost:
                 if (coordinates == selectedShip.GetNextTile())
                 {
                     Confirm();
                 }
                 return;
+                
         }
         if (coordinates != selectedShip.pos && hexGrid.GetCellAtPos(coordinates).containedShip != null)
         {
             targetedShip = hexGrid.GetCellAtPos(coordinates).containedShip;
             TargetShip(targetedShip);
         }
+        
     }
 
     public void TargetShip(Ship targetedShip)
@@ -198,10 +203,12 @@ public class PlayerControl : MonoBehaviour
         }
         else if (currentAction == ShipAction.None)
         {
-            if(TurnHandler.instance.currentTeam == targetedShip.team)
+            this.targetedShip = null;
+            if (TurnHandler.instance.currentTeam == targetedShip.team)
             SwitchShip(targetedShip);
             else GameEvents.instance.CamMoveTo(targetedShip.transform.position);
         }
+        GameEvents.instance.UpdateUI();
     }
 
     public void Confirm()
@@ -247,9 +254,10 @@ public class PlayerControl : MonoBehaviour
                 GridController.instance.UpdateShipPos(selectedShip,0.3f);
                 break;
 
-            
+        
         }
         
+
         selectedShip.shipStatus.isEvading = false;
         prevSpeed = selectedShip.speed;
         prevMoveDir = selectedShip.moveDir;
@@ -259,6 +267,7 @@ public class PlayerControl : MonoBehaviour
        
         //GameEvents.instance.RecolorMesh();
         GameEvents.instance.UpdateUI();
+        //UIButtons.instance.ToggleConfirmButton(false);
     }
 
     public void CycleShip()

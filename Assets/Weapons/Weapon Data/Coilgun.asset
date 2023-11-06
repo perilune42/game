@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Coilgun
   m_EditorClassIdentifier: 
   damage: 4
-  idealRange: 5
+  idealRange: 6
   accuracy: 0.9
   evasionPenaltyPerCell: 0.02
   ammoCapacity: 1
