@@ -14,6 +14,7 @@ public class HexGrid : MonoBehaviour
     public Color hoverColor = Color.magenta;
 	public Color shipColor = Color.green;
 	public Color highlightColor = Color.red;
+	public Color debugColor = Color.yellow;
 	public bool coordsDisplay = false;
 
 

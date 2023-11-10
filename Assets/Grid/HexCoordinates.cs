@@ -78,7 +78,12 @@ public struct HexCoordinates {
 		return new HexCoordinates(a.X * b, a.Z * b);
 	}
 
-	public static HexCoordinates operator *(int b, HexCoordinates a) {
+    public static HexCoordinates operator *(HexCoordinates a, float b)
+    {
+        return new HexCoordinates(Mathf.RoundToInt(a.X * b), Mathf.RoundToInt(a.Z * b));
+    }
+
+    public static HexCoordinates operator *(int b, HexCoordinates a) {
 		return new HexCoordinates(a.X * b, a.Z * b);
 	}
     public static int operator *(HexCoordinates a, HexCoordinates b)

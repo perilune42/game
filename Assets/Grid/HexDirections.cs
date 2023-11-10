@@ -1,7 +1,7 @@
 using UnityEngine;
 
 public enum HexDirection {
-	N,NE,SE,S,SW,NW
+	N,NE,SE,S,SW,NW,None
 
 }
 

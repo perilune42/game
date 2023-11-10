@@ -99,8 +99,8 @@ public class HexMesh : MonoBehaviour {
         {
             for (int j = 0; j < 6; j++)
             {
-
-                if (hexGrid.cells[i].isHighlighting) tempColor = hexGrid.highlightColor;
+                if (hexGrid.cells[i].isDebug) tempColor = hexGrid.debugColor;
+                else if (hexGrid.cells[i].isHighlighting) tempColor = hexGrid.highlightColor;
                 else if (hexGrid.cells[i].isActive) tempColor = hexGrid.shipColor;
                 else tempColor = hexGrid.cells[i].color;
 

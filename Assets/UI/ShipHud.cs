@@ -61,6 +61,7 @@ public class ShipHud : MonoBehaviour
             else if (damage == 0)
             {
                 healthBar.SetLevel(((float)this.ship.shipStatus.health) / this.ship.shipStatus.maxHealth);
+                healthBarPreview.SetLevel((float)this.ship.shipStatus.health / this.ship.shipStatus.maxHealth);
                 damageLabel.enabled = false;
 
             }

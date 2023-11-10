@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GridController : MonoBehaviour
 {
-    HexCell activeCell;
+    HexCell activeCell, debugCell;
     public static GridController instance;
 
     private void Awake()
@@ -19,6 +19,15 @@ public class GridController : MonoBehaviour
         activeCell.isActive = true;
         GameEvents.instance.RecolorMesh();
     }
+
+    public void SetDebugCell(HexCell cell)
+    {
+        if (debugCell != null) debugCell.isDebug = false;
+        debugCell = cell;
+        debugCell.isDebug = true;
+        GameEvents.instance.RecolorMesh();
+    }
+
     public void UpdateShipPos(Ship ship)
     {
         ship.TriggerMoveAnim();

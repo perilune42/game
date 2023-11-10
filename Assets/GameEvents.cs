@@ -49,7 +49,7 @@ public class GameEvents : MonoBehaviour
     public event Action onRecolorMesh;
     public void RecolorMesh()
     {
-        //hexGrid.hexMesh.CheckNull();
+
         if(onRecolorMesh != null) onRecolorMesh();
     }
 
@@ -62,7 +62,9 @@ public class GameEvents : MonoBehaviour
     public event Action onUpdateUI;
     public void UpdateUI()
     {
-        if(onUpdateUI != null) onUpdateUI();
+        //GridController.instance.SetDebugCell(hexGrid.GetCellAtPos
+        //(AIUtils.CenterMass(TurnHandler.instance.enemyShipList)));
+        if (onUpdateUI != null) onUpdateUI();
     }
 
     public event Action<string> onDisplayPopup;
