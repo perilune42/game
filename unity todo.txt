@@ -1,6 +1,9 @@
+High Priority:
+-ship destruction
+-victory condition
+
+Other:
 -out of bounds fix
-
-
 -change shipstatus to subclass
 -firing animation
 -armor
