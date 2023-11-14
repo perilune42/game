@@ -62,7 +62,6 @@
     <Compile Include="Assets\GameEvents.cs" />
     <Compile Include="Assets\Grid\HexMesh.cs" />
     <Compile Include="Assets\ObjectMover.cs" />
-    <Compile Include="Assets\UI\ShipHud.cs" />
     <Compile Include="Assets\UI\ShipList.cs" />
     <Compile Include="Assets\Weapons\WeaponInterfaces.cs" />
     <Compile Include="Assets\Ship\TargetType.cs" />
@@ -86,6 +85,7 @@
     <Compile Include="Assets\Weapons\LaserWeaponSO.cs" />
     <Compile Include="Assets\UI\AllUnitList.cs" />
     <Compile Include="Assets\GameLogic\PlayerControl.cs" />
+    <Compile Include="Assets\UI\ShipUI.cs" />
     <Compile Include="Assets\UI\ShipCard.cs" />
     <Compile Include="Assets\UI\UIButtons.cs" />
     <Compile Include="Assets\GameLogic\InputHandler.cs" />

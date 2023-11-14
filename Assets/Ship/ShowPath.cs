@@ -6,7 +6,6 @@ public class PathShower : MonoBehaviour
 {
     Ship ship;
     LineRenderer lineRenderer;
-    public HexGrid hexGrid;
     public Material speed1;
     public Material speed2;
     public Material speed3;
@@ -38,7 +37,7 @@ public class PathShower : MonoBehaviour
     {
         
         lineRenderer.SetPosition(0, ship.transform.position);
-        lineRenderer.SetPosition(1, hexGrid.GetCellAtPos(nextTile).transform.position);
+        lineRenderer.SetPosition(1, HexGrid.instance.GetCellAtPos(nextTile).transform.position);
         if (ship.GetSpeedLevel() == 1 ) lineRenderer.material = speed1;
         else if (ship.GetSpeedLevel() == 2 ) lineRenderer.material = speed2;
         else lineRenderer.material = speed3;

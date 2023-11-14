@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c32068544be9a8d418eb107199b4f4b0, type: 3}
   m_Name: Debug Gun
   m_EditorClassIdentifier: 
-  damage: 4
-  idealRange: 4
-  accuracy: 0.9
+  damage: 300
+  idealRange: 8
+  accuracy: 1
   evasionPenaltyPerCell: 0.04
-  ammoCapacity: 3
-  reloadActions: 2
-  weaponName: Autocannon
+  ammoCapacity: 10
+  reloadActions: 1
+  weaponName: Debug Gun
   visualProjectilePrefab: {fileID: 837092916497042348, guid: 2015fd137a790264c994cebbaf661755, type: 3}

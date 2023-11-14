@@ -273,7 +273,7 @@ public class PlayerControl : MonoBehaviour
 
     public void CycleShip()
     {
-        SwitchShip(shipList.ships[(selectedShip.id + 1) % shipList.ships.Count]);
+        SwitchShip(shipList.activeShips[(selectedShip.id + 1) % shipList.activeShips.Count]);
     }
     public void SwitchShip(Ship ship)
     {
@@ -308,7 +308,7 @@ public class PlayerControl : MonoBehaviour
 
     public void SwitchShip(int id)
     {
-        SwitchShip(shipList.ships[id]);
+        SwitchShip(shipList.activeShips[id]);
     }
 
     void SwitchShipAtPos(HexCoordinates coordinates)
