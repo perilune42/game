@@ -19,6 +19,7 @@ public class Ship : MonoBehaviour
     public int id;
     public int uid;
     public bool isSelected = false;
+    public bool isDestroyed = false;
 
     public AILogic AILogic = null;
     public ShipStatus shipStatus;
@@ -34,6 +35,7 @@ public class Ship : MonoBehaviour
     HexCoordinates nextTile;
     PathShower pathShower;
     ObjectMover objectMover;
+    MeshRenderer meshRenderer;
 
     float slowThreshold = 1f;
     float fastThreshold = 2f;
@@ -48,6 +50,7 @@ public class Ship : MonoBehaviour
         shipStatus = GetComponent<ShipStatus>();
         weapons = GetComponentsInChildren<Weapon>();
         AILogic = GetComponent<AILogic>();
+        meshRenderer = GetComponentInChildren<MeshRenderer>();
     }
 
     // Start is called before the first frame update
@@ -240,9 +243,12 @@ public class Ship : MonoBehaviour
         GameEvents.instance.RecolorMesh();
     }
 
-    void UpdatePath()
+    public void Destroy()
     {
-
+        isDestroyed = true;
+        meshRenderer.gameObject.SetActive(false);
+        pathShower.Hide();
+        GameEvents.instance.ShipDestroyed();
     }
 
     public void _Debug()

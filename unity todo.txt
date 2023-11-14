@@ -1,14 +1,19 @@
 High Priority:
--ship destruction
--victory condition
+-Ship Spawner in runtime
+-view enemy ship weapons
+-view enemy ship incoming projectiles
+-add cooldown for AIMoveRoutine - or - implement retreat routine after intercepting target
 
 Other:
+-ship placer (for testing)
 -out of bounds fix
 -change shipstatus to subclass
 -firing animation
 -armor
 -overwatch
 -lockon
+-camera actions: click to select, double click to view
+-victory condition
 
 -rotate animation
 

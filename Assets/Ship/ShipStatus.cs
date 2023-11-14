@@ -20,6 +20,12 @@ public class ShipStatus : MonoBehaviour
     public void Damage(int damage)
     {
         health -= damage;
+        if (health <= 0)
+        {
+            health = 0;
+
+            ship.Destroy();
+        }
     }
 
     public void AddProjectile(KineticProjectile projectile)

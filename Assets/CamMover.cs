@@ -24,6 +24,11 @@ public class CamMover : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (trackTarget == null)
+        {
+            isTracking = false;
+            trackCounter = 0;
+        }
         if  (isTracking)
         {
             MoveTo(trackTarget.position);

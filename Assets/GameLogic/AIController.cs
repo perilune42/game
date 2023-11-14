@@ -30,6 +30,7 @@ public class AIController : MonoBehaviour
             GameEvents.instance.CamMoveTo(ship.transform.position);
             while (ship.ActionAvailable(ShipAction.Pass))
             {
+                if (ship.isDestroyed) break;
                 bool finishedAction = false;
 
                 string debugString = "";
@@ -111,6 +112,7 @@ public class AIController : MonoBehaviour
                     StartCoroutine(Pass(ship));
                     yield return new WaitForSeconds(1.5f);
                 }
+
             }
             
         }

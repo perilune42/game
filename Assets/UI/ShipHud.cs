@@ -28,6 +28,13 @@ public class ShipHud : MonoBehaviour
         GameEvents.instance.onHitShip += DamagePopup;
     }
 
+    private void OnDestroy()
+    {
+        GameEvents.instance.onPreviewDamage -= PreviewDamage;
+        GameEvents.instance.onUpdateUI -= UpdateLabels;
+        GameEvents.instance.onHitShip -= DamagePopup;
+    }
+
     /*private void Update()
     {
         if (Vector2.Distance(Input.mousePosition, transform.position) < 50)
@@ -70,6 +77,11 @@ public class ShipHud : MonoBehaviour
 
     void UpdateLabels()
     {
+        if (ship.isDestroyed)
+        {
+            gameObject.SetActive(false);
+            return;
+        }
         healthLabel.text = ship.shipStatus.health.ToString() + "/" + ship.shipStatus.maxHealth;
         if (healthBar.GetLevel() == healthBarPreview.GetLevel())
         {

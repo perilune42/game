@@ -132,7 +132,7 @@ public class UIButtons : MonoBehaviour
 
     public void Debug()
     {
-        GameEvents.instance.Debug();
+        GameEvents.instance._Debug();
     }
     
     public void ToggleConfirmButton(bool toggle)

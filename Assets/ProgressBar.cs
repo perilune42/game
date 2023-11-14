@@ -14,7 +14,7 @@ public class ProgressBar : MonoBehaviour
 
     public void SetLevel(float level)
     {
-        rectTransform.sizeDelta = new Vector2(level * initialWidth, rectTransform.rect.height);
+        if (rectTransform != null) rectTransform.sizeDelta = new Vector2(level * initialWidth, rectTransform.rect.height);
     }
 
     public float GetLevel()

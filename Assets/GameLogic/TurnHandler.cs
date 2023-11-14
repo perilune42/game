@@ -36,6 +36,17 @@ public class TurnHandler : MonoBehaviour
         GameEvents.instance.UpdateUI();
     }
 
+    public ShipList ShipListOfTeam(Team team)
+    {
+        switch (team) {
+            case Team.Player:
+                return playerShipList;
+            case Team.Enemy:
+                return enemyShipList;
+            default:
+                return null;
+        }
+    }
     public void CycleTeam()
     {
         currentTeam = teams[((int)currentTeam + 1) % teams.Length];

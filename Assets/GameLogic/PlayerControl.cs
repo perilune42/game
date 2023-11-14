@@ -176,7 +176,8 @@ public class PlayerControl : MonoBehaviour
                 return;
                 
         }
-        if (coordinates != selectedShip.pos && hexGrid.GetCellAtPos(coordinates).containedShip != null)
+        if (coordinates != selectedShip.pos && hexGrid.GetCellAtPos(coordinates).containedShip != null
+                                            && !hexGrid.GetCellAtPos(coordinates).containedShip.isDestroyed)
         {
             targetedShip = hexGrid.GetCellAtPos(coordinates).containedShip;
             TargetShip(targetedShip);

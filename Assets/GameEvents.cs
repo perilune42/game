@@ -16,7 +16,7 @@ public class GameEvents : MonoBehaviour
     }
 
     public event Action onDebug;
-    public void Debug()
+    public void _Debug()
     {
         if (onDebug != null) onDebug();
     }
@@ -96,5 +96,15 @@ public class GameEvents : MonoBehaviour
     {
         if (onHitShip != null) onHitShip(ship, hitType, damage);  
     }
-    
+
+    public event Action onShipDestroyed;
+    public void ShipDestroyed()
+    {
+        if (onShipDestroyed != null)
+        {
+            onShipDestroyed();
+            UpdateUI();
+            Debug.Log("destroyed ship");
+        }
+    }
 }

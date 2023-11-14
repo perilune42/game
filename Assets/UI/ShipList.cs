@@ -7,6 +7,7 @@ public class ShipList : MonoBehaviour
 {
     List<Ship> allShips;
     public List<Ship> ships;
+    public List<Ship> activeShips;
     public List<ShipCard> shipCards;
     public ShipCard shipCardPrefab;
     PlayerControl playerControl;
@@ -39,23 +40,51 @@ public class ShipList : MonoBehaviour
                 i++;
             }
         }
+        activeShips = new List<Ship>(ships);
 
         GameEvents.instance.TurnHandlerInit();
 
         GameEvents.instance.onUpdateUI += UpdateCards;
+        GameEvents.instance.onShipDestroyed += ReassignShips;
     }
 
     public void UpdateCards()
     {
-        foreach (ShipCard card in shipCards) {
-            card.UpdateLabels();
-            card.SetActive(playerControl.selectedShip == card.ship);
+        for (int i = shipCards.Count - 1; i >= 0; i--) {
+            ShipCard card = shipCards[i];
+            if (card.ship.isDestroyed)
+            {
+                shipCards.RemoveAt(i);
+                Destroy(card.gameObject);
+                continue;
+            }
+            else
+            {
+                card.UpdateLabels();
+                card.SetActive(playerControl.selectedShip == card.ship);
+            }
         }
+        
         
     }
     // Update is called once per frame
-    void Update()
+    public void ReassignShips()
     {
-        
+        int i = 0;
+        activeShips.Clear();
+        foreach (Ship ship in ships)
+        {
+            if (!ship.isDestroyed)
+            {
+                activeShips.Add(ship);
+                ship.id = i;
+                i++;
+            }
+        }
+        UpdateCards();
+        foreach (ShipCard card in shipCards)
+        {
+            UIUtils.List(card.gameObject, card.ship.id, 10, Vector2.down);
+        }
     }
 }
