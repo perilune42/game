@@ -31,10 +31,12 @@ public class HexGrid : MonoBehaviour
 
 	public static HexGrid instance;
 
+
+
     void Start () {
 		hexMesh.Triangulate();
 		hexLines.DrawGrid(this);
-		instance = this;
+
 	}
 
 	
@@ -53,8 +55,8 @@ public class HexGrid : MonoBehaviour
     }
 
     void Awake () {
-        
-		hexMesh = GetComponentInChildren<HexMesh>();
+        instance = this;
+        hexMesh = GetComponentInChildren<HexMesh>();
         hexLines = GetComponentInChildren<HexLines>();
         cells = new HexCell[height * width];
 

@@ -77,6 +77,7 @@
     <Compile Include="Assets\CameraController.cs" />
     <Compile Include="Assets\GameLogic\Teams.cs" />
     <Compile Include="Assets\Grid\grid.cs" />
+    <Compile Include="Assets\GameLogic\ControlAction.cs" />
     <Compile Include="Assets\GameLogic\AIController.cs" />
     <Compile Include="Assets\Weapons\Weapon.cs" />
     <Compile Include="Assets\Ship\Ship.cs" />
@@ -103,13 +104,13 @@
     <Compile Include="Assets\CamMover.cs" />
     <Compile Include="Assets\UI\PositionPreview.cs" />
     <Compile Include="Assets\GameLogic\GridController.cs" />
-    <Compile Include="Assets\GameLogic\ShipAction.cs" />
     <Compile Include="Assets\DestroySelf.cs" />
     <Compile Include="Assets\Grid\HexCoordinates.cs" />
     <Compile Include="Assets\Grid\HexGrid.cs" />
     <Compile Include="Assets\DamagePopupContainer.cs" />
     <Compile Include="Assets\UI\WeaponList.cs" />
     <Compile Include="Assets\Weapons\KineticWeapon.cs" />
+    <Compile Include="Assets\ShipSpawner.cs" />
     <Compile Include="Assets\GameLogic\TurnHandler.cs" />
     <Compile Include="Assets\Weapons\KineticProjectile.cs" />
   </ItemGroup>

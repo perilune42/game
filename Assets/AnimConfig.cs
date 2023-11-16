@@ -10,4 +10,6 @@ public class AnimConfig : MonoBehaviour
 
     public static float camAnimAccel = 0.1f;
     public static float camMaxMoveSpeed = 1;
+
+    public static float doubleClickInterval = 0.3f;
 }

@@ -8,7 +8,7 @@ public class PositionPreview : MonoBehaviour
     Canvas canvas;
     private void Awake()
     {
-        hexGrid = GetComponentInParent<HexGrid>();
+        hexGrid = HexGrid.instance;
         canvas = GetComponent<Canvas>();
     }
 

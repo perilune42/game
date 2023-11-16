@@ -43,7 +43,7 @@ public class Ship : MonoBehaviour
 
     private void Awake()
     {
-        hexGrid = GetComponentInParent<HexGrid>();
+        hexGrid = HexGrid.instance;
         pathShower = GetComponentInChildren<PathShower>();
         positionPreview = GetComponentInChildren<PositionPreview>();
         objectMover = GetComponent<ObjectMover>();
@@ -213,20 +213,20 @@ public class Ship : MonoBehaviour
 
 
 
-    public bool ActionAvailable(ShipAction action)
+    public bool ActionAvailable(ControlAction action)
     {
         switch (action) {
-            case ShipAction.Rotate:
+            case ControlAction.Rotate:
                 return actions >= rotateSpeed;
-            case ShipAction.Boost:
+            case ControlAction.Boost:
                 return actions > 0;
-            case ShipAction.None:
+            case ControlAction.None:
                 return actions > 0;
-            case ShipAction.Pass:
+            case ControlAction.Pass:
                 return actions > 0;
-            case ShipAction.DirectTargetShip:
+            case ControlAction.DirectTargetShip:
                 return actions > 0;
-            case ShipAction.Evade:
+            case ControlAction.Evade:
                 return actions == 4;
             default:
                 return false;

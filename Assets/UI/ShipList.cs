@@ -20,26 +20,9 @@ public class ShipList : MonoBehaviour
     void Start()
     { 
         playerControl = PlayerControl.instance;
-        allShips = FindObjectsOfType<Ship>().ToList<Ship>();
-        int i = 0;
-        foreach (Ship ship in allShips)
-        {
-            if (team == ship.team)
-            {
-                ship.id = i;
-                ships.Add(ship);
-                ShipCard card = Instantiate<ShipCard>(shipCardPrefab);
-                card.transform.SetParent(transform, false);
-                card.ship = ship;
-                card.shipList = this;
-                UIUtils.List(card.gameObject, i, 10, Vector2.down);
-                card.Init();
-                shipCards.Add(card);
-                
 
-                i++;
-            }
-        }
+        Init();
+
         activeShips = new List<Ship>(ships);
 
         GameEvents.instance.TurnHandlerInit();
@@ -67,7 +50,39 @@ public class ShipList : MonoBehaviour
         
         
     }
-    // Update is called once per frame
+
+    public void Init()
+    {
+        allShips = FindObjectsOfType<Ship>().ToList<Ship>();
+        ships.Clear();
+        int i = 0;
+        foreach (ShipCard card in shipCards)
+        {
+            Destroy(card.gameObject);
+        }
+        shipCards.Clear();
+        foreach (Ship ship in allShips)
+        {
+            if (team == ship.team)
+            {
+                ship.id = i;
+                ships.Add(ship);
+                ShipCard card = Instantiate<ShipCard>(shipCardPrefab);
+                card.transform.SetParent(transform, false);
+                card.ship = ship;
+                card.shipList = this;
+                UIUtils.List(card.gameObject, i, 10, Vector2.down);
+                card.Init();
+                shipCards.Add(card);
+
+
+                i++;
+            }
+        }
+        ReassignShips();
+
+    }
+
     public void ReassignShips()
     {
         int i = 0;

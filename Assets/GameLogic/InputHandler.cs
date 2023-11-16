@@ -54,7 +54,7 @@ public class InputHandler : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            playerControl.SetCurrentAction(ShipAction.None);
+            playerControl.SetCurrentAction(ControlAction.None);
         }
         if (Input.GetKeyDown(KeyCode.Tab))
         {

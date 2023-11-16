@@ -126,8 +126,8 @@ public class AIUtils
     //returns cloest ship to parameter ship within shipList
     {
         if (shipList.ships.Count == 0) return null;
-        Ship closest = shipList.ships[0];
-        foreach (Ship otherShip in shipList.ships)
+        Ship closest = shipList.activeShips[0];
+        foreach (Ship otherShip in shipList.activeShips)
         {
             if (HexCoordinates.Distance(ship.pos, otherShip.pos)
                 < HexCoordinates.Distance(ship.pos, closest.pos))
@@ -141,7 +141,7 @@ public class AIUtils
     public static HexCoordinates CenterMass(ShipList shipList)
     {
         HexCoordinates positionSum = new HexCoordinates(0,0);
-        foreach (Ship ship in shipList.ships)
+        foreach (Ship ship in shipList.activeShips)
         {
             positionSum = positionSum + ship.pos;
         }

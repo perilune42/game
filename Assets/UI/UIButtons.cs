@@ -25,13 +25,13 @@ public class UIButtons : MonoBehaviour
 
     public void UpdateButtonsVisibility()
     {
-        if (playerControl.currentAction != ShipAction.None && playerControl.currentAction != ShipAction.DirectTargetShip)
+        if (playerControl.currentAction != ControlAction.None && playerControl.currentAction != ControlAction.DirectTargetShip)
         {
-            if (playerControl.currentAction == ShipAction.Rotate && playerControl.pendingDirection == null) ToggleConfirmButton(false);
+            if (playerControl.currentAction == ControlAction.Rotate && playerControl.pendingDirection == null) ToggleConfirmButton(false);
             else ToggleConfirmButton(true);
         }
         else ToggleConfirmButton(false);
-        if (playerControl.currentAction == ShipAction.DirectTargetShip)
+        if (playerControl.currentAction == ControlAction.DirectTargetShip)
         {
             ToggleFireButtons(true);
             if (playerControl.targetedShip != null)
@@ -55,21 +55,21 @@ public class UIButtons : MonoBehaviour
 
     public void Rotate()
     {
-        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(ShipAction.Rotate))
-        playerControl.SetCurrentAction(ShipAction.Rotate);
+        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(ControlAction.Rotate))
+        playerControl.SetCurrentAction(ControlAction.Rotate);
         
     }
     public void Confirm()
     {
-        if ( playerControl.selectedShip != null && playerControl.currentAction != ShipAction.None)
+        if ( playerControl.selectedShip != null && playerControl.currentAction != ControlAction.None)
         {
             playerControl.Confirm(); //should change to pass
         }
     }
     public void Pass()
     {
-        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(ShipAction.Pass))
-            playerControl.SetCurrentAction(ShipAction.Pass);
+        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(ControlAction.Pass))
+            playerControl.SetCurrentAction(ControlAction.Pass);
 
     }
     public void ToggleCoords()
@@ -79,17 +79,17 @@ public class UIButtons : MonoBehaviour
 
     public void Boost()
     {
-        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(ShipAction.Boost))
+        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(ControlAction.Boost))
         {
-            playerControl.SetCurrentAction(ShipAction.Boost);
+            playerControl.SetCurrentAction(ControlAction.Boost);
         }
     }
 
     public void Fire()
     {
-        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(ShipAction.DirectTargetShip))
+        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(ControlAction.DirectTargetShip))
         {
-            playerControl.SetCurrentAction(ShipAction.DirectTargetShip);
+            playerControl.SetCurrentAction(ControlAction.DirectTargetShip);
         }
     }
 
@@ -100,9 +100,9 @@ public class UIButtons : MonoBehaviour
 
     public void SelectWeapon(Weapon weapon)
     {
-        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(ShipAction.DirectTargetShip))
+        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(ControlAction.DirectTargetShip))
         {
-            playerControl.SetCurrentAction(ShipAction.DirectTargetShip, false, weapon);
+            playerControl.SetCurrentAction(ControlAction.DirectTargetShip, false, weapon);
             
         }
     }
@@ -124,9 +124,9 @@ public class UIButtons : MonoBehaviour
 
     public void Evade()
     {
-        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(ShipAction.Evade))
+        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(ControlAction.Evade))
         {
-            playerControl.SetCurrentAction(ShipAction.Evade);
+            playerControl.SetCurrentAction(ControlAction.Evade);
         }
     }
 

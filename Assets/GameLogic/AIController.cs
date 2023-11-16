@@ -28,7 +28,7 @@ public class AIController : MonoBehaviour
         foreach (Ship ship in shipList.ships)
         {
             GameEvents.instance.CamMoveTo(ship.transform.position);
-            while (ship.ActionAvailable(ShipAction.Pass))
+            while (ship.ActionAvailable(ControlAction.Pass))
             {
                 if (ship.isDestroyed) break;
                 bool finishedAction = false;

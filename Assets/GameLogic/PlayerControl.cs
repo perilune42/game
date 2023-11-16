@@ -9,7 +9,7 @@ public class PlayerControl : MonoBehaviour
 {
     public static PlayerControl instance;
 
-    public ShipAction currentAction = ShipAction.None;
+    public ControlAction currentAction = ControlAction.None;
     //public PlayerAction pendingAction = PlayerAction.None;
     public Ship selectedShip;
     [SerializeField]
@@ -21,6 +21,9 @@ public class PlayerControl : MonoBehaviour
     
 
     public Ship targetedShip;
+    Ship lastTargetedShip;
+    float lastTargetedShipTime;
+
     Weapon selectedWeapon;
 
 
@@ -48,7 +51,7 @@ public class PlayerControl : MonoBehaviour
     }
 
 
-    public void SetCurrentAction(ShipAction newAction, bool keep = false, Weapon weapon = null) //keep: keeping any changes to speed and direction
+    public void SetCurrentAction(ControlAction newAction, bool keep = false, Weapon weapon = null) //keep: keeping any changes to speed and direction
     {
         if (TurnHandler.instance.IsAITurn()) return;
         GameEvents.instance.PreviewDamage(null, 0);
@@ -65,27 +68,27 @@ public class PlayerControl : MonoBehaviour
                 cell.isHighlighting = false;
             }
             //tempColoredCells.Clear();
-            if (currentAction != newAction && currentAction != ShipAction.None && !keep) //switching between actions
+            if (currentAction != newAction && currentAction != ControlAction.None && !keep) //switching between actions
             {
                 selectedShip.speed = prevSpeed; //reset previews
                 selectedShip.moveDir = prevMoveDir;
                 selectedShip.GetNextTile();
                 selectedShip.positionPreview.Hide();
             }
-            if (newAction == ShipAction.None)
+            if (newAction == ControlAction.None)
             {
                 actionLabel.text = "";
 
                 
 
             }
-            if (newAction == ShipAction.Pass)
+            if (newAction == ControlAction.Pass)
             {
                 actionLabel.text = "Pass";
                 selectedShip.positionPreview.PreviewAt(selectedShip.GetNextTile(), selectedShip.headingDir);
                 hexGrid.GetCellAtPos(selectedShip.GetNextTile()).isHighlighting = true;
             }
-            if (newAction == ShipAction.Rotate)
+            if (newAction == ControlAction.Rotate)
             {
                 actionLabel.text = "Rotate";
 
@@ -99,7 +102,7 @@ public class PlayerControl : MonoBehaviour
 
 
             }
-            if (newAction == ShipAction.Boost && currentAction != ShipAction.Boost)
+            if (newAction == ControlAction.Boost && currentAction != ControlAction.Boost)
             {
                 actionLabel.text = "Boost";
                 selectedShip.Boost(selectedShip.accel);  //event
@@ -112,17 +115,21 @@ public class PlayerControl : MonoBehaviour
 
             }
 
-            if (newAction == ShipAction.Evade)
+            if (newAction == ControlAction.Evade)
             {
                 actionLabel.text = "Evade";
                 selectedShip.shipStatus.isEvading = true;
             }
 
-            if (newAction == ShipAction.DirectTargetShip)
+            if (newAction == ControlAction.DirectTargetShip)
             {
                 actionLabel.text = "Firing " + weapon.weaponName;
                 selectedWeapon = weapon;
                 if (weapon is IRanged w) w.DisplayRange();
+            }
+            if (newAction == ControlAction.DevSpawnShip)
+            {
+                actionLabel.text = "Select Spawn Position";
             }
             currentAction = newAction;
             targetedShip = null;
@@ -138,8 +145,8 @@ public class PlayerControl : MonoBehaviour
     {
 
         switch (currentAction) {
-            case ShipAction.Rotate:
-                if (currentAction == ShipAction.Rotate)
+            case ControlAction.Rotate:
+                if (currentAction == ControlAction.Rotate)
                 {
 
                     HexCoordinates selectedDirection = coordinates - selectedShip.pos;
@@ -167,17 +174,21 @@ public class PlayerControl : MonoBehaviour
 
                 }
                 return;
-            case ShipAction.Pass:
-            case ShipAction.Boost:
+            case ControlAction.Pass:
+            case ControlAction.Boost:
                 if (coordinates == selectedShip.GetNextTile())
                 {
                     Confirm();
                 }
                 return;
+            case ControlAction.DevSpawnShip:
+                ShipSpawner.instance.SpawnPresetShip(coordinates);
+                break;
+
                 
         }
-        if (coordinates != selectedShip.pos && hexGrid.GetCellAtPos(coordinates).containedShip != null
-                                            && !hexGrid.GetCellAtPos(coordinates).containedShip.isDestroyed)
+        if (hexGrid.GetCellAtPos(coordinates).containedShip != null &&
+            !hexGrid.GetCellAtPos(coordinates).containedShip.isDestroyed)
         {
             targetedShip = hexGrid.GetCellAtPos(coordinates).containedShip;
             TargetShip(targetedShip);
@@ -187,8 +198,20 @@ public class PlayerControl : MonoBehaviour
 
     public void TargetShip(Ship targetedShip)
     {
+        if (targetedShip == null) return;
+
+        if (Time.time - lastTargetedShipTime < AnimConfig.doubleClickInterval &&
+            targetedShip == lastTargetedShip)
+        {
+            GameEvents.instance.CamMoveTo(targetedShip.transform.position);
+        }
+
+        lastTargetedShip = targetedShip;
+        lastTargetedShipTime = Time.time;
+        
+
         if (TurnHandler.instance.IsAITurn()) return;
-        if (currentAction == ShipAction.DirectTargetShip)
+        if (currentAction == ControlAction.DirectTargetShip)
         { 
             if (targetedShip != selectedShip)
             {
@@ -199,15 +222,17 @@ public class PlayerControl : MonoBehaviour
                 if (selectedWeapon is ITargetsShip w2) GameEvents.instance.PreviewDamage(targetedShip, w2.CalculateDamage(targetedShip));
                 
             }
-            GameEvents.instance.CamMoveTo(targetedShip.transform.position);
+            
 
         }
-        else if (currentAction == ShipAction.None)
+        else if (currentAction == ControlAction.None)
         {
-            this.targetedShip = null;
-            if (TurnHandler.instance.currentTeam == targetedShip.team)
-            SwitchShip(targetedShip);
-            else GameEvents.instance.CamMoveTo(targetedShip.transform.position);
+            if (targetedShip != selectedShip)
+            {
+                this.targetedShip = null;
+                if (TurnHandler.instance.currentTeam == targetedShip.team)
+                    SwitchShip(targetedShip);
+            }
         }
         GameEvents.instance.UpdateUI();
     }
@@ -216,41 +241,41 @@ public class PlayerControl : MonoBehaviour
     {
         
         switch (currentAction) {
-            case ShipAction.Pass:
+            case ControlAction.Pass:
                 {
                     selectedShip.Pass(1);
                     GridController.instance.UpdateShipPos(selectedShip);
-                    SetCurrentAction(ShipAction.None);
+                    SetCurrentAction(ControlAction.None);
 
                 }
                 break;
-            case ShipAction.Rotate:
+            case ControlAction.Rotate:
 
 
                 if (pendingDirection != null)
                 {
                     selectedShip.Rotate(pendingDirection ?? HexDirection.N);
                     GridController.instance.UpdateShipPos(selectedShip);
-                    SetCurrentAction(ShipAction.None, true);
+                    SetCurrentAction(ControlAction.None, true);
                 }
                 break;
 
-            case ShipAction.Boost:
+            case ControlAction.Boost:
                 selectedShip.Pass(1);
                 GridController.instance.UpdateShipPos(selectedShip);
-                SetCurrentAction(ShipAction.None, true);
+                SetCurrentAction(ControlAction.None, true);
                 break;
 
-            case ShipAction.Evade:
+            case ControlAction.Evade:
                 selectedShip.Pass(1);
                 GridController.instance.UpdateShipPos(selectedShip);
-                SetCurrentAction(ShipAction.None);
+                SetCurrentAction(ControlAction.None);
                 break;
             
-            case ShipAction.DirectTargetShip:
+            case ControlAction.DirectTargetShip:
                 if (targetedShip == null || targetedShip == selectedShip) return;
                 if (selectedWeapon is ITargetsShip w) w.ShootShip(targetedShip);
-                SetCurrentAction(ShipAction.None, true);
+                SetCurrentAction(ControlAction.None, true);
                 selectedShip.Pass(1);
                 GridController.instance.UpdateShipPos(selectedShip,0.3f);
                 break;
@@ -292,17 +317,12 @@ public class PlayerControl : MonoBehaviour
 
             shipList.UpdateCards();
 
-            SetCurrentAction(ShipAction.None);
+            SetCurrentAction(ControlAction.None);
 
-            GameEvents.instance.CamMoveTo(cell.transform.position);
 
             GameEvents.instance.RecolorMesh();
             GameEvents.instance.DisplayWeapons(ship);
             GameEvents.instance.UpdateUI();
-        }
-        else
-        {
-            GameEvents.instance.CamMoveTo(ship.transform.position);
         }
     }
 
