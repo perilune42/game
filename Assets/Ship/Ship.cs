@@ -234,6 +234,11 @@ public class Ship : MonoBehaviour
         
     }
 
+    public bool ActionAvailable()
+    {
+        return actions > 0;
+    }
+
     public void PostMove()
     {
         pathShower.UnHide();

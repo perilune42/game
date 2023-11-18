@@ -67,6 +67,12 @@ public class GameEvents : MonoBehaviour
         if (onUpdateUI != null) onUpdateUI();
     }
 
+    public event Action<bool> onLockControls;
+    public void LockControls(bool toggle)
+    {
+        if (onLockControls != null) onLockControls(toggle);
+    }
+
     public event Action<string> onDisplayPopup;
     public void DisplayPopup(string message)
     {

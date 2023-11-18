@@ -14,6 +14,7 @@ public class WeaponButton : MonoBehaviour
     RectTransform rectTransform;
     UIButtons buttonController;
     Button button;
+    bool locked = false;
 
 
     // Start is called before the first frame update
@@ -23,6 +24,7 @@ public class WeaponButton : MonoBehaviour
         buttonController = FindObjectOfType<UIButtons>();
         button = GetComponent<Button>();
         GameEvents.instance.onUpdateUI += UpdateLabels;
+        GameEvents.instance.onLockControls += LockControls;
     }
 
     public void SetPosition(int pos)
@@ -54,7 +56,15 @@ public class WeaponButton : MonoBehaviour
             }
             else reloadLabel.gameObject.SetActive(false);
         }
-        button.interactable = weapon.CanFire();
+        if (!locked) button.interactable = weapon.CanFire();
+        else button.interactable = false;
+    }
+
+    public void LockControls(bool toggle)
+    {
+        locked = toggle;
+        UpdateLabels();
+
     }
 
 }

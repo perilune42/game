@@ -59,7 +59,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Weapons\LaserWeapon.cs" />
-    <Compile Include="Assets\GameEvents.cs" />
     <Compile Include="Assets\Grid\HexMesh.cs" />
     <Compile Include="Assets\ObjectMover.cs" />
     <Compile Include="Assets\UI\ShipList.cs" />
@@ -83,6 +82,7 @@
     <Compile Include="Assets\Ship\Ship.cs" />
     <Compile Include="Assets\Grid\HexDirections.cs" />
     <Compile Include="Assets\Weapons\KineticWeaponSO.cs" />
+    <Compile Include="Assets\GameLogic\GameEvents.cs" />
     <Compile Include="Assets\Weapons\LaserWeaponSO.cs" />
     <Compile Include="Assets\UI\AllUnitList.cs" />
     <Compile Include="Assets\GameLogic\PlayerControl.cs" />

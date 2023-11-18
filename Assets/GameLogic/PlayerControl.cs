@@ -230,8 +230,7 @@ public class PlayerControl : MonoBehaviour
             if (targetedShip != selectedShip)
             {
                 this.targetedShip = null;
-                if (TurnHandler.instance.currentTeam == targetedShip.team)
-                    SwitchShip(targetedShip);
+                SwitchShip(targetedShip);
             }
         }
         GameEvents.instance.UpdateUI();
@@ -290,7 +289,7 @@ public class PlayerControl : MonoBehaviour
         selectedShip.positionPreview.Hide();
         selectedShip.GetNextTile();
 
-       
+        if (!selectedShip.ActionAvailable()) GameEvents.instance.LockControls(true);
         //GameEvents.instance.RecolorMesh();
         GameEvents.instance.UpdateUI();
         //UIButtons.instance.ToggleConfirmButton(false);
@@ -298,11 +297,31 @@ public class PlayerControl : MonoBehaviour
 
     public void CycleShip()
     {
-        SwitchShip(shipList.activeShips[(selectedShip.id + 1) % shipList.activeShips.Count]);
+        if (selectedShip.team == TurnHandler.instance.currentTeam)
+        {
+            for (int i = (selectedShip.id + 1) % shipList.activeShips.Count; i < shipList.activeShips.Count; i++)
+            {
+                if (shipList.activeShips[i % shipList.activeShips.Count].ActionAvailable()) {
+                    SwitchShip(shipList.activeShips[i % shipList.activeShips.Count]);
+                    return;
+                }
+            }
+        }
+        else if (shipList.activeShips.Count > 0)
+        {
+            for (int i = 0; i < shipList.activeShips.Count; i++)
+            {
+                if (shipList.activeShips[i % shipList.activeShips.Count].ActionAvailable())
+                {
+                    SwitchShip(shipList.activeShips[i % shipList.activeShips.Count]);
+                    return;
+                }
+            }
+        }
     }
     public void SwitchShip(Ship ship)
     {
-        if (ship.team == shipList.team)
+        if (ship != null)
         {
             selectedShip.shipStatus.isEvading = false;
             selectedShip.isSelected = false;
@@ -324,6 +343,13 @@ public class PlayerControl : MonoBehaviour
             GameEvents.instance.DisplayWeapons(ship);
             GameEvents.instance.UpdateUI();
         }
+        
+        if (ship.team == TurnHandler.instance.currentTeam && !TurnHandler.instance.IsAITurn())
+        {
+            if (!ship.ActionAvailable()) GameEvents.instance.LockControls(true);
+            else GameEvents.instance.LockControls(false);
+        }
+        else GameEvents.instance.LockControls(true);
     }
 
     public void SwitchShip(int id)

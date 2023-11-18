@@ -66,7 +66,6 @@ public class TurnHandler : MonoBehaviour
                 }
             }
         }
-        playerControl.SwitchShip(0);
         foreach (ShipList list in shipLists)
         {
             list.UpdateCards();
@@ -75,12 +74,11 @@ public class TurnHandler : MonoBehaviour
 
         if (currentTeam == Team.Enemy && AIControl)
         {
-            UIButtons.instance.LockPlayerControls(true);
             AIController.instance.PlayTurn();
         }
         else if (currentTeam == Team.Player)
         {
-            UIButtons.instance.LockPlayerControls(false);
+            playerControl.CycleShip();
         }
     }
 

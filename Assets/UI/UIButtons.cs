@@ -21,6 +21,7 @@ public class UIButtons : MonoBehaviour
         playerControl = PlayerControl.instance;
         instance = this;
         GameEvents.instance.onUpdateUI += UpdateButtonsVisibility;
+        GameEvents.instance.onLockControls += LockPlayerControls;
     }
 
     public void UpdateButtonsVisibility()

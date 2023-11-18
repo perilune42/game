@@ -25,8 +25,9 @@ public class AIController : MonoBehaviour
 
     IEnumerator DoActions()
     {
-        foreach (Ship ship in shipList.ships)
+        foreach (Ship ship in shipList.ships) //add randomness
         {
+            PlayerControl.instance.SwitchShip(ship); 
             GameEvents.instance.CamMoveTo(ship.transform.position);
             while (ship.ActionAvailable(ControlAction.Pass))
             {

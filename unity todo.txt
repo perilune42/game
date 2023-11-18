@@ -1,11 +1,7 @@
 High Priority:
--Ship Spawner in runtime
--view enemy ship weapons
--view enemy ship incoming projectiles
 -add cooldown for AIMoveRoutine - or - implement retreat routine after intercepting target
 
 Other:
--ship placer (for testing)
 -critical hits
 -payloads
 -out of bounds fix
@@ -14,8 +10,9 @@ Other:
 -armor
 -overwatch
 -lockon
--camera actions: click to select, double click to view
 -victory condition
+-add AI control order randomness
+-camera pan to hit ship on enemy turn
 
 -rotate animation
 
