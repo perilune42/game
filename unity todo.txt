@@ -1,24 +1,28 @@
 High Priority:
 -add cooldown for AIMoveRoutine - or - implement retreat routine after intercepting target
+-rework turn system
 
-Other:
+Features:
 -critical hits
 -payloads
--out of bounds fix
--change shipstatus to subclass
--firing animation
 -armor
 -overwatch
 -lockon
 -victory condition
+
+
+Minor:
 -add AI control order randomness
--camera pan to hit ship on enemy turn
-
--rotate animation
-
--laser fade
-
--decide font, button layout
 -add damage preview to incoming projectiles
+-out of bounds fix
+
+Visuals:
+-camera pan to hit ship on enemy turn
+-rotate animation
+-laser fade
+-decide font, button layout
+-firing animation
+-more & better ship models
+
 
 
