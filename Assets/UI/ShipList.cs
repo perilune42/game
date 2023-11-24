@@ -25,8 +25,6 @@ public class ShipList : MonoBehaviour
 
         activeShips = new List<Ship>(ships);
 
-        GameEvents.instance.TurnHandlerInit();
-
         GameEvents.instance.onUpdateUI += UpdateCards;
         GameEvents.instance.onShipDestroyed += ReassignShips;
     }

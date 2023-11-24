@@ -169,15 +169,20 @@ public struct HexCoordinates {
 
     public static float Distance(HexCoordinates A, HexCoordinates B)
     {
-        HexCoordinates vector = A - B;
-        return (Math.Abs(vector.X) + Math.Abs(vector.Y) + Math.Abs(vector.Z)) / 2;
+        Vector2 vector = A.ToV2() - B.ToV2();
+        return vector.magnitude;
     }
 
     public Vector2 ToV2()
     {
-        float x = (3.0f / 2 * X);
-        float y = (float)(-Math.Sqrt(3) / 2 * X - Math.Sqrt(3) * Y);
+        float x = (3.0f / 2 * X) / (float)Math.Sqrt(3);
+        float y = (float)((-Math.Sqrt(3) / 2 * X - Math.Sqrt(3) * Y) / Math.Sqrt(3));
 
-        return new Vector2 (x, y).normalized;
+        return new Vector2(x, y);
+    }
+
+    public Vector2 ToV2Norm()
+    {
+        return ToV2().normalized;
     }
 }

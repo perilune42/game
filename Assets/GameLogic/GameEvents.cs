@@ -113,4 +113,10 @@ public class GameEvents : MonoBehaviour
             Debug.Log("destroyed ship");
         }
     }
+
+    public event Action onUseCommandPoint;
+    public void UseCommandPoint()
+    {
+        if (onUseCommandPoint != null) onUseCommandPoint();
+    }
 }

@@ -76,8 +76,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   team: 1
-  speed: 2
-  accel: 2
+  speed: 4
+  thrust: 0
   moveDir: 3
   headingDir: 3
   pos:
@@ -85,7 +85,7 @@ MonoBehaviour:
     z: 30
   positionPreview: {fileID: 0}
   rotateSpeed: 0
-  actions: 4
+  actions: 0
   shipName: Interceptor
   id: 0
   uid: 0
@@ -93,6 +93,7 @@ MonoBehaviour:
   isDestroyed: 0
   AILogic: {fileID: 0}
   shipStatus: {fileID: 0}
+  shipData: {fileID: 11400000, guid: 3eb789e67f7a150439938f4882f6b1ab, type: 2}
   weapons: []
   cell: {fileID: 0}
 --- !u!114 &7403878140408480118
@@ -138,6 +139,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   behavior: 0
+  lastMoved: 100
 --- !u!1001 &1269312924062750447
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -58,7 +58,7 @@ public class LaserWeapon : Weapon, IRanged, ITargetsShip, IHasCooldown
         return cooldownTimer == 0;
     }
 
-    public override void PassAction()
+    public override void PassTurn()
     {
         if (cooldownTimer > 0)
         {

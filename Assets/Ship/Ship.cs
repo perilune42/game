@@ -7,8 +7,8 @@ using Unity.VisualScripting;
 public class Ship : MonoBehaviour
 {
     public Team team = Team.Player;
-    public int speed = 4;
-    public int accel = 4;
+    public int speed;
+    public int thrust;
     public HexDirection moveDir = HexDirection.N;
     public HexDirection headingDir = HexDirection.N;
     public HexCoordinates pos = new HexCoordinates(5,0);
@@ -23,6 +23,8 @@ public class Ship : MonoBehaviour
 
     public AILogic AILogic = null;
     public ShipStatus shipStatus;
+    public ShipDataSO shipData;
+
 
     public Weapon[] weapons;
 
@@ -43,6 +45,8 @@ public class Ship : MonoBehaviour
 
     private void Awake()
     {
+        thrust = shipData.thrust;
+        speed = thrust;
         hexGrid = HexGrid.instance;
         actions = GameConfig.turnActions;
         pathShower = GetComponentInChildren<PathShower>();
@@ -103,12 +107,12 @@ public class Ship : MonoBehaviour
                 else if (moveDir - headingDir == -2 || moveDir - headingDir == 4) //CW 120 deg
                 {
                     moveDir = headingDir;
-                    speed = accel;
+                    speed = thrust;
                 }
                 else if (moveDir - headingDir == 2 || moveDir - headingDir == -4) //CCW 120 deg
                 {
                     moveDir = headingDir;
-                    speed = accel;
+                    speed = thrust;
                 }
             }
             else if (GetSpeedLevel() == 2)  //speed 2 - double boost required for turning, uses 2 actions
@@ -120,12 +124,12 @@ public class Ship : MonoBehaviour
                 else if (moveDir - headingDir == -2 || moveDir - headingDir == 4) //CW 120 deg
                 {
                     moveDir = (HexDirection)((int)(moveDir + 1) % 6);
-                    speed = accel;
+                    speed = thrust;
                 }
                 else if (moveDir - headingDir == 2 || moveDir - headingDir == -4) //CCW 120 deg
                 {
                     moveDir = (HexDirection)((int)(moveDir + 5) % 6);
-                    speed = accel;
+                    speed = thrust;
                 }
             }
             
@@ -166,44 +170,60 @@ public class Ship : MonoBehaviour
 
     public int GetSpeedLevel()
     {
-        if (speed < accel * slowThreshold) return 1;
-        else if (speed < accel * fastThreshold) return 2;
+        if (speed < thrust * slowThreshold) return 1;
+        else if (speed < thrust * fastThreshold) return 2;
         else return 3;
     }
 
-    public void Pass(int actions)
+    public void PassAction(int actions)
     {
         UseAction(actions);
     }
 
     void UseAction()
     {
+
+        if(IsFirstAction())
+        {
+            shipStatus.RollProjectiles();
+        }
+        
+        GetNextTile();
+        actions--;
+        GameEvents.instance.UseCommandPoint();
+    }
+
+    public void EndTurnMove()
+    {
+        foreach (Weapon weapon in weapons)
+        {
+            weapon.PassTurn();
+        }
         pos = pos + HexCoordinates.FromDirection(moveDir) * speed;
 
         cell.containedShip = null;
         cell = hexGrid.GetCellAtPos(pos);
         cell.containedShip = this;
 
-        foreach (Weapon weapon in weapons)
-        {
-            weapon.PassAction();
-        }
-
-        if(IsFirstAction())
-        {
-            shipStatus.RollProjectiles();
-        }
-
-        //transform.position = cell.transform.position;
-        
         GetNextTile();
         pathShower.Hide();
-        actions--;
     }
 
     public void TriggerMoveAnim()
     {
         objectMover.MoveTo(pos);
+    }
+
+    public void GiveActions()
+    {
+        if (team == Team.Enemy)
+        {
+            actions = GameConfig.enemyActions;
+        }
+        else
+        {
+            actions = GameConfig.turnActions;
+        }
     }
     public void UseAction(int actions)
     {
@@ -215,7 +235,8 @@ public class Ship : MonoBehaviour
 
     bool IsFirstAction()
     {
-        return actions == GameConfig.turnActions;
+        if (team == Team.Player) return actions == GameConfig.turnActions;
+        else return actions == GameConfig.enemyActions;
     }
 
     public bool ActionAvailable(ControlAction action)

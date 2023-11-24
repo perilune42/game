@@ -10,7 +10,7 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged, IUsesAmmo, IHasCoold
 
     public KineticWeaponSO weaponData;
     public int damage, idealRange, ammoCapacity, reloadActions, ammoCount;
-    public float accuracy, evasionPenaltyPerCell;
+    public float accuracy;
     public int cooldownTimer;
 
     ProjectileRenderer projectileAnimHandler;
@@ -27,7 +27,6 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged, IUsesAmmo, IHasCoold
         damage = weaponData.damage;
         idealRange = weaponData.idealRange;
         accuracy = weaponData.accuracy;
-        evasionPenaltyPerCell = weaponData.evasionPenaltyPerCell;
         ammoCapacity = weaponData.ammoCapacity;
         reloadActions = weaponData.reloadActions;
 
@@ -70,17 +69,27 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged, IUsesAmmo, IHasCoold
         return damage;
     }
 
-    public float ChanceToHit(Ship target)
+    public float ChanceToHit(Ship target, float distance)
     {
-        return accuracy; //modifiers, range penalties
+        if (target.shipStatus.isEvading)
+            return Mathf.Max(0, (accuracy - weaponData.RangePenalty(distance)) * (1 - weaponData.EvasionPenalty(distance)));
+        else return Mathf.Max(0, accuracy - weaponData.RangePenalty(distance));
     }
+
+    public float ChanceToHitPreview(Ship target, float distance, bool isEvading)
+    {
+        if (isEvading)
+            return Mathf.Max(0, (accuracy - weaponData.RangePenalty(distance)) * (1 - weaponData.EvasionPenalty(distance)));
+        else return Mathf.Max(0, accuracy - weaponData.RangePenalty(distance));
+    }
+
     
     public override bool CanFire()
     {
         return cooldownTimer == 0;
     }
 
-    public override void PassAction()
+    public override void PassTurn()
     {
         if (cooldownTimer > 0)
         {

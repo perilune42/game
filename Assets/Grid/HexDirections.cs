@@ -13,7 +13,7 @@ public static class HexDirectionE {
 	}
     public static Vector2 ToV2(this HexDirection direction)
     {
-        return HexCoordinates.FromDirection(direction).ToV2();
+        return HexCoordinates.FromDirection(direction).ToV2Norm();
     }
 	
 	public static int Difference(HexDirection direction1, HexDirection direction2)

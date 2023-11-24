@@ -10,8 +10,7 @@ public class KineticWeaponSO : ScriptableObject
 
 
     public float accuracy = 0.9f;
-    public float evasionPenaltyPerCell = 0.02f; //tracking stat
-
+    public float velocity = 10f;
     public int ammoCapacity = 1;
     public int reloadActions = 1;
 
@@ -19,4 +18,13 @@ public class KineticWeaponSO : ScriptableObject
 
 
     public ProjectileTrail visualProjectilePrefab;
+
+    public float RangePenalty(float distance)
+    {
+        return distance / (20 * velocity); //10 velocity: 10 cells = 5%, 20 cells = 10%
+    }
+    public float EvasionPenalty(float distance)
+    {
+        return distance / (5 * velocity);
+    }
 }

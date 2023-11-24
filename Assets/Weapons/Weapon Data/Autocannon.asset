@@ -15,7 +15,7 @@ MonoBehaviour:
   damage: 4
   idealRange: 4
   accuracy: 0.9
-  evasionPenaltyPerCell: 0.04
+  velocity: 3
   ammoCapacity: 3
   reloadActions: 2
   weaponName: Autocannon

@@ -46,11 +46,11 @@ public class InputHandler : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.B))
         {
-            ship.Boost(ship.accel, 1);
+            ship.Boost(ship.thrust, 1);
         }
         if (Input.GetKeyDown(KeyCode.V))
         {
-            ship.Boost(ship.accel, 2);
+            ship.Boost(ship.thrust, 2);
         }
         if (Input.GetKeyDown(KeyCode.Escape))
         {

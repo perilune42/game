@@ -6,8 +6,8 @@ public class ShipStatus : MonoBehaviour
 {
     public Ship ship;
 
-    public int health = 20;
-    public int maxHealth = 20;
+    public int health;
+    public int maxHealth;
 
     public bool isEvading = false;
 
@@ -15,6 +15,8 @@ public class ShipStatus : MonoBehaviour
     void Awake()
     {
         ship = GetComponent<Ship>();
+        maxHealth = ship.shipData.health;
+        health = maxHealth;
     }
 
     public void Damage(int damage)

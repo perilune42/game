@@ -16,6 +16,7 @@ public class TurnHandler : MonoBehaviour
     public ShipList playerShipList, enemyShipList;
 
     public bool AIControl = false;
+    public int playerCommandPoints;
 
     public static TurnHandler instance;
     private void Start()
@@ -32,8 +33,10 @@ public class TurnHandler : MonoBehaviour
 
         GameEvents.instance.onTurnEnd += CycleTeam;
         GameEvents.instance.onTurnHandlerInit += Init;
-
+        GameEvents.instance.onUseCommandPoint += UseCommandPoint;
         GameEvents.instance.UpdateUI();
+        currentTeam = Team.Player;
+        playerCommandPoints = GameConfig.playerCommandPoints;
     }
 
     public ShipList ShipListOfTeam(Team team)
@@ -47,15 +50,32 @@ public class TurnHandler : MonoBehaviour
                 return null;
         }
     }
+
+    public void UseCommandPoint()
+    {
+        playerCommandPoints--;
+        if (playerCommandPoints <= 0) GameEvents.instance.LockControls(true);
+        GameEvents.instance.UpdateUI();
+    }
+
     public void CycleTeam()
     {
+        foreach (Ship ship in ShipListOfTeam(currentTeam).activeShips)
+        {
+            ship.EndTurnMove();
+            GridController.instance.UpdateShipPos(ship);
+        }
+
         currentTeam = teams[((int)currentTeam + 1) % teams.Length];
+        
+
+
         foreach (ShipList list in shipLists) {
             if (list.team == currentTeam) {
                 playerControl.shipList = list;
                 foreach (Ship ship in list.ships)
                 {
-                    ship.actions = GameConfig.turnActions;
+                    ship.GiveActions();
                 }
             }
             else
@@ -71,6 +91,8 @@ public class TurnHandler : MonoBehaviour
             list.UpdateCards();
         }
         teamLabel.text = currentTeam.ToString();
+
+
 
         if (currentTeam == Team.Enemy && AIControl)
         {
@@ -78,41 +100,25 @@ public class TurnHandler : MonoBehaviour
         }
         else if (currentTeam == Team.Player)
         {
+            playerCommandPoints = GameConfig.playerCommandPoints;
             playerControl.CycleShip();
         }
+        GameEvents.instance.UpdateUI();
     }
 
     public void Init()
     {
-        currentTeam = Team.Player;
-        foreach (ShipList list in shipLists)
-        {
-            if (list.team == currentTeam)
-            {
-                playerControl.shipList = list;
-                foreach (Ship ship in list.ships)
-                {
-                    ship.actions = GameConfig.turnActions;
-                }
-            }
-            else
-            {
-                foreach (Ship ship in list.ships)
-                {
-                    ship.actions = 0;
-                }
-            }
-        }
-        foreach (ShipList list in shipLists)
-        {
-            list.UpdateCards();
-        }
-        teamLabel.text = currentTeam.ToString();
+        CycleTeam();
     }
 
     public bool IsAITurn()
     {
         return (currentTeam == Team.Enemy && AIControl);
+    }
+
+    public bool PlayerControllable()
+    {
+        return !(IsAITurn() || (playerCommandPoints == 0));
     }
 
 }
