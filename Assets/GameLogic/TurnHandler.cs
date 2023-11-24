@@ -55,7 +55,7 @@ public class TurnHandler : MonoBehaviour
                 playerControl.shipList = list;
                 foreach (Ship ship in list.ships)
                 {
-                    ship.actions = 4;
+                    ship.actions = GameConfig.turnActions;
                 }
             }
             else
@@ -92,7 +92,7 @@ public class TurnHandler : MonoBehaviour
                 playerControl.shipList = list;
                 foreach (Ship ship in list.ships)
                 {
-                    ship.actions = 4;
+                    ship.actions = GameConfig.turnActions;
                 }
             }
             else

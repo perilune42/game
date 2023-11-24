@@ -14,7 +14,7 @@ public class Ship : MonoBehaviour
     public HexCoordinates pos = new HexCoordinates(5,0);
     public PositionPreview positionPreview;
     public int rotateSpeed = 1;
-    public int actions = 4;
+    public int actions;
     public string shipName = "Ship";
     public int id;
     public int uid;
@@ -44,6 +44,7 @@ public class Ship : MonoBehaviour
     private void Awake()
     {
         hexGrid = HexGrid.instance;
+        actions = GameConfig.turnActions;
         pathShower = GetComponentInChildren<PathShower>();
         positionPreview = GetComponentInChildren<PositionPreview>();
         objectMover = GetComponent<ObjectMover>();
@@ -51,6 +52,7 @@ public class Ship : MonoBehaviour
         weapons = GetComponentsInChildren<Weapon>();
         AILogic = GetComponent<AILogic>();
         meshRenderer = GetComponentInChildren<MeshRenderer>();
+        
     }
 
     // Start is called before the first frame update
@@ -187,7 +189,7 @@ public class Ship : MonoBehaviour
             weapon.PassAction();
         }
 
-        if(actions == 4)
+        if(IsFirstAction())
         {
             shipStatus.RollProjectiles();
         }
@@ -211,7 +213,10 @@ public class Ship : MonoBehaviour
         }
     }
 
-
+    bool IsFirstAction()
+    {
+        return actions == GameConfig.turnActions;
+    }
 
     public bool ActionAvailable(ControlAction action)
     {
@@ -227,7 +232,7 @@ public class Ship : MonoBehaviour
             case ControlAction.DirectTargetShip:
                 return actions > 0;
             case ControlAction.Evade:
-                return actions == 4;
+                return IsFirstAction();
             default:
                 return false;
         }

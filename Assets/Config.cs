@@ -13,3 +13,8 @@ public class AnimConfig : MonoBehaviour
 
     public static float doubleClickInterval = 0.3f;
 }
+
+public class GameConfig : MonoBehaviour
+{
+    public static int turnActions = 1;
+}

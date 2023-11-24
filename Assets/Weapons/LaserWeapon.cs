@@ -46,10 +46,10 @@ public class LaserWeapon : Weapon, IRanged, ITargetsShip, IHasCooldown
     {
         if (dist <= fallOffRange)
         {
-            return damage;
+            return baseDamage;
         }
         else {
-            return Mathf.Max(Mathf.CeilToInt( damage - (dist - fallOffRange) * fallOffRate), 1);
+            return Mathf.Max(Mathf.CeilToInt( (baseDamage - 1) - (dist - fallOffRange) * fallOffRate), 1);
         }
     }
 

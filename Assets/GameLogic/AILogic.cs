@@ -79,6 +79,8 @@ public class AILogic : MonoBehaviour
     Ship ship;
     ShipList playerShips;
 
+    public int lastMoved = -1;
+
     private void Awake()
     {
         ship = GetComponent<Ship>();
