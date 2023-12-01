@@ -16,6 +16,7 @@ Minor:
 -add damage preview to incoming projectiles
 -out of bounds fix
 -hit projectiles on turn end
+-fix action not set to none after using all command points
 
 
 Visuals:

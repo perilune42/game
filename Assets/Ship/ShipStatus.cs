@@ -9,6 +9,10 @@ public class ShipStatus : MonoBehaviour
     public int health;
     public int maxHealth;
 
+    public int armorPoints;
+    public int maxArmorPoints;
+    public int armorLevel;
+
     public bool isEvading = false;
 
     public List<KineticProjectile> incomingProjectiles = new List<KineticProjectile>();
@@ -17,6 +21,9 @@ public class ShipStatus : MonoBehaviour
         ship = GetComponent<Ship>();
         maxHealth = ship.shipData.health;
         health = maxHealth;
+        maxArmorPoints = ship.shipData.armorPoints;
+        armorLevel = ship.shipData.armorLevel;
+        armorPoints = maxArmorPoints;
     }
 
     public void Damage(int damage)
