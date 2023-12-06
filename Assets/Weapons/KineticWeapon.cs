@@ -9,7 +9,8 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged, IUsesAmmo, IHasCoold
     
 
     public KineticWeaponSO weaponData;
-    public int damage, idealRange, ammoCapacity, reloadActions, ammoCount;
+    public int idealRange, ammoCapacity, reloadActions, ammoCount;
+    //public AttackData attack;
     public float accuracy;
     public int cooldownTimer;
 
@@ -20,11 +21,9 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged, IUsesAmmo, IHasCoold
 
     public override void Init()
     {
-
         
         type = TargetType.Kinetic;
         weaponName = weaponData.weaponName;
-        damage = weaponData.damage;
         idealRange = weaponData.idealRange;
         accuracy = weaponData.accuracy;
         ammoCapacity = weaponData.ammoCapacity;
@@ -35,6 +34,11 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged, IUsesAmmo, IHasCoold
 
         projectileAnimHandler = GetComponent<ProjectileRenderer>();
         rangeLineRenderer = HexGrid.instance.weaponRangeDisplay;
+    }
+
+    public AttackData GetAttack(Ship targetShip)
+    {
+        return new AttackData(weaponData.damage, weaponData.armorPierce);
     }
     public void ShootShip(Ship targetShip)
     {
@@ -64,9 +68,9 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged, IUsesAmmo, IHasCoold
         GameEvents.instance.UpdateUI();
     }
 
-    public int CalculateDamage(Ship targetShip)
+    public DamageData GetDamage(Ship targetShip)
     {
-        return damage;
+        return Weapon.CalcBasicDamage(GetAttack(targetShip), targetShip);
     }
 
     public float ChanceToHit(Ship target, float distance)

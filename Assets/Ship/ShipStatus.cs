@@ -26,15 +26,21 @@ public class ShipStatus : MonoBehaviour
         armorPoints = maxArmorPoints;
     }
 
-    public void Damage(int damage)
+    public void DealDamage(DamageData damage)
     {
-        health -= damage;
+        health -= damage.healthDamage;
+        armorPoints = Mathf.Max(0, armorPoints - damage.armorDamage);
         if (health <= 0)
         {
             health = 0;
 
             ship.Destroy();
         }
+    }
+
+    public DamageData CalculateDamage(AttackData attack)
+    {
+        return new DamageData(attack.damage - Mathf.Max(0, armorLevel - attack.armorPierce), attack.damage);
     }
 
     public void AddProjectile(KineticProjectile projectile)

@@ -6,6 +6,10 @@ using UnityEngine;
 public class KineticWeaponSO : ScriptableObject
 {
     public int damage = 3;
+    public int armorPierce = 1;
+    
+
+
     public int idealRange = 5;
 
 
@@ -16,9 +20,7 @@ public class KineticWeaponSO : ScriptableObject
 
     public string weaponName = "Kinetic";
 
-
-    public ProjectileTrail visualProjectilePrefab;
-
+    public ProjectileTrail visualProjectilePrefab;    
     public float RangePenalty(float distance)
     {
         return distance / (20 * velocity); //10 velocity: 10 cells = 5%, 20 cells = 10%

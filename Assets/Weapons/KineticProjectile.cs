@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class KineticProjectile: MonoBehaviour
 {
-    public int damage;
+    public DamageData damage;
     public float accuracy;
     public float distance;
     Ship target;
@@ -12,7 +12,7 @@ public class KineticProjectile: MonoBehaviour
     public void Init (KineticWeapon origin, Ship target) 
     {
         this.weapon = origin;
-        damage = origin.CalculateDamage(target);
+        damage = origin.GetDamage(target);
         accuracy = origin.accuracy;
         distance = HexCoordinates.Distance(origin.ship.pos, target.pos);
         this.target = target;
@@ -33,8 +33,8 @@ public class KineticProjectile: MonoBehaviour
 
     private void Hit()
     {
-        target.shipStatus.Damage(damage);
-        GameEvents.instance.HitShip(target, HitType.Hit, damage);
+        target.shipStatus.DealDamage(damage);
+        GameEvents.instance.HitShip(target, HitType.Hit, damage.healthDamage);
     }
 
     private void Miss()

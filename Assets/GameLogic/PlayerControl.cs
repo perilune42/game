@@ -223,7 +223,7 @@ public class PlayerControl : MonoBehaviour
                         " / " +
                         UIUtils.ToPercent(kinetic.ChanceToHitPreview(targetedShip, HexCoordinates.Distance(selectedShip.pos, targetedShip.pos), true)) +
                         "\n" + HexCoordinates.Distance(selectedShip.pos, targetedShip.pos).ToString();
-                if (selectedWeapon is ITargetsShip w2) GameEvents.instance.PreviewDamage(targetedShip, w2.CalculateDamage(targetedShip));
+                if (selectedWeapon is ITargetsShip w2) GameEvents.instance.PreviewDamage(targetedShip, w2.GetDamage(targetedShip).healthDamage);
                 
             }
             
