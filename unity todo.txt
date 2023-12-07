@@ -1,20 +1,23 @@
 High Priority:
--add cooldown for AIMoveRoutine - or - implement retreat routine after intercepting target
 -rework turn system
 
 Features:
+-AI scores
 -critical hits
 -payloads
 -armor
 -overwatch
 -lockon
 -victory condition
-
+-command points distribution: different max points for each ship
 
 Minor:
 -add AI control order randomness
 -add damage preview to incoming projectiles
 -out of bounds fix
+-hit projectiles on turn end
+-fix action not set to none after using all command points
+
 
 Visuals:
 -camera pan to hit ship on enemy turn
@@ -23,6 +26,7 @@ Visuals:
 -decide font, button layout
 -firing animation
 -more & better ship models
+-cascading projectile impacts
 
 
 

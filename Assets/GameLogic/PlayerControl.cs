@@ -53,7 +53,7 @@ public class PlayerControl : MonoBehaviour
 
     public void SetCurrentAction(ControlAction newAction, bool keep = false, Weapon weapon = null) //keep: keeping any changes to speed and direction
     {
-        if (TurnHandler.instance.IsAITurn()) return;
+        if (!TurnHandler.instance.PlayerControllable()) return;
         GameEvents.instance.PreviewDamage(null, 0);
         selectedShip.shipStatus.isEvading = false;
 
@@ -105,7 +105,7 @@ public class PlayerControl : MonoBehaviour
             if (newAction == ControlAction.Boost && currentAction != ControlAction.Boost)
             {
                 actionLabel.text = "Boost";
-                selectedShip.Boost(selectedShip.accel);  //event
+                selectedShip.Boost(selectedShip.thrust);  //event
                 selectedShip.positionPreview.PreviewAt(selectedShip.GetNextTile(), selectedShip.headingDir);
                 hexGrid.GetCellAtPos(selectedShip.GetNextTile()).isHighlighting = true;
 
@@ -210,7 +210,7 @@ public class PlayerControl : MonoBehaviour
         lastTargetedShipTime = Time.time;
         
 
-        if (TurnHandler.instance.IsAITurn()) return;
+        if (!TurnHandler.instance.PlayerControllable()) return;
         if (currentAction == ControlAction.DirectTargetShip)
         { 
             if (targetedShip != selectedShip)
@@ -218,8 +218,12 @@ public class PlayerControl : MonoBehaviour
                 this.targetedShip = targetedShip;
                 GameEvents.instance.PreviewDamage(null, 0);
                 actionLabel.text = "Targeting " + targetedShip.shipName;
-                if (selectedWeapon is KineticWeapon kinetic) actionLabel.text += "\n" + UIUtils.ToPercent(kinetic.ChanceToHit(targetedShip));
-                if (selectedWeapon is ITargetsShip w2) GameEvents.instance.PreviewDamage(targetedShip, w2.CalculateDamage(targetedShip));
+                if (selectedWeapon is KineticWeapon kinetic) actionLabel.text += "\n" + 
+                        UIUtils.ToPercent(kinetic.ChanceToHitPreview(targetedShip, HexCoordinates.Distance(selectedShip.pos, targetedShip.pos), false)) +
+                        " / " +
+                        UIUtils.ToPercent(kinetic.ChanceToHitPreview(targetedShip, HexCoordinates.Distance(selectedShip.pos, targetedShip.pos), true)) +
+                        "\n" + HexCoordinates.Distance(selectedShip.pos, targetedShip.pos).ToString();
+                if (selectedWeapon is ITargetsShip w2) GameEvents.instance.PreviewDamage(targetedShip, w2.GetDamage(targetedShip).healthDamage);
                 
             }
             
@@ -242,8 +246,8 @@ public class PlayerControl : MonoBehaviour
         switch (currentAction) {
             case ControlAction.Pass:
                 {
-                    selectedShip.Pass(1);
-                    GridController.instance.UpdateShipPos(selectedShip);
+                    selectedShip.PassAction(1);
+                    
                     SetCurrentAction(ControlAction.None);
 
                 }
@@ -254,20 +258,17 @@ public class PlayerControl : MonoBehaviour
                 if (pendingDirection != null)
                 {
                     selectedShip.Rotate(pendingDirection ?? HexDirection.N);
-                    GridController.instance.UpdateShipPos(selectedShip);
                     SetCurrentAction(ControlAction.None, true);
                 }
                 break;
 
             case ControlAction.Boost:
-                selectedShip.Pass(1);
-                GridController.instance.UpdateShipPos(selectedShip);
+                selectedShip.PassAction(1);
                 SetCurrentAction(ControlAction.None, true);
                 break;
 
             case ControlAction.Evade:
-                selectedShip.Pass(1);
-                GridController.instance.UpdateShipPos(selectedShip);
+                selectedShip.PassAction(1);
                 SetCurrentAction(ControlAction.None);
                 break;
             
@@ -275,7 +276,7 @@ public class PlayerControl : MonoBehaviour
                 if (targetedShip == null || targetedShip == selectedShip) return;
                 if (selectedWeapon is ITargetsShip w) w.ShootShip(targetedShip);
                 SetCurrentAction(ControlAction.None, true);
-                selectedShip.Pass(1);
+                selectedShip.PassAction(1);
                 GridController.instance.UpdateShipPos(selectedShip,0.3f);
                 break;
 
@@ -344,7 +345,7 @@ public class PlayerControl : MonoBehaviour
             GameEvents.instance.UpdateUI();
         }
         
-        if (ship.team == TurnHandler.instance.currentTeam && !TurnHandler.instance.IsAITurn())
+        if (ship.team == TurnHandler.instance.currentTeam && TurnHandler.instance.PlayerControllable())
         {
             if (!ship.ActionAvailable()) GameEvents.instance.LockControls(true);
             else GameEvents.instance.LockControls(false);

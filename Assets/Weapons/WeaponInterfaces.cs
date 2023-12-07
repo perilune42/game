@@ -6,8 +6,10 @@ interface IRanged
 
 interface ITargetsShip
 {
+    public AttackData GetAttack(Ship targetShip);
     public void ShootShip (Ship targetShip);
-    public int CalculateDamage(Ship targetShip);
+    public DamageData GetDamage(Ship targetShip);
+    
 
 }
 

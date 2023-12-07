@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using JetBrains.Annotations;
+using UnityEngine;
 
 [RequireComponent(typeof(ProjectileRenderer))]
 public class LaserWeapon : Weapon, IRanged, ITargetsShip, IHasCooldown
@@ -25,22 +26,26 @@ public class LaserWeapon : Weapon, IRanged, ITargetsShip, IHasCooldown
         lineRenderer = HexGrid.instance.weaponRangeDisplay;
     }
 
+    public AttackData GetAttack(Ship targetShip)
+    {
+        int finalDamage;
+        float distance = HexCoordinates.Distance(targetShip.pos, ship.pos);
+        finalDamage = DamageFallOff(damage, distance);
+        return new AttackData(finalDamage, weaponData.armorPierce);
+    }
 
     public void ShootShip(Ship targetShip)
     {
-        targetShip.shipStatus.Damage(CalculateDamage(targetShip));
-        GameEvents.instance.HitShip(targetShip, HitType.Hit, CalculateDamage(targetShip));
+        targetShip.shipStatus.DealDamage(GetDamage(targetShip));
+        GameEvents.instance.HitShip(targetShip, HitType.Hit, GetDamage(targetShip).healthDamage);
         projectileAnimHandler.Shoot(targetShip.transform.position, weaponData.visualProjectilePrefab);
 
         cooldownTimer = reloadActions + 1;
     }
 
-    public int CalculateDamage(Ship targetShip)
+    public DamageData GetDamage(Ship targetShip)
     {
-        int finalDamage;
-        float distance = HexCoordinates.Distance(targetShip.pos, ship.pos);
-        finalDamage = DamageFallOff(damage, distance);
-        return finalDamage;
+        return Weapon.CalcBasicDamage(GetAttack(targetShip), targetShip);
     }
     int DamageFallOff(int baseDamage, float dist)
     {
@@ -58,7 +63,7 @@ public class LaserWeapon : Weapon, IRanged, ITargetsShip, IHasCooldown
         return cooldownTimer == 0;
     }
 
-    public override void PassAction()
+    public override void PassTurn()
     {
         if (cooldownTimer > 0)
         {

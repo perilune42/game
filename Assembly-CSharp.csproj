@@ -67,9 +67,9 @@
     <Compile Include="Assets\ProjectileRenderer.cs" />
     <Compile Include="Assets\ProgressBar.cs" />
     <Compile Include="Assets\Config.cs" />
-    <Compile Include="Assets\UI\Popup.cs" />
     <Compile Include="Assets\Starfield Skybox\Demo\Script\LookCamera.cs" />
     <Compile Include="Assets\FinalInit.cs" />
+    <Compile Include="Assets\Ship\ShipDataSO.cs" />
     <Compile Include="Assets\UI\IncomingProjectileDisplay.cs" />
     <Compile Include="Assets\Ship\ShowPath.cs" />
     <Compile Include="Assets\DebugScript.cs" />
@@ -82,6 +82,7 @@
     <Compile Include="Assets\Ship\Ship.cs" />
     <Compile Include="Assets\Grid\HexDirections.cs" />
     <Compile Include="Assets\Weapons\KineticWeaponSO.cs" />
+    <Compile Include="Assets\Weapons\Damage.cs" />
     <Compile Include="Assets\GameLogic\GameEvents.cs" />
     <Compile Include="Assets\Weapons\LaserWeaponSO.cs" />
     <Compile Include="Assets\UI\AllUnitList.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="Assets\UI\WeaponList.cs" />
     <Compile Include="Assets\Weapons\KineticWeapon.cs" />
     <Compile Include="Assets\ShipSpawner.cs" />
+    <Compile Include="Assets\UI\InfoUI.cs" />
     <Compile Include="Assets\GameLogic\TurnHandler.cs" />
     <Compile Include="Assets\Weapons\KineticProjectile.cs" />
   </ItemGroup>

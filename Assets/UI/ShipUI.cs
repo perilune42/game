@@ -8,17 +8,13 @@ public class ShipUI : MonoBehaviour
 {
     Ship ship;
     [SerializeField]
-    TMP_Text healthLabel;
-    [SerializeField]
-    TMP_Text actionLabel;
-    [SerializeField]
-    TMP_Text damageLabel;
+    TMP_Text healthLabel, actionLabel, damageLabel, armorLabel, armorLevelLabel;
     [SerializeField]
     DamagePopupContainer damagePopupContainer;
 
     [SerializeField] Color activeColor, inactiveColor, enemyActiveColor, enemyInactiveColor;
     [SerializeField] Image hudBackground;
-    [SerializeField] ProgressBar healthBar, healthBarPreview;
+    [SerializeField] ProgressBar healthBar, healthBarPreview, armorBar, armorBarPreview;
 
     private void Start()
     {
@@ -78,10 +74,14 @@ public class ShipUI : MonoBehaviour
             return;
         }
         healthLabel.text = ship.shipStatus.health.ToString() + "/" + ship.shipStatus.maxHealth;
+        armorLabel.text = ship.shipStatus.armorPoints.ToString() + "/" + ship.shipStatus.maxArmorPoints;
+        armorLevelLabel.text = ship.shipStatus.armorLevel.ToString();
         if (healthBar.GetLevel() == healthBarPreview.GetLevel())
         {
             healthBar.SetLevel((float)ship.shipStatus.health / ship.shipStatus.maxHealth);
+            armorBar.SetLevel((float)ship.shipStatus.armorPoints / ship.shipStatus.maxArmorPoints);
             healthBarPreview.SetLevel((float)ship.shipStatus.health / ship.shipStatus.maxHealth);
+            armorBarPreview.SetLevel((float)ship.shipStatus.armorPoints / ship.shipStatus.maxArmorPoints);
         }
         actionLabel.text = ship.actions.ToString();
 

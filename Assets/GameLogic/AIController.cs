@@ -25,6 +25,7 @@ public class AIController : MonoBehaviour
 
     IEnumerator DoActions()
     {
+        yield return new WaitForSeconds(1.5f);
         foreach (Ship ship in shipList.ships) //add randomness
         {
             PlayerControl.instance.SwitchShip(ship); 
@@ -47,7 +48,7 @@ public class AIController : MonoBehaviour
                     debugString += " " + interceptRoutine.targetShip.shipName;
                     debugString += " " + AIUtils.ClosestDirection(ship.pos, interceptRoutine.targetShip.pos);
                     targetMoveDirection = AIUtils.ClosestDirection(ship.pos, interceptRoutine.targetShip.pos);
-                    if (HexCoordinates.Distance(ship.pos, interceptRoutine.targetShip.pos) > ship.accel * 5)
+                    if (HexCoordinates.Distance(ship.pos, interceptRoutine.targetShip.pos) > ship.thrust * 5)
                     {
                         targetSpeedLevel = 3;
                     }
@@ -130,9 +131,7 @@ public class AIController : MonoBehaviour
 
     IEnumerator Pass(Ship ship)
     {
-        ship.Pass(1);
-        GameEvents.instance.CamTrack(ship.transform);
-        GridController.instance.UpdateShipPos(ship);
+        ship.PassAction(1);
         GameEvents.instance.UpdateUI();
         yield return null;
     }
@@ -140,15 +139,13 @@ public class AIController : MonoBehaviour
     IEnumerator Rotate(Ship ship, HexDirection direction)
     {
         ship.Rotate(direction);
-        GameEvents.instance.CamTrack(ship.transform);
-        GridController.instance.UpdateShipPos(ship);
         GameEvents.instance.UpdateUI();
         yield return null;
     }
 
     IEnumerator Boost(Ship ship)
     {
-        ship.Boost(ship.accel);
+        ship.Boost(ship.thrust);
         yield return new WaitForSeconds(0.5f);
         StartCoroutine(Pass(ship));
     }

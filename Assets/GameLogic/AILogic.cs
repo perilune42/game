@@ -157,8 +157,8 @@ public class AIUtils
         HexDirection closest = HexDirection.N;
         for (int i = 1; i < 6; i++)
         {
-            if (Vector2.Dot(((HexDirection)i).ToV2(), vector.ToV2())
-                > Vector2.Dot(closest.ToV2(), vector.ToV2()))
+            if (Vector2.Dot(((HexDirection)i).ToV2(), vector.ToV2Norm())
+                > Vector2.Dot(closest.ToV2(), vector.ToV2Norm()))
             {
                 closest = (HexDirection)i;
             }
@@ -174,7 +174,7 @@ public class AIUtils
     //acceptable maxAngle range
     {
         HexCoordinates vector = destination - origin;
-        if (Vector2.Angle(direction.ToV2(), vector.ToV2()) <= maxAngle)
+        if (Vector2.Angle(direction.ToV2(), vector.ToV2Norm()) <= maxAngle)
         {
             return true;
         }
@@ -185,7 +185,7 @@ public class AIUtils
                                   HexCoordinates destination)
     {
         HexCoordinates vector = destination - origin;
-        return Vector2.Angle(direction.ToV2(), vector.ToV2());
+        return Vector2.Angle(direction.ToV2(), vector.ToV2Norm());
     }
 
     public static HexDirection RotateManeuverBestHeading(Ship ship, HexDirection targetDirection)

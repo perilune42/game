@@ -30,7 +30,7 @@ public class ShipSpawner : MonoBehaviour
 
         if (dir != HexDirection.None)
         {
-            spawnedShip.speed = spawnedShip.accel;
+            spawnedShip.speed = spawnedShip.thrust;
             spawnedShip.headingDir = dir;
             spawnedShip.moveDir = dir;
         }
