@@ -24,4 +24,6 @@ public struct DamageData
         this.healthDamage = healthDamage;
         this.armorDamage = armorDamage;
     }
+
+    public static DamageData none = new DamageData(0, 0);
 }

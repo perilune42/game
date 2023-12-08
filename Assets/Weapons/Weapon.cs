@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Buffers.Text;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,6 +23,8 @@ public abstract class Weapon : MonoBehaviour
     
     public static DamageData CalcBasicDamage(AttackData attack, Ship targetShip)
     {
+
+        
         
         if (targetShip.shipStatus.armorPoints <= 0)
         {

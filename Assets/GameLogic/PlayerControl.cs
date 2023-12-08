@@ -216,14 +216,14 @@ public class PlayerControl : MonoBehaviour
             if (targetedShip != selectedShip)
             {
                 this.targetedShip = targetedShip;
-                GameEvents.instance.PreviewDamage(null, 0);
+                GameEvents.instance.PreviewDamage(null, DamageData.) ;
                 actionLabel.text = "Targeting " + targetedShip.shipName;
                 if (selectedWeapon is KineticWeapon kinetic) actionLabel.text += "\n" + 
                         UIUtils.ToPercent(kinetic.ChanceToHitPreview(targetedShip, HexCoordinates.Distance(selectedShip.pos, targetedShip.pos), false)) +
                         " / " +
                         UIUtils.ToPercent(kinetic.ChanceToHitPreview(targetedShip, HexCoordinates.Distance(selectedShip.pos, targetedShip.pos), true)) +
                         "\n" + HexCoordinates.Distance(selectedShip.pos, targetedShip.pos).ToString();
-                if (selectedWeapon is ITargetsShip w2) GameEvents.instance.PreviewDamage(targetedShip, w2.GetDamage(targetedShip).healthDamage);
+                if (selectedWeapon is ITargetsShip w2) GameEvents.instance.PreviewDamage(targetedShip, w2.GetDamage(targetedShip));
                 
             }
             

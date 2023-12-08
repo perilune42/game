@@ -91,8 +91,8 @@ public class GameEvents : MonoBehaviour
         if (onUpdateProjDisplay != null) onUpdateProjDisplay(projectile, hit);
     }
 
-    public event Action<Ship, int> onPreviewDamage;
-    public void PreviewDamage(Ship ship, int damage)
+    public event Action<Ship, DamageData> onPreviewDamage;
+    public void PreviewDamage(Ship ship, DamageData damage)
     {
         if (onPreviewDamage != null) onPreviewDamage(ship, damage);
     }
