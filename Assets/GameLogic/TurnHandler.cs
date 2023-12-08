@@ -18,6 +18,8 @@ public class TurnHandler : MonoBehaviour
     public bool AIControl = false;
     public int playerCommandPoints;
 
+    public bool debugInfiniteActions = false;
+
     public static TurnHandler instance;
     private void Start()
     {
@@ -54,6 +56,11 @@ public class TurnHandler : MonoBehaviour
     public void UseCommandPoint()
     {
         playerCommandPoints--;
+        if (debugInfiniteActions)
+        {
+            playerCommandPoints++;
+            playerControl.selectedShip.GiveActions();
+        }
         if (playerCommandPoints <= 0) GameEvents.instance.LockControls(true);
         GameEvents.instance.UpdateUI();
     }

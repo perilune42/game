@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c32068544be9a8d418eb107199b4f4b0, type: 3}
   m_Name: Debug Gun
   m_EditorClassIdentifier: 
-  damage: 6
-  armorPierce: 2
+  damage: 2
+  armorPierce: 0
   idealRange: 20
   accuracy: 1
   velocity: 10

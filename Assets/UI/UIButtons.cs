@@ -115,6 +115,13 @@ public class UIButtons : MonoBehaviour
 
     }
 
+    public void ToggleInfiniteActions(TMP_Dropdown dropdown)
+    {
+        if (dropdown.value == 0) TurnHandler.instance.debugInfiniteActions = false;
+        else TurnHandler.instance.debugInfiniteActions = true;
+
+    }
+
     public void LockPlayerControls(bool toggle)
     {
         foreach (Button button in buttons)

@@ -63,7 +63,7 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged, IUsesAmmo, IHasCoold
         ammoCount--;
         if (ammoCount == 0)
         {
-            cooldownTimer = reloadActions + 1;
+            cooldownTimer = reloadActions;
         }
         GameEvents.instance.UpdateUI();
     }

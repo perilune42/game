@@ -8,7 +8,7 @@ public class ShipUI : MonoBehaviour
 {
     Ship ship;
     [SerializeField]
-    TMP_Text healthLabel, actionLabel, damageLabel, armorLabel, armorLevelLabel;
+    TMP_Text healthLabel, actionLabel, damageLabel, armorLabel, armorDamageLabel, armorLevelLabel;
     [SerializeField]
     DamagePopupContainer damagePopupContainer;
 
@@ -45,22 +45,36 @@ public class ShipUI : MonoBehaviour
         }
     }
 
-    void PreviewDamage(Ship ship, int damage)
+    void PreviewDamage(Ship ship, DamageData damage)
     {
-        if (ship == this.ship || ship == null)
+        if (ship == this.ship || (ship == null && damage.Equals(DamageData.none)))
         {
-            if (damage > 0)
+            if (damage.healthDamage > 0)
             {
-                healthBar.SetLevel(((float)ship.shipStatus.health - damage) / ship.shipStatus.maxHealth);
+                healthBar.SetLevel(((float)ship.shipStatus.health - damage.healthDamage) / ship.shipStatus.maxHealth);
                 
                 damageLabel.enabled = true;
-                damageLabel.text = (-damage).ToString();
+                damageLabel.text = (-damage.healthDamage).ToString();
             }
-            else if (damage == 0)
+            else if (damage.healthDamage == 0)
             {
                 healthBar.SetLevel(((float)this.ship.shipStatus.health) / this.ship.shipStatus.maxHealth);
                 healthBarPreview.SetLevel((float)this.ship.shipStatus.health / this.ship.shipStatus.maxHealth);
                 damageLabel.enabled = false;
+            }
+
+            if (damage.armorDamage > 0)
+            {
+                armorBar.SetLevel(((float)ship.shipStatus.armorPoints - damage.armorDamage) / ship.shipStatus.maxArmorPoints );
+
+                armorDamageLabel.enabled = true;
+                armorDamageLabel.text = (-damage.armorDamage).ToString();
+            }
+            else if (damage.armorDamage == 0)
+            {
+                armorBar.SetLevel(((float)this.ship.shipStatus.armorPoints) / this.ship.shipStatus.maxArmorPoints);
+                armorBarPreview.SetLevel((float)this.ship.shipStatus.armorPoints / this.ship.shipStatus.maxArmorPoints);
+                armorDamageLabel.enabled = false;
 
             }
         }
@@ -76,6 +90,7 @@ public class ShipUI : MonoBehaviour
         healthLabel.text = ship.shipStatus.health.ToString() + "/" + ship.shipStatus.maxHealth;
         armorLabel.text = ship.shipStatus.armorPoints.ToString() + "/" + ship.shipStatus.maxArmorPoints;
         armorLevelLabel.text = ship.shipStatus.armorLevel.ToString();
+        /*
         if (healthBar.GetLevel() == healthBarPreview.GetLevel())
         {
             healthBar.SetLevel((float)ship.shipStatus.health / ship.shipStatus.maxHealth);
@@ -83,6 +98,7 @@ public class ShipUI : MonoBehaviour
             healthBarPreview.SetLevel((float)ship.shipStatus.health / ship.shipStatus.maxHealth);
             armorBarPreview.SetLevel((float)ship.shipStatus.armorPoints / ship.shipStatus.maxArmorPoints);
         }
+        */
         actionLabel.text = ship.actions.ToString();
 
         if (ship.team == TurnHandler.instance.currentTeam)

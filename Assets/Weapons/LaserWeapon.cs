@@ -31,7 +31,7 @@ public class LaserWeapon : Weapon, IRanged, ITargetsShip, IHasCooldown
         int finalDamage;
         float distance = HexCoordinates.Distance(targetShip.pos, ship.pos);
         finalDamage = DamageFallOff(damage, distance);
-        return new AttackData(finalDamage, weaponData.armorPierce);
+        return new AttackData(finalDamage, weaponData.armorPierce, weaponData.armorBonus);
     }
 
     public void ShootShip(Ship targetShip)
@@ -40,7 +40,7 @@ public class LaserWeapon : Weapon, IRanged, ITargetsShip, IHasCooldown
         GameEvents.instance.HitShip(targetShip, HitType.Hit, GetDamage(targetShip).healthDamage);
         projectileAnimHandler.Shoot(targetShip.transform.position, weaponData.visualProjectilePrefab);
 
-        cooldownTimer = reloadActions + 1;
+        cooldownTimer = reloadActions;
     }
 
     public DamageData GetDamage(Ship targetShip)

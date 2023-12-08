@@ -243,6 +243,7 @@ MonoBehaviour:
   actionLabel: {fileID: 5041711509701617925}
   damageLabel: {fileID: 3218812935544764105}
   armorLabel: {fileID: 2058349553183848179}
+  armorDamageLabel: {fileID: 1339643158740149908}
   armorLevelLabel: {fileID: 5542559609412642935}
   damagePopupContainer: {fileID: 7216155545112893773}
   activeColor: {r: 0.049722813, g: 0.20754719, b: 0.04013884, a: 0.8862745}
@@ -847,6 +848,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8100941525840057481, guid: 20ba0e6f78c0cdd409396aec49b093ca, type: 3}
   m_PrefabInstance: {fileID: 8266771147085777562}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1339643158740149908 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6930519576983776270, guid: 20ba0e6f78c0cdd409396aec49b093ca, type: 3}
+  m_PrefabInstance: {fileID: 8266771147085777562}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2002091107725778908 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7598034153095402822, guid: 20ba0e6f78c0cdd409396aec49b093ca, type: 3}

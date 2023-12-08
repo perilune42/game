@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: IR Laser
   m_EditorClassIdentifier: 
   damage: 5
+  armorPierce: -1
+  armorBonus: 1.5
   fallOffRange: 3
   fallOffRate: 0.5
+  reloadActions: 1
   weaponName: Laser
   visualProjectilePrefab: {fileID: 837092916497042348, guid: 8f4d60cede5faf3479980a97afb125db, type: 3}
