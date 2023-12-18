@@ -16,3 +16,4 @@ MonoBehaviour:
   health: 20
   armorPoints: 10
   armorLevel: 3
+  defaultMaxActions: 2

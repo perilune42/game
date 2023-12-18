@@ -5,7 +5,6 @@ Features:
 -AI scores
 -critical hits
 -payloads
--armor
 -overwatch
 -lockon
 -victory condition
@@ -15,9 +14,13 @@ Minor:
 -add AI control order randomness
 -add damage preview to incoming projectiles
 -out of bounds fix
--hit projectiles on turn end
+-force defense on turn end
 -fix action not set to none after using all command points
+-make unavailable actions uninteractable
+-improve defense UI, show ships under attack in ship list
 
+Bugs:
+-Enemy ship not clickable after several turns / ship destruction
 
 Visuals:
 -camera pan to hit ship on enemy turn

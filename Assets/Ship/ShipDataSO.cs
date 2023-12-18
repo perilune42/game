@@ -9,4 +9,5 @@ public class ShipDataSO : ScriptableObject
     public int health;
     public int armorPoints;
     public int armorLevel;
+    public int defaultMaxActions = 2;
 }

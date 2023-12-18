@@ -16,7 +16,7 @@ public class AnimConfig : MonoBehaviour
 
 public class GameConfig : MonoBehaviour
 {
-    public static int turnActions = 3;
-    public static int enemyActions = 1;
+    public static int turnActions = 2;
+    public static int enemyActions = 2;
     public static int playerCommandPoints = 6;
 }

@@ -51,6 +51,7 @@ public abstract class Weapon : MonoBehaviour
                 if (finalArmorDamage > targetShip.shipStatus.armorPoints)
                 {
                     overDamage = baseArmorDamage - partialDamage;
+                    break;
                 }
             }
             finalArmorDamage = targetShip.shipStatus.armorPoints;

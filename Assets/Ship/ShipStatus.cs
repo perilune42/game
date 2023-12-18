@@ -26,6 +26,11 @@ public class ShipStatus : MonoBehaviour
         armorPoints = maxArmorPoints;
     }
 
+    public bool IsUnderAttack()
+    {
+        return incomingProjectiles.Count > 0;
+    }
+
     public void DealDamage(DamageData damage)
     {
         health -= damage.healthDamage;

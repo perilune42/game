@@ -31,7 +31,7 @@ public class IncomingProjectileDisplay : MonoBehaviour
                 Destroy(card.gameObject);
             }
             cards.Clear();
-            if (ship.shipStatus.incomingProjectiles.Count == 0)
+            if (!ship.shipStatus.IsUnderAttack())
             {
                 gameObject.SetActive(false);
                 return;

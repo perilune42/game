@@ -15,11 +15,13 @@ public class Ship : MonoBehaviour
     public PositionPreview positionPreview;
     public int rotateSpeed = 1;
     public int actions;
+    public int maxActions = -1;
     public string shipName = "Ship";
     public int id;
     public int uid;
     public bool isSelected = false;
     public bool isDestroyed = false;
+    
 
     public AILogic AILogic = null;
     public ShipStatus shipStatus;
@@ -62,6 +64,10 @@ public class Ship : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (maxActions == -1)
+        {
+            maxActions = shipData.defaultMaxActions;
+        }
         cell = hexGrid.GetCellAtPos(pos);
         cell.containedShip = this;
         transform.position = cell.transform.position;
@@ -75,7 +81,7 @@ public class Ship : MonoBehaviour
     {
         headingDir = newHeading;
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, 60 * (int)headingDir, transform.rotation.eulerAngles.z);
-        UseAction(rotateSpeed);
+        PassAction(rotateSpeed);
     }
     public void Rotate(int newHeading)
     {
@@ -153,6 +159,7 @@ public class Ship : MonoBehaviour
             speed = -speed;
             moveDir = (HexDirection)((int)(moveDir + 3) % 6);
         }
+        shipStatus.isEvading = true;
         GetNextTile();
     }
 
@@ -175,23 +182,8 @@ public class Ship : MonoBehaviour
         else return 3;
     }
 
-    public void PassAction(int actions)
-    {
-        UseAction(actions);
-    }
 
-    void UseAction()
-    {
 
-        if(IsFirstAction())
-        {
-            shipStatus.RollProjectiles();
-        }
-        
-        GetNextTile();
-        actions--;
-        GameEvents.instance.UseCommandPoint();
-    }
 
     public void EndTurnMove()
     {
@@ -216,16 +208,9 @@ public class Ship : MonoBehaviour
 
     public void GiveActions()
     {
-        if (team == Team.Enemy)
-        {
-            actions = GameConfig.enemyActions;
-        }
-        else
-        {
-            actions = GameConfig.turnActions;
-        }
+        actions = maxActions;
     }
-    public void UseAction(int actions)
+    public void PassAction(int actions)
     {
         for (int i = 0; i < actions; i++)
         {
@@ -233,15 +218,53 @@ public class Ship : MonoBehaviour
         }
     }
 
+
+    public void Evade()
+    {
+        shipStatus.isEvading = true;
+        PassAction(1);
+    }
+
+    public void Brace()
+    {
+        shipStatus.RollProjectiles();
+    }
+
+    void UseAction()
+    {
+
+        if (shipStatus.IsUnderAttack())
+        {
+            shipStatus.RollProjectiles();
+        }
+
+        GetNextTile();
+        actions--;
+        GameEvents.instance.UseCommandPoint();
+    }
+
     bool IsFirstAction()
     {
-        if (team == Team.Player) return actions == GameConfig.turnActions;
-        else return actions == GameConfig.enemyActions;
+        return actions == maxActions;
     }
 
     public bool ActionAvailable(ControlAction action)
     {
-        switch (action) {
+        if (shipStatus.IsUnderAttack())
+        {
+            switch (action)
+            {
+                case ControlAction.Evade:
+                    return actions > 0;
+                case ControlAction.Brace:
+                    return true;
+                case ControlAction.Boost:
+                    return actions > 0;
+            }
+        }
+
+        switch (action)
+        {
             case ControlAction.Rotate:
                 return actions >= rotateSpeed;
             case ControlAction.Boost:
@@ -252,11 +275,10 @@ public class Ship : MonoBehaviour
                 return actions > 0;
             case ControlAction.DirectTargetShip:
                 return actions > 0;
-            case ControlAction.Evade:
-                return IsFirstAction();
             default:
                 return false;
         }
+        
         
     }
 

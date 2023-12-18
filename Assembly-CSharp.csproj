@@ -61,6 +61,7 @@
     <Compile Include="Assets\Weapons\LaserWeapon.cs" />
     <Compile Include="Assets\Grid\HexMesh.cs" />
     <Compile Include="Assets\ObjectMover.cs" />
+    <Compile Include="Assets\UI\DefenseDisplay.cs" />
     <Compile Include="Assets\UI\ShipList.cs" />
     <Compile Include="Assets\Weapons\WeaponInterfaces.cs" />
     <Compile Include="Assets\Ship\TargetType.cs" />

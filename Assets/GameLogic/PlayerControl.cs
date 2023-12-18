@@ -109,7 +109,6 @@ public class PlayerControl : MonoBehaviour
                 selectedShip.positionPreview.PreviewAt(selectedShip.GetNextTile(), selectedShip.headingDir);
                 hexGrid.GetCellAtPos(selectedShip.GetNextTile()).isHighlighting = true;
 
-                selectedShip.shipStatus.isEvading = true;
 
 
 
@@ -119,6 +118,10 @@ public class PlayerControl : MonoBehaviour
             {
                 actionLabel.text = "Evade";
                 selectedShip.shipStatus.isEvading = true;
+            }
+            if (newAction == ControlAction.Brace)
+            {
+                actionLabel.text = "Brace";
             }
 
             if (newAction == ControlAction.DirectTargetShip)
@@ -268,10 +271,14 @@ public class PlayerControl : MonoBehaviour
                 break;
 
             case ControlAction.Evade:
-                selectedShip.PassAction(1);
+                selectedShip.Evade();
                 SetCurrentAction(ControlAction.None);
                 break;
-            
+            case ControlAction.Brace:
+                selectedShip.Brace();
+                SetCurrentAction(ControlAction.None);
+                break;
+
             case ControlAction.DirectTargetShip:
                 if (targetedShip == null || targetedShip == selectedShip) return;
                 if (selectedWeapon is ITargetsShip w) w.ShootShip(targetedShip);

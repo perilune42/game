@@ -138,6 +138,15 @@ public class UIButtons : MonoBehaviour
         }
     }
 
+    public void Brace()
+    {
+        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(ControlAction.Brace))
+        {
+            playerControl.SetCurrentAction(ControlAction.Brace);
+        }
+    }
+
+
     public void Debug()
     {
         GameEvents.instance._Debug();
