@@ -13,6 +13,7 @@ public class ShipCard : MonoBehaviour
     public Ship ship;
     public ShipList shipList;
     public Image image;
+    public TMP_Text alertIcon;
 
 
     // Start is called before the first frame update
@@ -29,6 +30,7 @@ public class ShipCard : MonoBehaviour
     {
         actionsLabel.text = ship.actions.ToString() + " / 4";
         healthLabel.text = ship.shipStatus.health.ToString() + " / " + ship.shipStatus.maxHealth.ToString();
+        alertIcon.enabled = ship.shipStatus.IsUnderAttack();
     }
     public void SetActive(bool active)
     {
