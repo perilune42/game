@@ -311,5 +311,9 @@ public class Ship : MonoBehaviour
         //Debug.Log("Hello");
     }
 
+    public static float Distance(Ship ship1, Ship ship2)
+    {
+        return HexCoordinates.Distance(ship1.pos, ship2.pos);
+    }
 
 }

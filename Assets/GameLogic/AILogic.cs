@@ -24,7 +24,7 @@ public interface IAIAttackRoutine : IAIAction
 }
 
 
-public struct AIIntercept: IAIMoveRoutine //intercept target ship at cruising speed
+public class AIIntercept: IAIMoveRoutine //intercept target ship at cruising speed
 {
     public Ship targetShip;
     public AIIntercept(Ship targetShip)
@@ -33,7 +33,7 @@ public struct AIIntercept: IAIMoveRoutine //intercept target ship at cruising sp
     }
 }
 
-public struct AIAdvance: IAIMoveRoutine //go to dest at cruising speed
+public class AIAdvance: IAIMoveRoutine //go to dest at cruising speed
 {
     public HexCoordinates destination;
     public AIAdvance(HexCoordinates destination)
@@ -50,7 +50,7 @@ public struct AIAdvance: IAIMoveRoutine //go to dest at cruising speed
 //flank: advance, but +- 1 direction
 
 
-public struct AIAttackShip: IAIAttackRoutine
+public class AIAttackShip: IAIAttackRoutine
 {
     public Ship targetShip;
     public AIAttackShip(Ship targetShip)
@@ -68,12 +68,20 @@ public struct AIAttackShip: IAIAttackRoutine
 //score rank all available routines
 //add randomness
 
-public struct AIFollow: IAIMoveRoutine
+public class AIFollow: IAIMoveRoutine
 {
     public Ship targetShip;
     public AIFollow(Ship targetShip)
     {
         this.targetShip = targetShip;
+    }
+}
+
+public class AIEvade: IAIAction
+{
+    public AIEvade()
+    {
+
     }
 }
 
@@ -84,10 +92,15 @@ public class AILogic : MonoBehaviour
     Ship ship;
     ShipList playerShips;
 
-    Dictionary<IAIAction, int> possibleActions = new Dictionary<IAIAction, int>();
+    public Dictionary<IAIAction, float> possibleActions = new Dictionary<IAIAction, float>();
 
 
     public int lastMoved = -1;
+
+    float AIEvasionBias; //score to evade a 5 armor damage attack with 100% accuracy
+    float AIAttackBias; //score to attack a ship 5 tiles away
+    float AIInterceptBias;
+    float AIRecentMovePenalty;
 
     private void Awake()
     {
@@ -98,6 +111,82 @@ public class AILogic : MonoBehaviour
     {
         playerShips = TurnHandler.instance.playerShipList;
     }
+
+    public void GetPossibleActions()
+    {
+
+        possibleActions.Clear();
+        float score = 0;
+        switch (this.behavior)
+        {
+
+            case AIBehavior.Interceptor:
+                AIEvasionBias = 100; //score to evade a 5 armor damage attack with 100% accuracy
+                AIAttackBias = 110; //score to attack a ship 5 tiles away
+                AIInterceptBias = 100;
+                AIRecentMovePenalty = 40;
+                if (ship.shipStatus.IsUnderAttack())
+                {
+                    foreach (KineticProjectile proj in ship.shipStatus.incomingProjectiles)
+                    {
+                        score += (proj.damage.armorDamage + proj.damage.healthDamage * 3) * AIEvasionBias / 5f * proj.ChanceToHit();
+                    }
+                    possibleActions.Add(new AIEvade(), score);
+                }
+
+                for (int i = 0; i < 3; i++)
+                {
+                    Ship targetShip = AIUtils.ClosestShip(ship, playerShips, i);
+                    if (targetShip != null)
+                    {
+                        score = AIAttackBias - Mathf.Clamp(Ship.Distance(ship, targetShip) - 5, 0, 100); //factor in weapon accuracy, less emphasis on distance
+                        possibleActions.Add(new AIAttackShip(targetShip), score); // add penalty based on how many threats target already has
+                    }
+                }
+                score = AIInterceptBias;
+                if (lastMoved != -1 && lastMoved < 3)
+                {
+                    score -= (3 - lastMoved) * AIRecentMovePenalty;
+                }
+                possibleActions.Add(new AIIntercept(AIUtils.ClosestShip(ship, playerShips)), score);
+
+                break;
+
+            case AIBehavior.Frontline:
+                AIEvasionBias = 100; //score to evade a 5 armor damage attack with 100% accuracy
+                AIAttackBias = 110; //score to attack a ship 5 tiles away
+                AIInterceptBias = 100;
+                AIRecentMovePenalty = 40;
+                if (ship.shipStatus.IsUnderAttack())
+                {
+                    foreach (KineticProjectile proj in ship.shipStatus.incomingProjectiles)
+                    {
+                        score += (proj.damage.armorDamage + proj.damage.healthDamage * 3) * AIEvasionBias / 5f * proj.ChanceToHit();
+                    }
+                    possibleActions.Add(new AIEvade(), score);
+                }
+
+                for (int i = 0; i < 3; i++)
+                {
+                    Ship targetShip = AIUtils.ClosestShip(ship, playerShips, i);
+                    if (targetShip != null)
+                    {
+                        score = AIAttackBias - Mathf.Clamp(Ship.Distance(ship, targetShip) - 5, 0, 100);
+                        possibleActions.Add(new AIAttackShip(targetShip), score);
+                    }
+                }
+                score = AIInterceptBias;
+                if (lastMoved != -1 && lastMoved < 3)
+                {
+                    score -= (3 - lastMoved) * AIRecentMovePenalty;
+                }
+                possibleActions.Add(new AIIntercept(AIUtils.ClosestShip(ship, playerShips)), score);
+
+                break;
+                
+        }
+    }
+
     public IAIMoveRoutine GetBestMoveRoutine()
     {
         switch (this.behavior) {

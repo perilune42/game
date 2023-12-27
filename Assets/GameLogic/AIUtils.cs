@@ -1,21 +1,30 @@
 
+using System.Collections.Generic;
 using UnityEngine;
 public class AIUtils
 {
-    public static Ship ClosestShip(Ship ship, ShipList shipList)
+    public static Ship ClosestShip(Ship ship, ShipList shipList, int position = 0)
     //returns cloest ship to parameter ship within shipList
     {
-        if (shipList.activeShips.Count == 0) return null;
-        Ship closest = shipList.activeShips[0];
-        foreach (Ship otherShip in shipList.activeShips)
-        {
-            if (HexCoordinates.Distance(ship.pos, otherShip.pos)
-                < HexCoordinates.Distance(ship.pos, closest.pos))
+        List<Ship> ships = new List<Ship>(shipList.activeShips);
+        int i = position;
+        while (true) {
+            Debug.Log("ships count " + ships.Count);
+            if (ships.Count == 0) return null;
+            Ship closest = ships[0];
+            foreach (Ship otherShip in ships)
             {
-                closest = otherShip;
+                if (HexCoordinates.Distance(ship.pos, otherShip.pos)
+                    < HexCoordinates.Distance(ship.pos, closest.pos))
+                {
+                    closest = otherShip;
+                }
             }
+            Debug.Log(closest.name);
+            if (i == 0) return closest;
+            else ships.Remove(closest);
+            i--;
         }
-        return closest;
     }
 
     public static HexCoordinates CenterMass(ShipList shipList)
