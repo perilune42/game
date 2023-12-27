@@ -10,9 +10,9 @@ public class UIButtons : MonoBehaviour
 
     public PlayerControl playerControl;
     public Canvas gridCanvas;
-    public Button[] buttons;
+    public ControlButton[] buttons;
 
-    [SerializeField] Button confirmButton, fireButton, guardButton;
+    [SerializeField] Button confirmButton, fireButton, guardButton, endTurnButton;
 
     public static UIButtons instance;
 
@@ -20,11 +20,11 @@ public class UIButtons : MonoBehaviour
     {
         playerControl = PlayerControl.instance;
         instance = this;
-        GameEvents.instance.onUpdateUI += UpdateButtonsVisibility;
+        GameEvents.instance.onUpdateUI += UpdateButtonsAvailability;
         GameEvents.instance.onLockControls += LockPlayerControls;
     }
 
-    public void UpdateButtonsVisibility()
+    public void UpdateButtonsAvailability()
     {
         if (playerControl.currentAction != ControlAction.None && playerControl.currentAction != ControlAction.DirectTargetShip)
         {
@@ -52,11 +52,14 @@ public class UIButtons : MonoBehaviour
             guardButton.interactable = false;
             ToggleFireButtons(false);
         }
+
+        if (playerControl.HasShipsUnderAttack()) endTurnButton.interactable = false;
+        else endTurnButton.interactable = true;
     }
 
     public void Rotate()
     {
-        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(ControlAction.Rotate))
+        if (playerControl.selectedShip != null && playerControl.ActionAvailable(ControlAction.Rotate))
         playerControl.SetCurrentAction(ControlAction.Rotate);
         
     }
@@ -69,7 +72,7 @@ public class UIButtons : MonoBehaviour
     }
     public void Pass()
     {
-        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(ControlAction.Pass))
+        if (playerControl.selectedShip != null && playerControl.ActionAvailable(ControlAction.Pass))
             playerControl.SetCurrentAction(ControlAction.Pass);
 
     }
@@ -80,7 +83,7 @@ public class UIButtons : MonoBehaviour
 
     public void Boost()
     {
-        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(ControlAction.Boost))
+        if (playerControl.selectedShip != null && playerControl.ActionAvailable(ControlAction.Boost))
         {
             playerControl.SetCurrentAction(ControlAction.Boost);
         }
@@ -88,7 +91,7 @@ public class UIButtons : MonoBehaviour
 
     public void Fire()
     {
-        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(ControlAction.DirectTargetShip))
+        if (playerControl.selectedShip != null && playerControl.ActionAvailable(ControlAction.DirectTargetShip))
         {
             playerControl.SetCurrentAction(ControlAction.DirectTargetShip);
         }
@@ -96,12 +99,13 @@ public class UIButtons : MonoBehaviour
 
     public void EndTurn()
     {
+        
         GameEvents.instance.TurnEnd();
     }
 
     public void SelectWeapon(Weapon weapon)
     {
-        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(ControlAction.DirectTargetShip))
+        if (playerControl.selectedShip != null && playerControl.ActionAvailable(ControlAction.DirectTargetShip))
         {
             playerControl.SetCurrentAction(ControlAction.DirectTargetShip, false, weapon);
             
@@ -124,15 +128,17 @@ public class UIButtons : MonoBehaviour
 
     public void LockPlayerControls(bool toggle)
     {
-        foreach (Button button in buttons)
+        foreach (ControlButton controlButton in buttons)
         {
-            button.interactable = !toggle;
+            if (toggle) controlButton.button.interactable = false;
+            else controlButton.button.interactable = playerControl.ActionAvailable(controlButton.action);
+
         }
     }
 
     public void Evade()
     {
-        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(ControlAction.Evade))
+        if (playerControl.selectedShip != null && playerControl.ActionAvailable(ControlAction.Evade))
         {
             playerControl.SetCurrentAction(ControlAction.Evade);
         }
@@ -140,14 +146,14 @@ public class UIButtons : MonoBehaviour
 
     public void Brace()
     {
-        if (playerControl.selectedShip != null && playerControl.selectedShip.ActionAvailable(ControlAction.Brace))
+        if (playerControl.selectedShip != null && playerControl.ActionAvailable(ControlAction.Brace))
         {
             playerControl.SetCurrentAction(ControlAction.Brace);
         }
     }
 
 
-    public void Debug()
+    public void _Debug()
     {
         GameEvents.instance._Debug();
     }

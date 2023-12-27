@@ -90,7 +90,7 @@ public class ShipUI : MonoBehaviour
         healthLabel.text = ship.shipStatus.health.ToString() + "/" + ship.shipStatus.maxHealth;
         armorLabel.text = ship.shipStatus.armorPoints.ToString() + "/" + ship.shipStatus.maxArmorPoints;
         armorLevelLabel.text = ship.shipStatus.armorLevel.ToString();
-        /*
+        
         if (healthBar.GetLevel() == healthBarPreview.GetLevel())
         {
             healthBar.SetLevel((float)ship.shipStatus.health / ship.shipStatus.maxHealth);
@@ -98,7 +98,7 @@ public class ShipUI : MonoBehaviour
             healthBarPreview.SetLevel((float)ship.shipStatus.health / ship.shipStatus.maxHealth);
             armorBarPreview.SetLevel((float)ship.shipStatus.armorPoints / ship.shipStatus.maxArmorPoints);
         }
-        */
+        
         actionLabel.text = ship.actions.ToString();
 
         if (ship.team == TurnHandler.instance.currentTeam)

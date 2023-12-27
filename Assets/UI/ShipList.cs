@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class ShipList : MonoBehaviour
 {
-    List<Ship> allShips;
-    public List<Ship> ships;
-    public List<Ship> activeShips;
+    List<Ship> allShips; //ships from all teams
+    public List<Ship> ships; //all ships on this team, inc destroyed
+    public List<Ship> activeShips; //non destroyed ships
     public List<ShipCard> shipCards;
     public ShipCard shipCardPrefab;
     PlayerControl playerControl;
@@ -16,7 +16,6 @@ public class ShipList : MonoBehaviour
 
     public Color defaultColor = Color.white;
     public Color activeColor = Color.green;
-    // Start is called before the first frame update
     void Start()
     { 
         playerControl = PlayerControl.instance;

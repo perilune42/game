@@ -63,6 +63,7 @@
     <Compile Include="Assets\UI\DefenseDisplay.cs" />
     <Compile Include="Assets\ObjectMover.cs" />
     <Compile Include="Assets\UI\ShipList.cs" />
+    <Compile Include="Assets\GameLogic\AIUtils.cs" />
     <Compile Include="Assets\Weapons\WeaponInterfaces.cs" />
     <Compile Include="Assets\Ship\TargetType.cs" />
     <Compile Include="Assets\ProjectileRenderer.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="Assets\Grid\HexDirections.cs" />
     <Compile Include="Assets\Weapons\KineticWeaponSO.cs" />
     <Compile Include="Assets\Weapons\Damage.cs" />
+    <Compile Include="Assets\UI\ControlButton.cs" />
     <Compile Include="Assets\GameLogic\GameEvents.cs" />
     <Compile Include="Assets\Weapons\LaserWeaponSO.cs" />
     <Compile Include="Assets\UI\AllUnitList.cs" />

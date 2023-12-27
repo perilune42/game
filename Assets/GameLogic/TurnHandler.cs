@@ -80,14 +80,14 @@ public class TurnHandler : MonoBehaviour
         foreach (ShipList list in shipLists) {
             if (list.team == currentTeam) {
                 playerControl.shipList = list;
-                foreach (Ship ship in list.ships)
+                foreach (Ship ship in list.activeShips)
                 {
                     ship.GiveActions();
                 }
             }
             else
             {
-                foreach (Ship ship in list.ships)
+                foreach (Ship ship in list.activeShips)
                 {
                     ship.actions = 0;
                 }

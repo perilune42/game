@@ -51,6 +51,15 @@ public class PlayerControl : MonoBehaviour
     }
 
 
+    public bool HasShipsUnderAttack()
+    {
+        foreach (Ship ship in shipList.activeShips)
+        {
+            if (ship.shipStatus.IsUnderAttack()) return true;
+        }
+        return false;
+    }
+
     public void SetCurrentAction(ControlAction newAction, bool keep = false, Weapon weapon = null) //keep: keeping any changes to speed and direction
     {
         if (!TurnHandler.instance.PlayerControllable()) return;
@@ -373,7 +382,21 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-
+   public bool ActionAvailable(ControlAction action)
+   { 
+        switch (action)
+        {
+            case ControlAction.Rotate:
+            case ControlAction.Boost:
+            case ControlAction.Pass:
+            case ControlAction.Evade:
+            case ControlAction.Brace:
+            case ControlAction.DirectTargetShip:
+                return selectedShip.ActionAvailable(action);
+            default:
+                return false;
+        }
+   }
 
     /*
     private void Update()
