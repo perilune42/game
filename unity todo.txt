@@ -2,25 +2,26 @@ High Priority:
 -rework turn system
 
 Features:
--AI scores
 -critical hits
 -payloads
 -overwatch
 -lockon
 -victory condition
 -command points distribution: different max points for each ship
+-multiple projectiles for some weapons (autocannon)
 
 Minor:
 -add AI control order randomness
--add damage preview to incoming projectiles
+-add damage preview to incoming projectiles !!
+-maintain team color on turn switch
 -out of bounds fix
--force defense on turn end
+-force defense on turn end (for AI)
+-reconsider distributed actions for AI
 -fix action not set to none after using all command points
 -make unavailable actions uninteractable
--improve defense UI, show ships under attack in ship list
 
 Bugs:
--Enemy ship not clickable after several turns / ship destruction
+-out of bounds
 
 Visuals:
 -camera pan to hit ship on enemy turn

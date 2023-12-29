@@ -22,6 +22,7 @@ public class ShipUI : MonoBehaviour
         GameEvents.instance.onUpdateUI += UpdateLabels;
         GameEvents.instance.onPreviewDamage += PreviewDamage;
         GameEvents.instance.onHitShip += DamagePopup;
+        GameEvents.instance.onHitShip += SetHealthBars;
         GameEvents.instance.onShipDestroyed += DisableUI;
     }
 
@@ -91,13 +92,16 @@ public class ShipUI : MonoBehaviour
         armorLabel.text = ship.shipStatus.armorPoints.ToString() + "/" + ship.shipStatus.maxArmorPoints;
         armorLevelLabel.text = ship.shipStatus.armorLevel.ToString();
         
-        if (healthBar.GetLevel() == healthBarPreview.GetLevel())
+        /*
+        if (healthBar.GetLevel() == healthBarPreview.GetLevel() && 
+            Mathf.Abs(healthBar.GetLevel() - (float)ship.shipStatus.health / ship.shipStatus.maxHealth) > 0.01f)
         {
             healthBar.SetLevel((float)ship.shipStatus.health / ship.shipStatus.maxHealth);
             armorBar.SetLevel((float)ship.shipStatus.armorPoints / ship.shipStatus.maxArmorPoints);
             healthBarPreview.SetLevel((float)ship.shipStatus.health / ship.shipStatus.maxHealth);
             armorBarPreview.SetLevel((float)ship.shipStatus.armorPoints / ship.shipStatus.maxArmorPoints);
         }
+        */
         
         actionLabel.text = ship.actions.ToString();
 
@@ -108,5 +112,13 @@ public class ShipUI : MonoBehaviour
         }
         else { hudBackground.color = enemyInactiveColor; }
 
+    }
+
+    void SetHealthBars(Ship otherShip, HitType hitType, int value)
+    {
+        healthBar.SetLevel((float)ship.shipStatus.health / ship.shipStatus.maxHealth);
+        armorBar.SetLevel((float)ship.shipStatus.armorPoints / ship.shipStatus.maxArmorPoints);
+        healthBarPreview.SetLevel((float)ship.shipStatus.health / ship.shipStatus.maxHealth);
+        armorBarPreview.SetLevel((float)ship.shipStatus.armorPoints / ship.shipStatus.maxArmorPoints);
     }
 }
