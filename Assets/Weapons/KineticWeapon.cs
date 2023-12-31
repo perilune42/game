@@ -44,21 +44,25 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged, IUsesAmmo, IHasCoold
     {
         
         float distance = HexCoordinates.Distance(ship.pos, targetShip.pos);
-        GameObject projObject = new GameObject(weaponName + " projectile");
-        KineticProjectile projectile = projObject.AddComponent<KineticProjectile>();
-        projObject.transform.parent = targetShip.transform;
-        projectile.Init(this, targetShip);
+        for (int i = 0; i < weaponData.projectileCount; i++)
+        {
+            GameObject projObject = new GameObject(weaponName + " projectile");
+            KineticProjectile projectile = projObject.AddComponent<KineticProjectile>();
+            projObject.transform.parent = targetShip.transform;
+            projectile.Init(this, targetShip);
 
-        if (distance <= idealRange) 
-        {
-            projectile.RollForHit();
-            Destroy(projObject);
+            if (distance <= idealRange)
+            {
+                projectile.RollForHit();
+                Destroy(projObject);
+                if (targetShip.isDestroyed) break;
+            }
+            else
+            {
+                targetShip.shipStatus.AddProjectile(projectile);
+            }
         }
-        else
-        {
-            targetShip.shipStatus.AddProjectile(projectile);
-        }
-        projectileAnimHandler.Shoot(targetShip.transform.position,weaponData.visualProjectilePrefab);
+        projectileAnimHandler.Shoot(targetShip.transform.position,weaponData.visualProjectilePrefab, weaponData.projectileCount);
 
         ammoCount--;
         if (ammoCount == 0)

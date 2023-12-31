@@ -17,6 +17,7 @@ public class KineticWeaponSO : ScriptableObject
     public float velocity = 10f;
     public int ammoCapacity = 1;
     public int reloadActions = 1;
+    public int projectileCount = 1;
 
     public string weaponName = "Kinetic";
 

@@ -4,11 +4,12 @@ High Priority:
 Features:
 -critical hits
 -payloads
--overwatch
+-overwatch (?)
+-translation/maneuver
 -lockon
 -victory condition
 -command points distribution: different max points for each ship
--multiple projectiles for some weapons (autocannon)
+-damage preview for multiple projectiles
 
 Minor:
 -add AI control order randomness
