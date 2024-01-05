@@ -1,4 +1,4 @@
 public enum TargetType
 {
-    Direct, Kinetic, Area, Missile //Torpedo etc
+    Direct, Kinetic, Area, Missile, Torpedo //Torpedo etc
 }

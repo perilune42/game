@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c32068544be9a8d418eb107199b4f4b0, type: 3}
   m_Name: Assault Cannon
   m_EditorClassIdentifier: 
-  damage: 4
+  damage: 5
+  armorPierce: 1
   idealRange: 5
   accuracy: 0.9
-  evasionPenaltyPerCell: 0.02
+  velocity: 6
   ammoCapacity: 1
-  reloadActions: 2
-  weaponName: Coilgun
+  reloadActions: 1
+  projectileCount: 1
+  weaponName: Assault Cannon
   visualProjectilePrefab: {fileID: 837092916497042348, guid: 2015fd137a790264c994cebbaf661755, type: 3}

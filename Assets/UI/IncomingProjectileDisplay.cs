@@ -40,7 +40,7 @@ public class IncomingProjectileDisplay : MonoBehaviour
 
 
             int i = 0;
-            foreach (KineticProjectile projectile in ship.shipStatus.incomingProjectiles)
+            foreach (IProjectile projectile in ship.shipStatus.incomingProjectiles)
             {
                 ProjDisplayCard card = Instantiate(cardPrefab);
                 card.transform.SetParent(transform, false);

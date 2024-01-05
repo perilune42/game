@@ -46,7 +46,7 @@ public class ShipUI : MonoBehaviour
         }
     }
 
-    void PreviewDamage(Ship ship, DamageData damage)
+    void PreviewDamage(Ship ship, DamageData damage) //use null, none to reset
     {
         if (ship == this.ship || (ship == null && damage.Equals(DamageData.none)))
         {

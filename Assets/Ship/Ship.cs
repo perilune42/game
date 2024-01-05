@@ -48,7 +48,6 @@ public class Ship : MonoBehaviour
     private void Awake()
     {
         thrust = shipData.thrust;
-        speed = thrust;
         hexGrid = HexGrid.instance;
         actions = GameConfig.turnActions;
         pathShower = GetComponentInChildren<PathShower>();

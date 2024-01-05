@@ -2,22 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class ProjDisplayCard : MonoBehaviour
+public class ProjDisplayCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public KineticProjectile projectile;
+    public IProjectile projectile;
     [SerializeField] TMP_Text projNameLabel, hitChanceLabel;
 
-    public void Init(KineticProjectile projectile, int pos)
+    public void Init(IProjectile projectile, int pos)
     {
         this.projectile = projectile;
         UIUtils.List(gameObject, pos, 5, Vector2.down);
-        projNameLabel.text = projectile.name;
+        projNameLabel.text = projectile.GetName();
         hitChanceLabel.text = UIUtils.ToPercent(projectile.ChanceToHit());
         GameEvents.instance.onUpdateProjDisplay += ShowHit;
     }
 
-    void ShowHit(KineticProjectile projectile, bool hit)
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        GameEvents.instance.PreviewDamage(projectile.GetTarget(), projectile.GetDamage());
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        GameEvents.instance.PreviewDamage(null, DamageData.none);
+    }
+
+    
+
+    void ShowHit(IProjectile projectile, bool hit)
     {
         if(projectile == this.projectile && this != null)
         {
@@ -34,7 +47,7 @@ public class ProjDisplayCard : MonoBehaviour
         yield return new WaitForSeconds(1);
         
         
-        Destroy(projectile);
+        projectile.Destroy();
 
         GameEvents.instance.FreezeProjDisplay(false);
         GameEvents.instance.UpdateUI();

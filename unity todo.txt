@@ -13,7 +13,7 @@ Features:
 
 Minor:
 -add AI control order randomness
--add damage preview to incoming projectiles !!
+-add selected weapon damage data
 -maintain team color on turn switch
 -out of bounds fix
 -force defense on turn end (for AI)

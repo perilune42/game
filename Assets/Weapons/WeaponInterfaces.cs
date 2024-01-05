@@ -1,10 +1,12 @@
-interface IRanged
+using UnityEngine;
+
+public interface IRanged
 {
     public void DisplayRange();
     public void HideRange();
 }
 
-interface ITargetsShip
+public interface ITargetsShip
 {
     public AttackData GetAttack(Ship targetShip);
     public void ShootShip (Ship targetShip);
@@ -13,12 +15,27 @@ interface ITargetsShip
 
 }
 
-interface IUsesAmmo
+public interface IUsesAmmo
 {
 
 }
 
-interface IHasCooldown
+public interface ILimitedUse
+{
+    public int GetRemainingUses();
+}
+
+public interface IHasCooldown
 {
     public int GetCooldown();
+}
+
+public interface IProjectile
+{
+    public float ChanceToHit();
+    public bool RollForHit();
+    public DamageData GetDamage();
+    public Ship GetTarget();
+    public string GetName();
+    public void Destroy();
 }

@@ -15,7 +15,7 @@ public class ShipStatus : MonoBehaviour
 
     public bool isEvading = false;
 
-    public List<KineticProjectile> incomingProjectiles = new List<KineticProjectile>();
+    public List<IProjectile> incomingProjectiles = new List<IProjectile>();
     void Awake()
     {
         ship = GetComponent<Ship>();
@@ -48,14 +48,14 @@ public class ShipStatus : MonoBehaviour
         return new DamageData(attack.damage - Mathf.Max(0, armorLevel - attack.armorPierce), attack.damage);
     }
 
-    public void AddProjectile(KineticProjectile projectile)
+    public void AddProjectile(IProjectile projectile)
     {
         incomingProjectiles.Add(projectile);
     }
 
     public void RollProjectiles()
     {
-        foreach (KineticProjectile projectile in incomingProjectiles) {
+        foreach (IProjectile projectile in incomingProjectiles) {
             bool hit = projectile.RollForHit();
             GameEvents.instance.UpdateProjDisplay(projectile, hit);
         }

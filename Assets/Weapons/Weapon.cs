@@ -23,40 +23,55 @@ public abstract class Weapon : MonoBehaviour
     
     public static DamageData CalcBasicDamage(AttackData attack, Ship targetShip)
     {
+        return CalcMultipleDamage(attack, targetShip, 1);
+    }
 
-        
-        
-        if (targetShip.shipStatus.armorPoints <= 0)
+    public static DamageData CalcMultipleDamage(AttackData attack, Ship targetShip, int count)
+    {
+        int remainingHealth = targetShip.shipStatus.health;
+        int remainingArmor = targetShip.shipStatus.armorPoints;
+
+        for (int i = 0; i < count; i++)
         {
-            return new DamageData(attack.damage, 0);
-        }
-        int finalHealthDamage;
-        if (attack.armorPierce >= 0)
-        {
-            finalHealthDamage = Mathf.Max(0, attack.damage - Mathf.Max(0, targetShip.shipStatus.armorLevel - attack.armorPierce));
-        }
-        else
-        {
-            finalHealthDamage = 0;
-        }
-        int baseArmorDamage = attack.damage;
-        int finalArmorDamage = Mathf.RoundToInt(baseArmorDamage * attack.armorBonus);
-        if (finalArmorDamage <= targetShip.shipStatus.armorPoints) return new DamageData(finalHealthDamage, finalArmorDamage);
-        else
-        {
-            int overDamage = 0;
-            for (int partialDamage = 1; partialDamage <= baseArmorDamage; partialDamage++)
+            if (remainingArmor <= 0)
             {
-                finalArmorDamage = Mathf.RoundToInt(partialDamage * attack.armorBonus);
-                if (finalArmorDamage > targetShip.shipStatus.armorPoints)
-                {
-                    overDamage = baseArmorDamage - partialDamage;
-                    break;
-                }
+                remainingHealth -= attack.damage;
+                continue;
             }
-            finalArmorDamage = targetShip.shipStatus.armorPoints;
-            finalHealthDamage += overDamage;
-            return new DamageData(finalHealthDamage, finalArmorDamage);
+            int finalHealthDamage;
+            if (attack.armorPierce >= 0)
+            {
+                finalHealthDamage = Mathf.Max(0, attack.damage - Mathf.Max(0, targetShip.shipStatus.armorLevel - attack.armorPierce));
+            }
+            else
+            {
+                finalHealthDamage = 0;
+            }
+            int baseArmorDamage = attack.damage;
+            int finalArmorDamage = Mathf.RoundToInt(baseArmorDamage * attack.armorBonus);
+            if (finalArmorDamage <= remainingArmor)
+            {
+                remainingHealth -= finalHealthDamage;
+                remainingArmor -= finalArmorDamage;
+            }
+            else
+            {
+                int overDamage = 0;
+                for (int partialDamage = 1; partialDamage <= baseArmorDamage; partialDamage++)
+                {
+                    finalArmorDamage = Mathf.RoundToInt(partialDamage * attack.armorBonus);
+                    if (finalArmorDamage > remainingArmor)
+                    {
+                        overDamage = baseArmorDamage - partialDamage;
+                        break;
+                    }
+                }
+                finalArmorDamage = remainingArmor;
+                finalHealthDamage += overDamage;
+                remainingHealth -= finalHealthDamage;
+                remainingArmor -= finalArmorDamage;
+            }
         }
+        return new DamageData(targetShip.shipStatus.health - remainingHealth, targetShip.shipStatus.armorPoints - remainingArmor);
     }
 }

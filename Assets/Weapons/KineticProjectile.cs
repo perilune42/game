@@ -1,18 +1,19 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 
 public class KineticProjectile: MonoBehaviour
 {
     public DamageData damage;
     public float accuracy;
     public float distance;
-    Ship target;
+    public Ship target;
     KineticWeapon weapon;
 
     public void Init (KineticWeapon origin, Ship target) 
     {
         this.weapon = origin;
-        damage = origin.GetDamage(target);
+        damage = origin.GetSingleDamage(target);
         accuracy = origin.accuracy;
         distance = HexCoordinates.Distance(origin.ship.pos, target.pos);
         this.target = target;
@@ -31,8 +32,29 @@ public class KineticProjectile: MonoBehaviour
         return hit;
     }
 
+    public DamageData GetDamage()
+    {
+        return weapon.GetSingleDamage(target);
+    }
+
+    public Ship GetTarget()
+    {
+        return target;
+    }
+
+    public string GetName()
+    {
+        return this.name;
+    }
+
+    public void Destoy()
+    {
+        GameObject.Destroy(gameObject);
+    }
+
     private void Hit()
     {
+        damage = GetDamage();
         target.shipStatus.DealDamage(damage);
         GameEvents.instance.HitShip(target, HitType.Hit, damage.healthDamage);
     }

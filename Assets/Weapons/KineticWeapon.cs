@@ -9,7 +9,7 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged, IUsesAmmo, IHasCoold
     
 
     public KineticWeaponSO weaponData;
-    public int idealRange, ammoCapacity, reloadActions, ammoCount;
+    public int idealRange, ammoCapacity, reloadActions, ammoCount, projectileCount;
     //public AttackData attack;
     public float accuracy;
     public int cooldownTimer;
@@ -28,6 +28,8 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged, IUsesAmmo, IHasCoold
         accuracy = weaponData.accuracy;
         ammoCapacity = weaponData.ammoCapacity;
         reloadActions = weaponData.reloadActions;
+        projectileCount = weaponData.projectileCount;
+
 
         ammoCount = ammoCapacity;
         cooldownTimer = 0;
@@ -44,7 +46,7 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged, IUsesAmmo, IHasCoold
     {
         
         float distance = HexCoordinates.Distance(ship.pos, targetShip.pos);
-        for (int i = 0; i < weaponData.projectileCount; i++)
+        for (int i = 0; i < projectileCount; i++)
         {
             GameObject projObject = new GameObject(weaponName + " projectile");
             KineticProjectile projectile = projObject.AddComponent<KineticProjectile>();
@@ -59,10 +61,10 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged, IUsesAmmo, IHasCoold
             }
             else
             {
-                targetShip.shipStatus.AddProjectile(projectile);
+                targetShip.shipStatus.AddProjectile((IProjectile)projectile);
             }
         }
-        projectileAnimHandler.Shoot(targetShip.transform.position,weaponData.visualProjectilePrefab, weaponData.projectileCount);
+        projectileAnimHandler.Shoot(targetShip.transform.position,weaponData.visualProjectilePrefab, projectileCount);
 
         ammoCount--;
         if (ammoCount == 0)
@@ -73,6 +75,11 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged, IUsesAmmo, IHasCoold
     }
 
     public DamageData GetDamage(Ship targetShip)
+    {
+        return Weapon.CalcMultipleDamage(GetAttack(targetShip), targetShip, projectileCount);
+    }
+
+    public DamageData GetSingleDamage(Ship targetShip)
     {
         return Weapon.CalcBasicDamage(GetAttack(targetShip), targetShip);
     }

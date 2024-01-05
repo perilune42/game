@@ -98,12 +98,15 @@
     <Compile Include="Assets\Grid\HexCell.cs" />
     <Compile Include="Assets\GameLogic\AI\AIUtils.cs" />
     <Compile Include="Assets\Grid\HexLines.cs" />
+    <Compile Include="Assets\Weapons\TorpedoWeaponSO.cs" />
     <Compile Include="Assets\UI\ProjDisplayCard.cs" />
     <Compile Include="Assets\UI\FaceCamera.cs" />
     <Compile Include="Assets\Grid\HexPatch.cs" />
     <Compile Include="Assets\GameLogic\AI\AIController.cs" />
+    <Compile Include="Assets\Weapons\TorpedoProjectile.cs" />
     <Compile Include="Assets\ProjectileTrail.cs" />
     <Compile Include="Assets\Ship\ShipStatus.cs" />
+    <Compile Include="Assets\Weapons\TorpedoWeapon.cs" />
     <Compile Include="Assets\UI\WeaponButton.cs" />
     <Compile Include="Assets\UI\UIUtils.cs" />
     <Compile Include="Assets\Grid\HexMetrics.cs" />
