@@ -7,6 +7,9 @@ public class TorpedoWeaponSO : ScriptableObject
 {
     public int damage = 3;
     public int armorPierce = 1;
+
+    public int partialDamage = 2;
+    public int partialArmorPierce = 0;
     
 
     public float accuracy = 0.9f;
@@ -14,12 +17,14 @@ public class TorpedoWeaponSO : ScriptableObject
     public int ammoCapacity = 3;
     public int projectileCount = 1;
 
+    public int reloadActions = 1;
+
     public string weaponName = "Torpedo";
 
     public ProjectileTrail visualProjectilePrefab;    
     public float RangePenalty(float distance)
     {
-        return distance / (20 * velocity); //10 velocity: 10 cells = 5%, 20 cells = 10%
+        return 0; //10 velocity: 10 cells = 5%, 20 cells = 10%
     }
     public float EvasionPenalty(float distance)
     {

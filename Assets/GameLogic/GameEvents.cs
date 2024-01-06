@@ -97,10 +97,10 @@ public class GameEvents : MonoBehaviour
         if (onPreviewDamage != null) onPreviewDamage(ship, damage);
     }
 
-    public event Action<Ship, HitType, int> onHitShip;
-    public void HitShip(Ship ship, HitType hitType, int damage)
+    public event Action<Ship, HitType, DamageData, CritType> onHitShip;
+    public void HitShip(Ship ship, HitType hitType, DamageData damage, CritType critType)
     {
-        if (onHitShip != null) onHitShip(ship, hitType, damage);  
+        if (onHitShip != null) onHitShip(ship, hitType, damage, critType);  
     }
 
     public event Action onShipDestroyed;

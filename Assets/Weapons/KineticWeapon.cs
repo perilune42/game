@@ -3,7 +3,7 @@ using UnityEngine;
 
 
 [RequireComponent(typeof(ProjectileRenderer))]
-public class KineticWeapon : Weapon, ITargetsShip, IRanged, IUsesAmmo, IHasCooldown
+public class KineticWeapon : Weapon, ITargetsShip, IRanged, IUsesAmmo, IHasCooldown, IHasHitChance
 {
     
     
@@ -72,6 +72,15 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged, IUsesAmmo, IHasCoold
             cooldownTimer = reloadActions;
         }
         GameEvents.instance.UpdateUI();
+    }
+
+    public int GetAmmoCount()
+    {
+        return ammoCount;
+    }
+    public int GetAmmoCapacity()
+    {
+        return ammoCapacity;
     }
 
     public DamageData GetDamage(Ship targetShip)

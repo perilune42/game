@@ -16,7 +16,7 @@ MonoBehaviour:
   armorPierce: 0
   idealRange: 3
   accuracy: 0.85
-  velocity: 3
+  velocity: 3.5
   ammoCapacity: 3
   reloadActions: 2
   projectileCount: 3

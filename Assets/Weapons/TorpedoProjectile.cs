@@ -37,6 +37,11 @@ public class TorpedoProjectile: MonoBehaviour, IProjectile
         return weapon.GetSingleDamage(target);
     }
 
+    DamageData GetPartialDamage()
+    {
+        return weapon.GetPartialDamage(target);
+    }
+
     public Ship GetTarget()
     {
         return target;
@@ -57,11 +62,11 @@ public class TorpedoProjectile: MonoBehaviour, IProjectile
     {
         damage = GetDamage();
         target.shipStatus.DealDamage(damage);
-        GameEvents.instance.HitShip(target, HitType.Hit, damage.healthDamage);
     }
 
     private void Miss()
     {
-        GameEvents.instance.HitShip(target, HitType.Miss, 0);
+        damage = GetPartialDamage();
+        target.shipStatus.DealDamage(damage);
     }
 }

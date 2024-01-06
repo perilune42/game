@@ -19,11 +19,11 @@ public class DamagePopupContainer : MonoBehaviour
         
     }
 
-    public void AddPopup(HitType hitType, int value)
+    public void AddPopup(HitType hitType, DamageData damage, CritType crit)
     {
         if (hitType == HitType.Hit)
         {
-            Add(value.ToString());
+            Add(damage.healthDamage.ToString(), crit);
         }
         else if (hitType == HitType.Miss)
         {
@@ -36,7 +36,7 @@ public class DamagePopupContainer : MonoBehaviour
         Add("miss");
     }
 
-    void Add(string text)
+    void Add(string text, CritType crit = CritType.none)
     {
         if (damagePopups.Count == 0)
         {
@@ -45,13 +45,18 @@ public class DamagePopupContainer : MonoBehaviour
         TMP_Text newPopup = Instantiate(damagePopupPrefab);
         newPopup.transform.SetParent(transform, false);
         newPopup.text = text;
+        if (crit != CritType.none)
+        {
+            newPopup.color = Color.yellow;
+            newPopup.text += " " + crit.ToString();
+        }
         damagePopups.Add(newPopup);
         UIUtils.List(newPopup.gameObject, damagePopups.Count, 5, Vector2.up);
     }
 
     IEnumerator StartCountdown()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(3);
         foreach (TMP_Text damagePopup in damagePopups)
         {
             Destroy(damagePopup.gameObject);

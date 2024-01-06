@@ -9,9 +9,9 @@ Features:
 -lockon
 -victory condition
 -command points distribution: different max points for each ship
--damage preview for multiple projectiles
 
 Minor:
+-UI improvement
 -add AI control order randomness
 -add selected weapon damage data
 -maintain team color on turn switch

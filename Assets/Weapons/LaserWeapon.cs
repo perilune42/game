@@ -37,7 +37,7 @@ public class LaserWeapon : Weapon, IRanged, ITargetsShip, IHasCooldown
     public void ShootShip(Ship targetShip)
     {
         targetShip.shipStatus.DealDamage(GetDamage(targetShip));
-        GameEvents.instance.HitShip(targetShip, HitType.Hit, GetDamage(targetShip).healthDamage);
+        
         projectileAnimHandler.Shoot(targetShip.transform.position, weaponData.visualProjectilePrefab);
 
         cooldownTimer = reloadActions;

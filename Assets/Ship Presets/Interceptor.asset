@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   thrust: 4
   health: 20
-  armorPoints: 15
+  armorPoints: 30
   armorLevel: 4
   defaultMaxActions: 2

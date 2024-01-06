@@ -42,11 +42,15 @@ public class WeaponButton : MonoBehaviour
     public void UpdateLabels()
     {
         if (weapon == null || button == null) return;
-        if (weapon is KineticWeapon k ) //change to interface IUsesAmmo
+        if (weapon is IUsesAmmo a)
         {
-            ammoLabel.text = k.ammoCount + " / " + k.ammoCapacity;
-
+            ammoLabel.text = a.GetAmmoCount() + " / " + a.GetAmmoCapacity();
         }
+        else if (weapon is ILimitedUse l)
+        {
+            ammoLabel.text = l.GetRemainingUses().ToString();
+        }
+
         if (weapon is IHasCooldown c)
         {
             if (c.GetCooldown() > 0)

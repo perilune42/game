@@ -1,3 +1,5 @@
+using System;
+
 public struct AttackData
 {
     public int damage;
@@ -26,4 +28,28 @@ public struct DamageData
     }
 
     public static DamageData none = new DamageData(0, 0);
+
+    public override bool Equals(object obj)
+    {
+        if (obj is DamageData otherDamage) 
+        {
+            return this.healthDamage == otherDamage.healthDamage && this.armorDamage == otherDamage.armorDamage;
+        }
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(healthDamage, armorDamage);
+    }
+
+    public static bool operator ==(DamageData left, DamageData right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(DamageData left, DamageData right)
+    {
+        return !(left == right);
+    }
 }

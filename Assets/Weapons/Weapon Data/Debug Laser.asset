@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79ad71ada2f18df4f9acff2d0ee2d1d4, type: 3}
   m_Name: Debug Laser
   m_EditorClassIdentifier: 
-  damage: 4
-  armorPierce: -1
+  damage: 6
+  armorPierce: 10
   armorBonus: 1.5
   fallOffRange: 10
-  fallOffRate: 0.5
+  fallOffRate: 0
   reloadActions: 0
   weaponName: Debug Laser
   visualProjectilePrefab: {fileID: 837092916497042348, guid: 8f4d60cede5faf3479980a97afb125db, type: 3}

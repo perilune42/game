@@ -15,9 +15,16 @@ public interface ITargetsShip
 
 }
 
+public interface IHasHitChance
+{
+    public float ChanceToHit(Ship target, float distance);
+    public float ChanceToHitPreview(Ship target, float distance, bool isEvading);
+}
+
 public interface IUsesAmmo
 {
-
+    public int GetAmmoCount();
+    public int GetAmmoCapacity();
 }
 
 public interface ILimitedUse

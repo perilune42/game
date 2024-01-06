@@ -3,7 +3,7 @@ using UnityEngine;
 
 
 [RequireComponent(typeof(ProjectileRenderer))]
-public class TorpedoWeapon : Weapon, ITargetsShip, IHasCooldown, ILimitedUse
+public class TorpedoWeapon : Weapon, ITargetsShip, IHasCooldown, ILimitedUse, IHasHitChance
 {
 
 
@@ -27,6 +27,7 @@ public class TorpedoWeapon : Weapon, ITargetsShip, IHasCooldown, ILimitedUse
         projectileCount = weaponData.projectileCount;
 
         cooldownTimer = 0;
+        reloadActions = weaponData .reloadActions;
 
         projectileAnimHandler = GetComponent<ProjectileRenderer>();
     }
@@ -34,6 +35,11 @@ public class TorpedoWeapon : Weapon, ITargetsShip, IHasCooldown, ILimitedUse
     public AttackData GetAttack(Ship targetShip)
     {
         return new AttackData(weaponData.damage, weaponData.armorPierce);
+    }
+
+    public AttackData GetPartialAttack(Ship targetShip)
+    {
+        return new AttackData(weaponData.partialDamage, weaponData.partialArmorPierce);
     }
 
     public int GetRemainingUses()
@@ -69,6 +75,11 @@ public class TorpedoWeapon : Weapon, ITargetsShip, IHasCooldown, ILimitedUse
     public DamageData GetSingleDamage(Ship targetShip)
     {
         return Weapon.CalcBasicDamage(GetAttack(targetShip), targetShip);
+    }
+
+    public DamageData GetPartialDamage(Ship targetShip)
+    {
+        return Weapon.CalcBasicDamage(GetPartialAttack(targetShip), targetShip);
     }
 
     public float ChanceToHit(Ship target, float distance)

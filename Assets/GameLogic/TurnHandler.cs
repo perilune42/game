@@ -83,13 +83,14 @@ public class TurnHandler : MonoBehaviour
                 foreach (Ship ship in list.activeShips)
                 {
                     ship.GiveActions();
+                    ship.shipStatus.TickEffects();
                 }
             }
             else
             {
                 foreach (Ship ship in list.activeShips)
                 {
-                    ship.actions = 0;
+                    ship.ClearActions() ;
                 }
             }
         }

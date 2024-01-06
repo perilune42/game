@@ -38,11 +38,11 @@ public class ShipUI : MonoBehaviour
     }
 
 
-    void DamagePopup(Ship ship, HitType hitType ,int value)
+    void DamagePopup(Ship ship, HitType hitType ,DamageData damage, CritType crit)
     {
         if (ship == this.ship)
         {
-            damagePopupContainer.AddPopup(hitType, value);
+            damagePopupContainer.AddPopup(hitType, damage, crit);
         }
     }
 
@@ -114,7 +114,7 @@ public class ShipUI : MonoBehaviour
 
     }
 
-    void SetHealthBars(Ship otherShip, HitType hitType, int value)
+    void SetHealthBars(Ship otherShip, HitType hitType, DamageData damage, CritType crit)
     {
         healthBar.SetLevel((float)ship.shipStatus.health / ship.shipStatus.maxHealth);
         armorBar.SetLevel((float)ship.shipStatus.armorPoints / ship.shipStatus.maxArmorPoints);

@@ -63,6 +63,7 @@ public class PlayerControl : MonoBehaviour
     public void SetCurrentAction(ControlAction newAction, bool keep = false, Weapon weapon = null) //keep: keeping any changes to speed and direction
     {
         if (!TurnHandler.instance.PlayerControllable()) return;
+        AttackDisplay.instance.Clear();
         GameEvents.instance.PreviewDamage(null, DamageData.none);
         selectedShip.shipStatus.isEvading = false;
 
@@ -230,11 +231,9 @@ public class PlayerControl : MonoBehaviour
                 this.targetedShip = targetedShip;
                 GameEvents.instance.PreviewDamage(null, DamageData.none) ;
                 actionLabel.text = "Targeting " + targetedShip.shipName;
-                if (selectedWeapon is KineticWeapon kinetic) actionLabel.text += "\n" + 
-                        UIUtils.ToPercent(kinetic.ChanceToHitPreview(targetedShip, HexCoordinates.Distance(selectedShip.pos, targetedShip.pos), false)) +
-                        " / " +
-                        UIUtils.ToPercent(kinetic.ChanceToHitPreview(targetedShip, HexCoordinates.Distance(selectedShip.pos, targetedShip.pos), true)) +
-                        "\n" + HexCoordinates.Distance(selectedShip.pos, targetedShip.pos).ToString();
+                if (selectedWeapon is IHasHitChance h) AttackDisplay.instance.ShowHitChance(
+                        h.ChanceToHitPreview(targetedShip, HexCoordinates.Distance(selectedShip.pos, targetedShip.pos), false),
+                        h.ChanceToHitPreview(targetedShip, HexCoordinates.Distance(selectedShip.pos, targetedShip.pos), true));
                 if (selectedWeapon is ITargetsShip w2) GameEvents.instance.PreviewDamage(targetedShip, w2.GetDamage(targetedShip));
                 
             }

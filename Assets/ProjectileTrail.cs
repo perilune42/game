@@ -6,8 +6,10 @@ public class ProjectileTrail : MonoBehaviour
 {
     public Vector3 target { private get; set; }
     public float speed = 20;
+    public float acceleration = 0;
     float time = -1;
     bool started = false;
+   
 
     public void StartTimer(float time)
     {
@@ -21,7 +23,11 @@ public class ProjectileTrail : MonoBehaviour
             time -= Time.deltaTime;
         }
         else if (time <= 0) started = true;
-        if (started) transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+        if (started)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+            speed += acceleration * Time.deltaTime;
+        }
         if (Vector3.Distance(transform.position,target) < 10)
         {
             Destroy(gameObject,2);

@@ -286,6 +286,10 @@ public class Ship : MonoBehaviour
         return actions > 0;
     }
 
+    public void ClearActions()
+    {
+        actions = 0;
+    }
     public void PostMove()
     {
         pathShower.UnHide();
@@ -314,5 +318,6 @@ public class Ship : MonoBehaviour
     {
         return HexCoordinates.Distance(ship1.pos, ship2.pos);
     }
+
 
 }

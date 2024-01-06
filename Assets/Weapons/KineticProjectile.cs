@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
 
-public class KineticProjectile: MonoBehaviour
+public class KineticProjectile: MonoBehaviour, IProjectile
 {
     public DamageData damage;
     public float accuracy;
@@ -47,7 +47,7 @@ public class KineticProjectile: MonoBehaviour
         return this.name;
     }
 
-    public void Destoy()
+    public void Destroy()
     {
         GameObject.Destroy(gameObject);
     }
@@ -56,11 +56,11 @@ public class KineticProjectile: MonoBehaviour
     {
         damage = GetDamage();
         target.shipStatus.DealDamage(damage);
-        GameEvents.instance.HitShip(target, HitType.Hit, damage.healthDamage);
+        
     }
 
     private void Miss()
     {
-        GameEvents.instance.HitShip(target, HitType.Miss, 0);
+        target.shipStatus.DealDamage(DamageData.none);
     }
 }
