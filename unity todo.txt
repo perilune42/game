@@ -1,6 +1,3 @@
-High Priority:
--rework turn system
-
 Features:
 -critical hits
 -payloads
@@ -11,6 +8,7 @@ Features:
 -command points distribution: different max points for each ship
 
 Minor:
+-UI for status effects
 -UI improvement
 -add AI control order randomness
 -add selected weapon damage data

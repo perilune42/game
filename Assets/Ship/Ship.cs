@@ -8,12 +8,10 @@ public class Ship : MonoBehaviour
 {
     public Team team = Team.Player;
     public int speed;
-    public int thrust;
     public HexDirection moveDir = HexDirection.N;
     public HexDirection headingDir = HexDirection.N;
     public HexCoordinates pos = new HexCoordinates(5,0);
     public PositionPreview positionPreview;
-    public int rotateSpeed = 1;
     public int actions;
     public int maxActions = -1;
     public string shipName = "Ship";
@@ -47,7 +45,6 @@ public class Ship : MonoBehaviour
 
     private void Awake()
     {
-        thrust = shipData.thrust;
         hexGrid = HexGrid.instance;
         actions = GameConfig.turnActions;
         pathShower = GetComponentInChildren<PathShower>();
@@ -60,7 +57,7 @@ public class Ship : MonoBehaviour
         
     }
 
-    // Start is called before the first frame update
+    
     void Start()
     {
         if (maxActions == -1)
@@ -80,12 +77,17 @@ public class Ship : MonoBehaviour
     {
         headingDir = newHeading;
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, 60 * (int)headingDir, transform.rotation.eulerAngles.z);
-        PassAction(rotateSpeed);
+        PassAction(shipStatus.rotateSpeed);
     }
     public void Rotate(int newHeading)
     {
         Rotate((HexDirection)newHeading);
         //Action();
+    }
+
+    public void Boost()
+    {
+        Boost(shipStatus.thrust.Get());
     }
 
     public void Boost(int force, int length = 1)
@@ -112,12 +114,12 @@ public class Ship : MonoBehaviour
                 else if (moveDir - headingDir == -2 || moveDir - headingDir == 4) //CW 120 deg
                 {
                     moveDir = headingDir;
-                    speed = thrust;
+                    speed = shipStatus.thrust.Get();
                 }
                 else if (moveDir - headingDir == 2 || moveDir - headingDir == -4) //CCW 120 deg
                 {
                     moveDir = headingDir;
-                    speed = thrust;
+                    speed = shipStatus.thrust.Get();
                 }
             }
             else if (GetSpeedLevel() == 2)  //speed 2 - double boost required for turning, uses 2 actions
@@ -129,12 +131,12 @@ public class Ship : MonoBehaviour
                 else if (moveDir - headingDir == -2 || moveDir - headingDir == 4) //CW 120 deg
                 {
                     moveDir = (HexDirection)((int)(moveDir + 1) % 6);
-                    speed = thrust;
+                    speed = shipStatus.thrust.Get();
                 }
                 else if (moveDir - headingDir == 2 || moveDir - headingDir == -4) //CCW 120 deg
                 {
                     moveDir = (HexDirection)((int)(moveDir + 5) % 6);
-                    speed = thrust;
+                    speed = shipStatus.thrust.Get();
                 }
             }
             
@@ -176,8 +178,8 @@ public class Ship : MonoBehaviour
 
     public int GetSpeedLevel()
     {
-        if (speed < thrust * slowThreshold) return 1;
-        else if (speed < thrust * fastThreshold) return 2;
+        if (speed < shipStatus.thrust.Get() * slowThreshold) return 1;
+        else if (speed < shipStatus.thrust.Get() * fastThreshold) return 2;
         else return 3;
     }
 
@@ -265,7 +267,7 @@ public class Ship : MonoBehaviour
         switch (action)
         {
             case ControlAction.Rotate:
-                return actions >= rotateSpeed;
+                return actions >= shipStatus.rotateSpeed;
             case ControlAction.Boost:
                 return actions > 0;
             case ControlAction.None:

@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="Assets\Weapons\LaserWeapon.cs" />
     <Compile Include="Assets\AttackDisplay.cs" />
+    <Compile Include="Assets\Stat.cs" />
     <Compile Include="Assets\Grid\HexMesh.cs" />
     <Compile Include="Assets\UI\DefenseDisplay.cs" />
     <Compile Include="Assets\ObjectMover.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Assets\CamMover.cs" />
     <Compile Include="Assets\UI\PositionPreview.cs" />
     <Compile Include="Assets\GameLogic\GridController.cs" />
+    <Compile Include="Assets\Ship\StatModifier.cs" />
     <Compile Include="Assets\DestroySelf.cs" />
     <Compile Include="Assets\Ship\CritType.cs" />
     <Compile Include="Assets\Grid\HexCoordinates.cs" />

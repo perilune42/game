@@ -62,7 +62,7 @@ public class AIController : MonoBehaviour
                         debugString += " " + interceptRoutine.targetShip.shipName;
                         debugString += " " + AIUtils.ClosestDirection(ship.pos, interceptRoutine.targetShip.pos);
                         targetMoveDirection = AIUtils.ClosestDirection(ship.pos, interceptRoutine.targetShip.pos);
-                        if (HexCoordinates.Distance(ship.pos, interceptRoutine.targetShip.pos) > ship.thrust * 5)
+                        if (HexCoordinates.Distance(ship.pos, interceptRoutine.targetShip.pos) > ship.shipStatus.thrust.Get() * 5)
                         {
                             targetSpeedLevel = 3;
                         }
@@ -181,7 +181,7 @@ public class AIController : MonoBehaviour
     IEnumerator Boost(Ship ship)
     {
         AIUtils.Log("Boosting!", ship);
-        ship.Boost(ship.thrust);
+        ship.Boost(ship.shipStatus.thrust.Get());
         yield return new WaitForSeconds(0.5f);
         StartCoroutine(Pass(ship));
     }

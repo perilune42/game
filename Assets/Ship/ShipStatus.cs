@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,10 @@ using static UnityEngine.GraphicsBuffer;
 public class ShipStatus : MonoBehaviour
 {
     public Ship ship;
+
+    public List<IStat> stats = new List<IStat>();
+    public StatInt thrust;
+    public int rotateSpeed = 0;
 
     public int health;
     public int maxHealth;
@@ -17,32 +22,43 @@ public class ShipStatus : MonoBehaviour
     public bool isEvading = false;
 
     public List<IProjectile> incomingProjectiles = new List<IProjectile>();
-    public List<IStatusEffect> statusEffects = new List<IStatusEffect>();
+    public List<StatusEffect> statusEffects = new List<StatusEffect>();
 
 
     void Awake()
     {
         ship = GetComponent<Ship>();
+
+        thrust = new StatInt(ship.shipData.thrust);
         maxHealth = ship.shipData.health;
         health = maxHealth;
         maxArmorPoints = ship.shipData.armorPoints;
         armorLevel = ship.shipData.armorLevel;
         armorPoints = maxArmorPoints;
+
+        stats.Add(thrust); //all stats go here
     }
+
+
+
 
     public bool IsUnderAttack()
     {
         return incomingProjectiles.Count > 0;
     }
 
-    public void AddStatusEffect(IStatusEffect effect)
+    public void AddStatusEffect(StatusEffect effect)
     {
         statusEffects.Add(effect);
     }
 
     public void TickEffects()
     {
-        foreach (IStatusEffect effect in statusEffects)
+        foreach (IStat stat in stats)
+        {
+            stat.ClearModifiers();
+        }
+        foreach (StatusEffect effect in statusEffects)
         {
             effect.Tick();
         }
@@ -70,6 +86,9 @@ public class ShipStatus : MonoBehaviour
                 case CritType.stun:
                     this.AddStatusEffect(new StunEffect(ship, 2));
                     break;
+                case CritType.slow:
+                    AddStatusEffect(new SlowEffect(ship, 2));
+                    break;
             }
         }
 
@@ -89,7 +108,7 @@ public class ShipStatus : MonoBehaviour
     {
         float chanceToCrit = GetCritChance(damage);
         if (Random.value > chanceToCrit) return CritType.none;
-        return CritType.stun; //temp
+        return CritType.slow; //temp
     }
 
     public float GetCritChance(DamageData damage)

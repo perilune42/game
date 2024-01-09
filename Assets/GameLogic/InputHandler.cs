@@ -44,14 +44,6 @@ public class InputHandler : MonoBehaviour
         {
             ship._Debug();
         }
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            ship.Boost(ship.thrust, 1);
-        }
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            ship.Boost(ship.thrust, 2);
-        }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             playerControl.SetCurrentAction(ControlAction.None);

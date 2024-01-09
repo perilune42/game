@@ -115,7 +115,7 @@ public class PlayerControl : MonoBehaviour
             if (newAction == ControlAction.Boost && currentAction != ControlAction.Boost)
             {
                 actionLabel.text = "Boost";
-                selectedShip.Boost(selectedShip.thrust);  //event
+                selectedShip.Boost();  //event
                 selectedShip.positionPreview.PreviewAt(selectedShip.GetNextTile(), selectedShip.headingDir);
                 hexGrid.GetCellAtPos(selectedShip.GetNextTile()).isHighlighting = true;
 
@@ -179,7 +179,7 @@ public class PlayerControl : MonoBehaviour
                         pendingDirection = targetDirection;
                         if (pendingDirection != null)
                         {
-                            selectedShip.positionPreview.PreviewAt(selectedShip.GetNextTile(selectedShip.rotateSpeed), targetDirection ?? HexDirection.N);
+                            selectedShip.positionPreview.PreviewAt(selectedShip.GetNextTile(selectedShip.shipStatus.rotateSpeed), targetDirection ?? HexDirection.N);
                         }
                         GameEvents.instance.UpdateUI();
                     }
