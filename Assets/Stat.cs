@@ -13,7 +13,7 @@ public interface IStat
 {
     public void ClearModifiers();
 }
-public class Stat<T>: IStat
+public class Stat<T> :IStat where T : IComparable
 {
     protected T value;
     protected List<T> flatModifiers = new List<T>();

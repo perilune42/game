@@ -20,6 +20,8 @@ public abstract class Weapon : MonoBehaviour
         Init();
         ship = GetComponentInParent<Ship>();
     }
+
+    
     
     public static DamageData CalcBasicDamage(AttackData attack, Ship targetShip)
     {

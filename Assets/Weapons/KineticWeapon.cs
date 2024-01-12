@@ -95,16 +95,14 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged, IUsesAmmo, IHasCoold
 
     public float ChanceToHit(Ship target, float distance)
     {
-        if (target.shipStatus.isEvading)
-            return Mathf.Max(0, (accuracy - weaponData.RangePenalty(distance)) * (1 - weaponData.EvasionPenalty(distance)));
-        else return Mathf.Max(0, accuracy - weaponData.RangePenalty(distance));
+        return ChanceToHit(target, distance, target.shipStatus.isEvading);
     }
 
-    public float ChanceToHitPreview(Ship target, float distance, bool isEvading)
+    public float ChanceToHit(Ship target, float distance, bool isEvading)
     {
         if (isEvading)
-            return Mathf.Max(0, (accuracy - weaponData.RangePenalty(distance)) * (1 - weaponData.EvasionPenalty(distance)));
-        else return Mathf.Max(0, accuracy - weaponData.RangePenalty(distance));
+            return Mathf.Clamp01((accuracy - weaponData.RangePenalty(distance)) * (1 - target.shipStatus.mobility.Get() * weaponData.EvasionPenalty(distance)));
+        else return Mathf.Clamp01(accuracy - weaponData.RangePenalty(distance));
     }
 
     

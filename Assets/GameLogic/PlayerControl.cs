@@ -232,8 +232,8 @@ public class PlayerControl : MonoBehaviour
                 GameEvents.instance.PreviewDamage(null, DamageData.none) ;
                 actionLabel.text = "Targeting " + targetedShip.shipName;
                 if (selectedWeapon is IHasHitChance h) AttackDisplay.instance.ShowHitChance(
-                        h.ChanceToHitPreview(targetedShip, HexCoordinates.Distance(selectedShip.pos, targetedShip.pos), false),
-                        h.ChanceToHitPreview(targetedShip, HexCoordinates.Distance(selectedShip.pos, targetedShip.pos), true));
+                        h.ChanceToHit(targetedShip, HexCoordinates.Distance(selectedShip.pos, targetedShip.pos), false),
+                        h.ChanceToHit(targetedShip, HexCoordinates.Distance(selectedShip.pos, targetedShip.pos), true));
                 if (selectedWeapon is ITargetsShip w2) GameEvents.instance.PreviewDamage(targetedShip, w2.GetDamage(targetedShip));
                 
             }

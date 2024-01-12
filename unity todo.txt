@@ -10,6 +10,8 @@ Features:
 Minor:
 -UI for status effects
 -UI improvement
+-overdamage wonky af
+-fix yellow speed line not updating after changing thrust
 -add AI control order randomness
 -add selected weapon damage data
 -maintain team color on turn switch
@@ -23,6 +25,7 @@ Bugs:
 -out of bounds
 
 Visuals:
+-enemy camera panning improvement
 -camera pan to hit ship on enemy turn
 -rotate animation
 -laser fade

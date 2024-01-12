@@ -46,9 +46,9 @@ public class AILogic : MonoBehaviour
         recentMovePenalty = AIBehaviorData.recentMovePenalty;
         if (ship.shipStatus.IsUnderAttack())
         {
-            foreach (KineticProjectile proj in ship.shipStatus.incomingProjectiles)
+            foreach (IProjectile proj in ship.shipStatus.incomingProjectiles)
             {
-                score += (proj.damage.armorDamage + proj.damage.healthDamage * 3) * evasionBias / 5f * proj.ChanceToHit();
+                score += (proj.GetDamage().armorDamage + proj.GetDamage().healthDamage * 3) * evasionBias / 5f * proj.ChanceToHit();
             }
             possibleRoutines.Add(new AIEvade(), score);
         }

@@ -8,7 +8,7 @@ public class ShipUI : MonoBehaviour
 {
     Ship ship;
     [SerializeField]
-    TMP_Text healthLabel, actionLabel, damageLabel, armorLabel, armorDamageLabel, armorLevelLabel;
+    TMP_Text healthLabel, actionLabel, damageLabel, armorLabel, armorDamageLabel, armorLevelLabel, effectsLabel;
     [SerializeField]
     DamagePopupContainer damagePopupContainer;
 
@@ -105,6 +105,8 @@ public class ShipUI : MonoBehaviour
         
         actionLabel.text = ship.actions.ToString();
 
+        SetStatusEffects();
+
         if (ship.team == TurnHandler.instance.currentTeam)
         {
             if (ship.isSelected) hudBackground.color = activeColor;
@@ -120,5 +122,15 @@ public class ShipUI : MonoBehaviour
         armorBar.SetLevel((float)ship.shipStatus.armorPoints / ship.shipStatus.maxArmorPoints);
         healthBarPreview.SetLevel((float)ship.shipStatus.health / ship.shipStatus.maxHealth);
         armorBarPreview.SetLevel((float)ship.shipStatus.armorPoints / ship.shipStatus.maxArmorPoints);
+    }
+
+    void SetStatusEffects()
+    {
+        string text = string.Empty;
+        foreach (StatusEffect effect in ship.shipStatus.statusEffects)
+        {
+            text += effect.ToString() + " ";
+        }
+        effectsLabel.text = text;
     }
 }

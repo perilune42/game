@@ -89,7 +89,7 @@ public class TorpedoWeapon : Weapon, ITargetsShip, IHasCooldown, ILimitedUse, IH
         else return Mathf.Max(0, accuracy - weaponData.RangePenalty(distance));
     }
 
-    public float ChanceToHitPreview(Ship target, float distance, bool isEvading)
+    public float ChanceToHit(Ship target, float distance, bool isEvading)
     {
         if (isEvading)
             return Mathf.Max(0, (accuracy - weaponData.RangePenalty(distance)) * (1 - weaponData.EvasionPenalty(distance)));

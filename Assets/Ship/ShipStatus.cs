@@ -10,6 +10,7 @@ public class ShipStatus : MonoBehaviour
 
     public List<IStat> stats = new List<IStat>();
     public StatInt thrust;
+    public StatFloat mobility;
     public int rotateSpeed = 0;
 
     public int health;
@@ -30,6 +31,7 @@ public class ShipStatus : MonoBehaviour
         ship = GetComponent<Ship>();
 
         thrust = new StatInt(ship.shipData.thrust);
+        mobility = new StatFloat(ship.shipData.mobility);
         maxHealth = ship.shipData.health;
         health = maxHealth;
         maxArmorPoints = ship.shipData.armorPoints;
@@ -47,9 +49,18 @@ public class ShipStatus : MonoBehaviour
         return incomingProjectiles.Count > 0;
     }
 
-    public void AddStatusEffect(StatusEffect effect)
+    public void AddStatusEffect(StatusEffect newEffect)
     {
-        statusEffects.Add(effect);
+        foreach (StatusEffect effect in statusEffects)
+        {
+            if (effect.GetType() == newEffect.GetType())
+            {
+                effect.Merge(newEffect);
+                return;
+            }
+        }
+        statusEffects.Add(newEffect);
+        newEffect.Apply(ship);
     }
 
     public void TickEffects()
@@ -84,10 +95,10 @@ public class ShipStatus : MonoBehaviour
                     finalDamage.healthDamage *= 2;
                     break;
                 case CritType.stun:
-                    this.AddStatusEffect(new StunEffect(ship, 2));
+                    this.AddStatusEffect(new StunEffect(2));
                     break;
                 case CritType.slow:
-                    AddStatusEffect(new SlowEffect(ship, 2));
+                    AddStatusEffect(new SlowEffect(2));
                     break;
             }
         }

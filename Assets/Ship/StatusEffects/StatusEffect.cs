@@ -6,19 +6,30 @@ public abstract class StatusEffect
 {
     public Ship ship;
     public int duration;
-    public bool active;
+    public bool active = false;
+     
+    public StatusEffect(int duration) //severity?
+    {
+        this.duration = duration;
+    }
 
-    public StatusEffect(Ship ship, int duration)
+    public void Apply(Ship ship)
     {
         this.ship = ship;
-        this.duration = duration;
         active = true;
+        StatEffect();
+    }
+
+    public override string ToString()
+    {
+        return $"{this.GetType().ToString()}: {duration}";
     }
 
     public int GetRemainingDuration()
     {
         return duration;
     }
+    
     public void Tick()
     {
         if (duration == 0)
@@ -26,10 +37,21 @@ public abstract class StatusEffect
             Finish();
             return;
         }
-        duration--;
-        TickEffect();
+        if (active)
+        {
+            duration--;
+            StatEffect();
+            TickEffect();
+        }
     }
-    protected virtual void TickEffect() { }
+
+    public void Merge(StatusEffect other)
+    {
+        this.duration = Mathf.Max(other.duration, this.duration);
+    }
+
+    protected virtual void StatEffect() { } //modify stats of ship starting immediately to end
+    protected virtual void TickEffect() { } //ticks every turn starting on turn of control
     public virtual void Finish()
     {
         active = false;
@@ -42,28 +64,32 @@ public abstract class StatusEffect
 
 public class StunEffect : StatusEffect
 {
-    public StunEffect(Ship ship, int duration): base(ship, duration) 
+    public StunEffect(int duration): base(duration) 
     {
 
     }
 
     protected override void TickEffect()
     {
-
         ship.ClearActions();
     }
 }
 
 public class SlowEffect : StatusEffect
 {
-    public SlowEffect(Ship ship, int duration) : base(ship, duration)
+    public SlowEffect(int duration) : base(duration)
     {
 
     }
 
+    protected override void StatEffect()
+    {
+        ship.shipStatus.thrust.AddMultiplier(0.5f);
+        ship.shipStatus.mobility.AddMultiplier(0.5f);
+    }
 
     protected override void TickEffect()
     {
-        ship.shipStatus.thrust.AddMultiplier(0.5f); //evasion strength
+
     }
 }
