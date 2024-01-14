@@ -55,7 +55,7 @@ public class KineticProjectile: MonoBehaviour, IProjectile
     private void Hit()
     {
         damage = GetDamage();
-        target.shipStatus.DealDamage(damage);
+        target.shipStatus.DealDamage(damage, true, weapon.critOffset);
         
     }
 

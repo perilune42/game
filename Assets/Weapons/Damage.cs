@@ -3,14 +3,14 @@ using System;
 public struct AttackData
 {
     public int damage;
-    public int armorPierce;
+    public int armorPen;
     public int damageType;
     public float armorBonus;
 
-    public AttackData(int damage, int armorPierce, float armorBonus = 1f)
+    public AttackData(int damage, int armorPen, float armorBonus = 1f)
     {
         this.damage = damage;
-        this.armorPierce = armorPierce;
+        this.armorPen = armorPen;
         this.damageType = 0; //ph
         this.armorBonus = armorBonus;
     }

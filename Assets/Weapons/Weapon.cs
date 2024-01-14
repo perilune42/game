@@ -40,14 +40,16 @@ public abstract class Weapon : MonoBehaviour
                 remainingHealth -= attack.damage;
                 continue;
             }
-            int finalHealthDamage;
-            if (attack.armorPierce >= 0)
+            int finalHealthDamage, blockedDamage;
+            if (attack.armorPen >= 0)
             {
-                finalHealthDamage = Mathf.Max(0, attack.damage - Mathf.Max(0, targetShip.shipStatus.armorLevel - attack.armorPierce));
+                finalHealthDamage = Mathf.Max(0, attack.damage - Mathf.Max(0, targetShip.shipStatus.armorLevel - attack.armorPen));
+                blockedDamage = Mathf.Max(0, targetShip.shipStatus.armorLevel - attack.armorPen);
             }
             else
             {
                 finalHealthDamage = 0;
+                blockedDamage = attack.damage;
             }
             int baseArmorDamage = attack.damage;
             int finalArmorDamage = Mathf.RoundToInt(baseArmorDamage * attack.armorBonus);
@@ -58,6 +60,7 @@ public abstract class Weapon : MonoBehaviour
             }
             else
             {
+                
                 int overDamage = 0;
                 for (int partialDamage = 1; partialDamage <= baseArmorDamage; partialDamage++)
                 {
@@ -69,7 +72,7 @@ public abstract class Weapon : MonoBehaviour
                     }
                 }
                 finalArmorDamage = remainingArmor;
-                finalHealthDamage += overDamage;
+                finalHealthDamage += Mathf.RoundToInt(((float)overDamage / baseArmorDamage) * blockedDamage);
                 remainingHealth -= finalHealthDamage;
                 remainingArmor -= finalArmorDamage;
             }

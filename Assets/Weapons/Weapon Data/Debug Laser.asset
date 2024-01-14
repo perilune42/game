@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Debug Laser
   m_EditorClassIdentifier: 
   damage: 6
-  armorPierce: 10
+  armorPen: -1
   armorBonus: 1.5
   fallOffRange: 10
   fallOffRate: 0
   reloadActions: 0
+  critOffset: 10
   weaponName: Debug Laser
   visualProjectilePrefab: {fileID: 837092916497042348, guid: 8f4d60cede5faf3479980a97afb125db, type: 3}

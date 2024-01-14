@@ -1,4 +1,4 @@
 public enum CritType
 {
-   none, doubleDamage, stun, disableMove, slow
+   none, doubleDamage, stun, disableMove, slow, targeting
 }

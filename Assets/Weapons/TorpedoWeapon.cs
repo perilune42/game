@@ -3,7 +3,7 @@ using UnityEngine;
 
 
 [RequireComponent(typeof(ProjectileRenderer))]
-public class TorpedoWeapon : Weapon, ITargetsShip, IHasCooldown, ILimitedUse, IHasHitChance
+public class TorpedoWeapon : Weapon, ITargetsShip, IHasCooldown, ILimitedUse, IHasHitChance, IShootsProjectile
 {
 
 
@@ -11,7 +11,7 @@ public class TorpedoWeapon : Weapon, ITargetsShip, IHasCooldown, ILimitedUse, IH
     public TorpedoWeaponSO weaponData;
     public int idealRange, remainingUses, reloadActions, projectileCount;
     //public AttackData attack;
-    public float accuracy;
+    public float accuracy, critOffset;
     public int cooldownTimer;
 
     ProjectileRenderer projectileAnimHandler;
@@ -25,19 +25,29 @@ public class TorpedoWeapon : Weapon, ITargetsShip, IHasCooldown, ILimitedUse, IH
         accuracy = weaponData.accuracy;
         remainingUses = weaponData.ammoCapacity;
         projectileCount = weaponData.projectileCount;
+        critOffset = weaponData.critOffset;
 
         cooldownTimer = 0;
-        reloadActions = weaponData .reloadActions;
+        reloadActions = weaponData.reloadActions;
 
         projectileAnimHandler = GetComponent<ProjectileRenderer>();
     }
-
-    public AttackData GetAttack(Ship targetShip)
+    public float GetCritOffset()
     {
-        return new AttackData(weaponData.damage, weaponData.armorPierce);
+        return critOffset;
     }
 
-    public AttackData GetPartialAttack(Ship targetShip)
+    public int GetProjectileCount()
+    {
+        return projectileCount;
+    }
+
+    public AttackData GetAttack(Ship targetShip = null)
+    {
+        return new AttackData(weaponData.damage, weaponData.armorPen);
+    }
+
+    public AttackData GetPartialAttack(Ship targetShip = null)
     {
         return new AttackData(weaponData.partialDamage, weaponData.partialArmorPierce);
     }
@@ -69,17 +79,17 @@ public class TorpedoWeapon : Weapon, ITargetsShip, IHasCooldown, ILimitedUse, IH
 
     public DamageData GetDamage(Ship targetShip)
     {
-        return Weapon.CalcMultipleDamage(GetAttack(targetShip), targetShip, projectileCount);
+        return Weapon.CalcMultipleDamage(GetAttack(), targetShip, projectileCount);
     }
 
     public DamageData GetSingleDamage(Ship targetShip)
     {
-        return Weapon.CalcBasicDamage(GetAttack(targetShip), targetShip);
+        return Weapon.CalcBasicDamage(GetAttack(), targetShip);
     }
 
     public DamageData GetPartialDamage(Ship targetShip)
     {
-        return Weapon.CalcBasicDamage(GetPartialAttack(targetShip), targetShip);
+        return Weapon.CalcBasicDamage(GetPartialAttack(), targetShip);
     }
 
     public float ChanceToHit(Ship target, float distance)

@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: Autocannon
   m_EditorClassIdentifier: 
   damage: 3
-  armorPierce: 0
+  armorPen: 0
   idealRange: 3
   accuracy: 0.85
   velocity: 3.5
   ammoCapacity: 3
   reloadActions: 2
   projectileCount: 3
+  critOffset: 0
   weaponName: Autocannon
   visualProjectilePrefab: {fileID: 837092916497042348, guid: 2015fd137a790264c994cebbaf661755, type: 3}

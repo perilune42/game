@@ -234,7 +234,11 @@ public class PlayerControl : MonoBehaviour
                 if (selectedWeapon is IHasHitChance h) AttackDisplay.instance.ShowHitChance(
                         h.ChanceToHit(targetedShip, HexCoordinates.Distance(selectedShip.pos, targetedShip.pos), false),
                         h.ChanceToHit(targetedShip, HexCoordinates.Distance(selectedShip.pos, targetedShip.pos), true));
-                if (selectedWeapon is ITargetsShip w2) GameEvents.instance.PreviewDamage(targetedShip, w2.GetDamage(targetedShip));
+                if (selectedWeapon is ITargetsShip w2)
+                {
+                    GameEvents.instance.PreviewDamage(targetedShip, w2.GetDamage(targetedShip));
+                    AttackDisplay.instance.ShowCritChance(targetedShip.shipStatus.GetCritChance(w2));
+                }
                 
             }
             

@@ -11,6 +11,7 @@ public class ShipStatus : MonoBehaviour
     public List<IStat> stats = new List<IStat>();
     public StatInt thrust;
     public StatFloat mobility;
+    public StatFloat accuracy;
     public int rotateSpeed = 0;
 
     public int health;
@@ -56,6 +57,7 @@ public class ShipStatus : MonoBehaviour
             if (effect.GetType() == newEffect.GetType())
             {
                 effect.Merge(newEffect);
+                Debug.Log("merged effects");
                 return;
             }
         }
@@ -76,7 +78,7 @@ public class ShipStatus : MonoBehaviour
         statusEffects.RemoveAll(x => x.IsActive() == false);
     }
 
-    public void DealDamage(DamageData damage, bool canCrit = true)
+    public void DealDamage(DamageData damage, bool canCrit = true, float critOffset = 0f)
     {
         CritType crit = CritType.none;
         DamageData finalDamage = damage;
@@ -86,7 +88,7 @@ public class ShipStatus : MonoBehaviour
             return;
         }
         
-        if (canCrit) crit = RollForCrit(damage);
+        if (canCrit) crit = RollForCrit(damage, critOffset);
         if (crit != CritType.none)
         {
             switch (crit)
@@ -95,10 +97,13 @@ public class ShipStatus : MonoBehaviour
                     finalDamage.healthDamage *= 2;
                     break;
                 case CritType.stun:
-                    this.AddStatusEffect(new StunEffect(2));
+                    AddStatusEffect(new StunEffect(2));
                     break;
                 case CritType.slow:
                     AddStatusEffect(new SlowEffect(2));
+                    break;
+                case CritType.targeting:
+                    AddStatusEffect(new ScrambleEffect(2)); //TODO: Not implemented accuracy stat yet
                     break;
             }
         }
@@ -115,23 +120,30 @@ public class ShipStatus : MonoBehaviour
         
     }
 
-    CritType RollForCrit(DamageData damage)
+    CritType RollForCrit(DamageData damage, float critOffset)
     {
-        float chanceToCrit = GetCritChance(damage);
+        float chanceToCrit = GetCritChance(damage, critOffset);
         if (Random.value > chanceToCrit) return CritType.none;
-        return CritType.slow; //temp
-    }
-
-    public float GetCritChance(DamageData damage)
+        CritType[] arr = { CritType.slow, CritType.stun, CritType.doubleDamage };
+        int choice = Random.Range(0, arr.Length);
+        return arr[choice];
+    } 
+    public float GetCritChance(DamageData damage, float critOffset)
     {
         float damagePercent = (float)damage.healthDamage / maxHealth;
-        float chanceToCrit = Mathf.Clamp01(2.5f * damagePercent - 0.25f);
+        float chanceToCrit = Mathf.Clamp01(2.5f * damagePercent - 0.25f + critOffset);
+        //critical chance formula, linear with endpoints at 10% damage and 50% damage
         return chanceToCrit;
+    }
+
+    public float GetCritChance(ITargetsShip weapon)
+    {
+        return GetCritChance(weapon.GetDamage(ship), weapon.GetCritOffset());
     }
 
     public DamageData CalculateDamage(AttackData attack)
     {
-        return new DamageData(attack.damage - Mathf.Max(0, armorLevel - attack.armorPierce), attack.damage);
+        return new DamageData(attack.damage - Mathf.Max(0, armorLevel - attack.armorPen), attack.damage);
     }
 
     public void AddProjectile(IProjectile projectile)

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class WeaponButton : MonoBehaviour
 {
-    public TMP_Text weaponNameLabel, ammoLabel, reloadLabel;
+    public TMP_Text weaponNameLabel, ammoLabel, reloadLabel, damageLabel, apLabel;
 
     public int horizSpacing = 10;
     public Weapon weapon;
@@ -59,6 +59,15 @@ public class WeaponButton : MonoBehaviour
                 reloadLabel.text = c.GetCooldown().ToString();
             }
             else reloadLabel.gameObject.SetActive(false);
+        }
+        if (weapon is ITargetsShip t)
+        {
+            damageLabel.text = t.GetAttack().damage.ToString();
+            apLabel.text = t.GetAttack().armorPen.ToString();
+            if (weapon is IShootsProjectile p)
+            {
+                if (p.GetProjectileCount() > 1) damageLabel.text += $" x {p.GetProjectileCount()}";
+            }
         }
         if (!locked) button.interactable = weapon.CanFire();
         else button.interactable = false;

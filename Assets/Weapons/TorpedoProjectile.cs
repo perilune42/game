@@ -61,7 +61,7 @@ public class TorpedoProjectile: MonoBehaviour, IProjectile
     private void Hit()
     {
         damage = GetDamage();
-        target.shipStatus.DealDamage(damage);
+        target.shipStatus.DealDamage(damage, true, weapon.critOffset);
     }
 
     private void Miss()

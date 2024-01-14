@@ -1,6 +1,5 @@
 Features:
--critical hits
--payloads
+-AI weapon choice
 -overwatch (?)
 -translation/maneuver
 -lockon
@@ -10,7 +9,6 @@ Features:
 Minor:
 -UI for status effects
 -UI improvement
--overdamage wonky af
 -fix yellow speed line not updating after changing thrust
 -add AI control order randomness
 -add selected weapon damage data

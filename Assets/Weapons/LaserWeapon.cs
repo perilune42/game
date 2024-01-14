@@ -7,7 +7,7 @@ public class LaserWeapon : Weapon, IRanged, ITargetsShip, IHasCooldown
 
     public LaserWeaponSO weaponData;
     public int damage, fallOffRange, reloadActions; //fallOffRange = damage starts to drop linearly
-    public float fallOffRate; //damage per tile after fallOffRange
+    public float fallOffRate, critOffset; //damage per tile after fallOffRange
     int cooldownTimer;
 
     ProjectileRenderer projectileAnimHandler;
@@ -21,22 +21,31 @@ public class LaserWeapon : Weapon, IRanged, ITargetsShip, IHasCooldown
         fallOffRange = weaponData.fallOffRange;
         fallOffRate = weaponData.fallOffRate;
         reloadActions = weaponData.reloadActions;
+        critOffset = weaponData.critOffset;
 
         projectileAnimHandler = GetComponent<ProjectileRenderer>();
         lineRenderer = HexGrid.instance.weaponRangeDisplay;
     }
 
-    public AttackData GetAttack(Ship targetShip)
+    public float GetCritOffset()
     {
+        return critOffset;
+    }
+    public AttackData GetAttack(Ship targetShip = null)
+    {
+        if (targetShip == null)
+        {
+            return new AttackData(damage, weaponData.armorPen, weaponData.armorBonus);
+        }
         int finalDamage;
         float distance = HexCoordinates.Distance(targetShip.pos, ship.pos);
         finalDamage = DamageFallOff(damage, distance);
-        return new AttackData(finalDamage, weaponData.armorPierce, weaponData.armorBonus);
+        return new AttackData(finalDamage, weaponData.armorPen, weaponData.armorBonus);
     }
 
     public void ShootShip(Ship targetShip)
     {
-        targetShip.shipStatus.DealDamage(GetDamage(targetShip));
+        targetShip.shipStatus.DealDamage(GetDamage(targetShip), true, critOffset);
         
         projectileAnimHandler.Shoot(targetShip.transform.position, weaponData.visualProjectilePrefab);
 

@@ -44,7 +44,6 @@ public abstract class StatusEffect
             TickEffect();
         }
     }
-
     public void Merge(StatusEffect other)
     {
         this.duration = Mathf.Max(other.duration, this.duration);
@@ -86,6 +85,24 @@ public class SlowEffect : StatusEffect
     {
         ship.shipStatus.thrust.AddMultiplier(0.5f);
         ship.shipStatus.mobility.AddMultiplier(0.5f);
+    }
+
+    protected override void TickEffect()
+    {
+
+    }
+}
+
+public class ScrambleEffect : StatusEffect
+{
+    public ScrambleEffect(int duration) : base(duration)
+    {
+
+    }
+
+    protected override void StatEffect()
+    {
+        ship.shipStatus.accuracy.AddMultiplier(0.5f);
     }
 
     protected override void TickEffect()

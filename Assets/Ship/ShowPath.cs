@@ -13,16 +13,13 @@ public class PathShower : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        GameEvents.instance.onUpdateUI += UpdateColor;
         ship = GetComponentInParent<Ship>();
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.positionCount = 2;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 
     public void Hide()
     {
@@ -38,8 +35,13 @@ public class PathShower : MonoBehaviour
         
         lineRenderer.SetPosition(0, ship.transform.position);
         lineRenderer.SetPosition(1, HexGrid.instance.GetCellAtPos(nextTile).transform.position);
-        if (ship.GetSpeedLevel() == 1 ) lineRenderer.material = speed1;
-        else if (ship.GetSpeedLevel() == 2 ) lineRenderer.material = speed2;
+        UpdateColor();
+    }
+
+    void UpdateColor()
+    {
+        if (ship.GetSpeedLevel() == 1) lineRenderer.material = speed1;
+        else if (ship.GetSpeedLevel() == 2) lineRenderer.material = speed2;
         else lineRenderer.material = speed3;
     }
 }

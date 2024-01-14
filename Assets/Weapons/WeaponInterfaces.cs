@@ -8,10 +8,10 @@ public interface IRanged
 
 public interface ITargetsShip
 {
-    public AttackData GetAttack(Ship targetShip);
+    public AttackData GetAttack(Ship targetShip = null);
     public void ShootShip (Ship targetShip);
     public DamageData GetDamage(Ship targetShip);
-    
+    public float GetCritOffset();
 
 }
 
@@ -35,6 +35,11 @@ public interface ILimitedUse
 public interface IHasCooldown
 {
     public int GetCooldown();
+}
+
+public interface IShootsProjectile
+{
+    public int GetProjectileCount();
 }
 
 public interface IProjectile

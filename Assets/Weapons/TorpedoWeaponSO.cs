@@ -6,7 +6,7 @@ using UnityEngine;
 public class TorpedoWeaponSO : ScriptableObject
 {
     public int damage = 3;
-    public int armorPierce = 1;
+    public int armorPen = 1;
 
     public int partialDamage = 2;
     public int partialArmorPierce = 0;
@@ -18,6 +18,7 @@ public class TorpedoWeaponSO : ScriptableObject
     public int projectileCount = 1;
 
     public int reloadActions = 1;
+    public float critOffset = 0f;
 
     public string weaponName = "Torpedo";
 

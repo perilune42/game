@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: Coilgun
   m_EditorClassIdentifier: 
   damage: 4
-  armorPierce: 3
+  armorPen: 3
   idealRange: 6
   accuracy: 0.9
   velocity: 10
   ammoCapacity: 1
   reloadActions: 2
   projectileCount: 1
+  critOffset: 0
   weaponName: Coilgun
   visualProjectilePrefab: {fileID: 837092916497042348, guid: 2015fd137a790264c994cebbaf661755, type: 3}

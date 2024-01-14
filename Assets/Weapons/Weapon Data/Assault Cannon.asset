@@ -13,12 +13,13 @@ MonoBehaviour:
   m_Name: Assault Cannon
   m_EditorClassIdentifier: 
   damage: 5
-  armorPierce: 1
+  armorPen: 2
   idealRange: 5
   accuracy: 0.9
   velocity: 6
   ammoCapacity: 1
   reloadActions: 1
   projectileCount: 1
+  critOffset: 0
   weaponName: Assault Cannon
   visualProjectilePrefab: {fileID: 837092916497042348, guid: 2015fd137a790264c994cebbaf661755, type: 3}

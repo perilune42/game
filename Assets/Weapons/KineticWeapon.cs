@@ -3,7 +3,7 @@ using UnityEngine;
 
 
 [RequireComponent(typeof(ProjectileRenderer))]
-public class KineticWeapon : Weapon, ITargetsShip, IRanged, IUsesAmmo, IHasCooldown, IHasHitChance
+public class KineticWeapon : Weapon, ITargetsShip, IRanged, IUsesAmmo, IHasCooldown, IHasHitChance, IShootsProjectile
 {
     
     
@@ -11,7 +11,7 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged, IUsesAmmo, IHasCoold
     public KineticWeaponSO weaponData;
     public int idealRange, ammoCapacity, reloadActions, ammoCount, projectileCount;
     //public AttackData attack;
-    public float accuracy;
+    public float accuracy, critOffset;
     public int cooldownTimer;
 
     ProjectileRenderer projectileAnimHandler;
@@ -29,6 +29,7 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged, IUsesAmmo, IHasCoold
         ammoCapacity = weaponData.ammoCapacity;
         reloadActions = weaponData.reloadActions;
         projectileCount = weaponData.projectileCount;
+        critOffset = weaponData.critOffset;
 
 
         ammoCount = ammoCapacity;
@@ -38,9 +39,19 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged, IUsesAmmo, IHasCoold
         rangeLineRenderer = HexGrid.instance.weaponRangeDisplay;
     }
 
-    public AttackData GetAttack(Ship targetShip)
+    public float GetCritOffset()
     {
-        return new AttackData(weaponData.damage, weaponData.armorPierce);
+        return critOffset;
+    }
+
+    public int GetProjectileCount()
+    {
+        return projectileCount;
+    }
+
+    public AttackData GetAttack(Ship targetShip = null)
+    {
+        return new AttackData(weaponData.damage, weaponData.armorPen);
     }
     public void ShootShip(Ship targetShip)
     {
@@ -85,12 +96,12 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged, IUsesAmmo, IHasCoold
 
     public DamageData GetDamage(Ship targetShip)
     {
-        return Weapon.CalcMultipleDamage(GetAttack(targetShip), targetShip, projectileCount);
+        return Weapon.CalcMultipleDamage(GetAttack(), targetShip, projectileCount);
     }
 
     public DamageData GetSingleDamage(Ship targetShip)
     {
-        return Weapon.CalcBasicDamage(GetAttack(targetShip), targetShip);
+        return Weapon.CalcBasicDamage(GetAttack(), targetShip);
     }
 
     public float ChanceToHit(Ship target, float distance)
@@ -101,8 +112,8 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged, IUsesAmmo, IHasCoold
     public float ChanceToHit(Ship target, float distance, bool isEvading)
     {
         if (isEvading)
-            return Mathf.Clamp01((accuracy - weaponData.RangePenalty(distance)) * (1 - target.shipStatus.mobility.Get() * weaponData.EvasionPenalty(distance)));
-        else return Mathf.Clamp01(accuracy - weaponData.RangePenalty(distance));
+            return Mathf.Clamp01((accuracy - RangePenalty(distance)) * (1 - target.shipStatus.mobility.Get() * EvasionPenalty(distance)));
+        else return Mathf.Clamp01(accuracy - RangePenalty(distance));
     }
 
     
@@ -145,6 +156,15 @@ public class KineticWeapon : Weapon, ITargetsShip, IRanged, IUsesAmmo, IHasCoold
     void Reload()
     {
         ammoCount = ammoCapacity;
+    }
+
+    public float RangePenalty(float distance)
+    {
+        return distance / (20 * weaponData.velocity); //10 velocity: 10 cells = 5%, 20 cells = 10%
+    }
+    public float EvasionPenalty(float distance)
+    {
+        return distance / (5 * weaponData.velocity);
     }
 
     public void HideRange()
