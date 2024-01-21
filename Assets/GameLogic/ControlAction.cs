@@ -1,4 +1,4 @@
 public enum ControlAction
 {
-    None, Rotate, Boost, Pass, Evade, Brace, DirectTargetShip, DevSpawnShip
+    None, Rotate, Boost, Translate, Pass, Evade, Brace, DirectTargetShip, DevSpawnShip
 }

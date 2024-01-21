@@ -12,7 +12,7 @@ public class UIButtons : MonoBehaviour
     public Canvas gridCanvas;
     public ControlButton[] buttons;
 
-    [SerializeField] Button confirmButton, fireButton, guardButton, endTurnButton;
+    [SerializeField] Button confirmButton, fireButton, guardButton, endTurnButton, translateButton;
 
     public static UIButtons instance;
 
@@ -28,7 +28,11 @@ public class UIButtons : MonoBehaviour
     {
         if (playerControl.currentAction != ControlAction.None && playerControl.currentAction != ControlAction.DirectTargetShip)
         {
-            if (playerControl.currentAction == ControlAction.Rotate && playerControl.pendingDirection == null) ToggleConfirmButton(false);
+            if ((playerControl.currentAction == ControlAction.Rotate && playerControl.pendingDirection == null)
+                || (playerControl.currentAction == ControlAction.Translate && playerControl.pendingCell == null))
+            {
+                ToggleConfirmButton(false);
+            }
             else ToggleConfirmButton(true);
         }
         else ToggleConfirmButton(false);
@@ -86,6 +90,14 @@ public class UIButtons : MonoBehaviour
         if (playerControl.selectedShip != null && playerControl.ActionAvailable(ControlAction.Boost))
         {
             playerControl.SetCurrentAction(ControlAction.Boost);
+        }
+    }
+
+    public void Translate()
+    {
+        if (playerControl.selectedShip != null && playerControl.ActionAvailable(ControlAction.Translate))
+        {
+            playerControl.SetCurrentAction(ControlAction.Translate);
         }
     }
 

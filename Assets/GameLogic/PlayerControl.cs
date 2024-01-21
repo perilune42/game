@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -28,6 +29,7 @@ public class PlayerControl : MonoBehaviour
 
 
     public HexDirection? pendingDirection;
+    public HexCoordinates? pendingCell;
     int prevSpeed;
     HexDirection prevMoveDir;
 
@@ -72,10 +74,12 @@ public class PlayerControl : MonoBehaviour
             if (selectedWeapon is IRanged k) k.HideRange();
             selectedWeapon = null;
             pendingDirection = null;
+            pendingCell = null;
             selectedShip.positionPreview.Hide();
             foreach (var cell in hexGrid.cells)
             {
                 cell.isHighlighting = false;
+                cell.isTargeted = false;
             }
             //tempColoredCells.Clear();
             if (currentAction != newAction && currentAction != ControlAction.None && !keep) //switching between actions
@@ -109,8 +113,6 @@ public class PlayerControl : MonoBehaviour
                 hexGrid.GetCellAtPos(HexCoordinates.FromDirection(HexDirection.SW) + selectedShip.pos).isHighlighting = true;
                 hexGrid.GetCellAtPos(HexCoordinates.FromDirection(HexDirection.NW) + selectedShip.pos).isHighlighting = true;
 
-
-
             }
             if (newAction == ControlAction.Boost && currentAction != ControlAction.Boost)
             {
@@ -119,9 +121,15 @@ public class PlayerControl : MonoBehaviour
                 selectedShip.positionPreview.PreviewAt(selectedShip.GetNextTile(), selectedShip.headingDir);
                 hexGrid.GetCellAtPos(selectedShip.GetNextTile()).isHighlighting = true;
 
-
-
-
+            }
+            if (newAction == ControlAction.Translate)
+            {
+                actionLabel.text = "Translate";
+                HexCoordinates[] translatableCells = selectedShip.GetTranslationAvailableTiles();
+                foreach (HexCoordinates cell in translatableCells)
+                {
+                    hexGrid.GetCellAtPos(cell).isHighlighting = true;
+                }
             }
 
             if (newAction == ControlAction.Evade)
@@ -193,6 +201,20 @@ public class PlayerControl : MonoBehaviour
                 {
                     Confirm();
                 }
+                return;
+            case ControlAction.Translate:
+                if (selectedShip.GetTranslationAvailableTiles().Contains(coordinates))
+                {
+                    if (coordinates == pendingCell && pendingCell != null) Confirm();
+                    else
+                    {
+                        hexGrid.GetCellAtPos(pendingCell ?? coordinates).isTargeted = false;
+                        pendingCell = coordinates;
+                        hexGrid.GetCellAtPos(coordinates).isTargeted = true;
+                        GameEvents.instance.UpdateUI();
+                    }
+                }
+                GameEvents.instance.RecolorMesh();
                 return;
             case ControlAction.DevSpawnShip:
                 ShipSpawner.instance.SpawnPresetShip(coordinates);
@@ -281,6 +303,10 @@ public class PlayerControl : MonoBehaviour
                 selectedShip.PassAction(1);
                 SetCurrentAction(ControlAction.None, true);
                 break;
+            case ControlAction.Translate:
+                selectedShip.Translate(pendingCell ?? selectedShip.pos);
+                SetCurrentAction(ControlAction.None);
+                break;
 
             case ControlAction.Evade:
                 selectedShip.Evade();
@@ -310,6 +336,7 @@ public class PlayerControl : MonoBehaviour
         selectedShip.GetNextTile();
 
         if (!selectedShip.ActionAvailable()) GameEvents.instance.LockControls(true);
+        else GameEvents.instance.LockControls(false);
         //GameEvents.instance.RecolorMesh();
         GameEvents.instance.UpdateUI();
         //UIButtons.instance.ToggleConfirmButton(false);
@@ -393,6 +420,7 @@ public class PlayerControl : MonoBehaviour
             case ControlAction.Boost:
             case ControlAction.Pass:
             case ControlAction.Evade:
+            case ControlAction.Translate:
             case ControlAction.Brace:
             case ControlAction.DirectTargetShip:
                 return selectedShip.ActionAvailable(action);

@@ -99,14 +99,16 @@ public class HexMesh : MonoBehaviour {
         {
             for (int j = 0; j < 6; j++)
             {
-                if (hexGrid.cells[i].isDebug) tempColor = hexGrid.debugColor;
-                else if (hexGrid.cells[i].isHighlighting) tempColor = hexGrid.highlightColor;
-                else if (hexGrid.cells[i].isActive) tempColor = hexGrid.shipColor;
-                else tempColor = hexGrid.cells[i].color;
+                HexCell cell = hexGrid.cells[i];
+                if (cell.isDebug) tempColor = hexGrid.debugColor;
+                else if (cell.isTargeted) tempColor = hexGrid.targetedColor;
+                else if (cell.isHighlighting) tempColor = hexGrid.highlightColor;
+                else if (cell.isActive) tempColor = hexGrid.shipColor;
+                else tempColor = cell.color;
 
-                if (hexGrid.cells[i].isHovering) tempColor += new Color(0.1f, 0.1f, 0.1f, 0.1f);
+                if (cell.isHovering) tempColor += new Color(0.1f, 0.1f, 0.1f, 0.1f);
 
-                if (hexGrid.cells[i] != null)
+                if (cell != null)
                 {
                     AddTriangleColor(tempColor);
                 }

@@ -7,6 +7,7 @@ public class ShipDataSO : ScriptableObject
 {
     public int thrust;
     public float mobility = 1;
+    public int maneuverSpeed = 1;
     public int health;
     public int armorPoints;
     public int armorLevel;

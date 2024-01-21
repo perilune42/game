@@ -10,7 +10,7 @@ public class Ship : MonoBehaviour
     public int speed;
     public HexDirection moveDir = HexDirection.N;
     public HexDirection headingDir = HexDirection.N;
-    public HexCoordinates pos = new HexCoordinates(5,0);
+    public HexCoordinates pos = new HexCoordinates(5, 0);
     public PositionPreview positionPreview;
     public int actions;
     public int maxActions = -1;
@@ -19,7 +19,8 @@ public class Ship : MonoBehaviour
     public int uid;
     public bool isSelected = false;
     public bool isDestroyed = false;
-    
+    bool hasManeuvered = false;
+
 
     public AILogic AILogic = null;
     public ShipStatus shipStatus;
@@ -28,8 +29,8 @@ public class Ship : MonoBehaviour
 
     public Weapon[] weapons;
 
-    
-    
+
+
 
     HexGrid hexGrid;
     [HideInInspector]
@@ -54,10 +55,10 @@ public class Ship : MonoBehaviour
         weapons = GetComponentsInChildren<Weapon>();
         AILogic = GetComponent<AILogic>();
         meshRenderer = GetComponentInChildren<MeshRenderer>();
-        
+
     }
 
-    
+
     void Start()
     {
         if (maxActions == -1)
@@ -72,7 +73,7 @@ public class Ship : MonoBehaviour
     void Update() {
 
     }
-    
+
     public void Rotate(HexDirection newHeading)
     {
         headingDir = newHeading;
@@ -97,13 +98,13 @@ public class Ship : MonoBehaviour
         else if (Math.Abs(headingDir - moveDir) == 3) speed -= force;
         else
         {
-            if (speed == 0) 
+            if (speed == 0)
             {
                 speed = force;
                 moveDir = headingDir;
             }
 
-            
+
             else if (GetSpeedLevel() == 1) //speed 1 - direct turning
             {
                 if (Math.Abs(moveDir - headingDir) == 1 || Math.Abs(moveDir - headingDir) == 5) //60 deg
@@ -139,7 +140,7 @@ public class Ship : MonoBehaviour
                     speed = shipStatus.thrust.Get();
                 }
             }
-            
+
             else  //speed 3 - cannot turn
             {
                 if (Math.Abs(moveDir - headingDir) == 1 || Math.Abs(moveDir - headingDir) == 5) //60 deg
@@ -164,6 +165,20 @@ public class Ship : MonoBehaviour
         GetNextTile();
     }
 
+    public void Translate(HexCoordinates coordinates)
+    {
+        pos = coordinates;
+        hasManeuvered = true;
+        TriggerMoveAnim();
+        UpdatePosition();
+        PassAction(1);
+    }
+
+    public HexCoordinates[] GetTranslationAvailableTiles()
+    {
+        HexPatch hexPatch = new HexPatch(pos, shipStatus.maneuverSpeed.Get());
+        return hexPatch.GetCells(false);
+    }
     public HexCoordinates GetNextTile(int actions)
     {
         nextTile = pos + HexCoordinates.FromDirection(moveDir) * speed * actions;
@@ -186,7 +201,7 @@ public class Ship : MonoBehaviour
 
 
 
-    public void EndTurnMove()
+    public void EndTurn()
     {
         foreach (Weapon weapon in weapons)
         {
@@ -194,6 +209,11 @@ public class Ship : MonoBehaviour
         }
         pos = pos + HexCoordinates.FromDirection(moveDir) * speed;
 
+        UpdatePosition();
+    }
+
+    public void UpdatePosition()
+    {
         cell.containedShip = null;
         cell = hexGrid.GetCellAtPos(pos);
         cell.containedShip = this;
@@ -210,6 +230,7 @@ public class Ship : MonoBehaviour
     public void GiveActions()
     {
         actions = maxActions;
+        hasManeuvered = false;
     }
     public void PassAction(int actions)
     {
@@ -230,6 +251,8 @@ public class Ship : MonoBehaviour
     {
         shipStatus.RollProjectiles();
     }
+
+
 
     void UseAction()
     {
@@ -270,6 +293,8 @@ public class Ship : MonoBehaviour
                 return actions >= shipStatus.rotateSpeed;
             case ControlAction.Boost:
                 return actions > 0;
+            case ControlAction.Translate:
+                return actions > 0 && !hasManeuvered;
             case ControlAction.None:
                 return actions > 0;
             case ControlAction.Pass:

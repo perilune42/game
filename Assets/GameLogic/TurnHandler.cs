@@ -69,7 +69,7 @@ public class TurnHandler : MonoBehaviour
     {
         foreach (Ship ship in ShipListOfTeam(currentTeam).activeShips)
         {
-            ship.EndTurnMove();
+            ship.EndTurn();
             GridController.instance.UpdateShipPos(ship);
         }
 

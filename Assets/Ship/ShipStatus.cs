@@ -11,6 +11,7 @@ public class ShipStatus : MonoBehaviour
     public List<IStat> stats = new List<IStat>();
     public StatInt thrust;
     public StatFloat mobility;
+    public StatInt maneuverSpeed;
     public StatFloat accuracy;
     public int rotateSpeed = 0;
 
@@ -33,6 +34,7 @@ public class ShipStatus : MonoBehaviour
 
         thrust = new StatInt(ship.shipData.thrust);
         mobility = new StatFloat(ship.shipData.mobility);
+        maneuverSpeed = new StatInt(ship.shipData.maneuverSpeed);
         maxHealth = ship.shipData.health;
         health = maxHealth;
         maxArmorPoints = ship.shipData.armorPoints;

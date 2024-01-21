@@ -12,7 +12,7 @@ public class HexCell : MonoBehaviour
     public Color color;
     Color originalColor;
     public Ship containedShip = null;
-    public bool isHovering, isHighlighting, isActive, isDebug = false;
+    public bool isHovering, isHighlighting, isTargeted, isActive, isDebug = false;
 
     public HexCell GetNeighbor (HexDirection direction) {
 		return neighbors[(int)direction];

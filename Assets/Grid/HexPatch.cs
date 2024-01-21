@@ -46,6 +46,41 @@ public struct HexPatch
 
     }
 
+    public HexCoordinates[] GetCells(bool includeCenter = true)
+    {
+        List<HexCoordinates> cells = new List<HexCoordinates>();
+        if (includeCenter) cells.Add(center);
+        for (int r = 1; r <= radius; r++)
+        {
+            for (int i = 0; i < r; i++)
+            {
+                cells.Add(center + HexCoordinates.N * r + HexCoordinates.SE * i);
+            }
+            for (int i = 0; i < r; i++)
+            {
+                cells.Add(center + HexCoordinates.NE * r + HexCoordinates.S * i);
+            }
+            for (int i = 0; i < r; i++)
+            {
+                cells.Add(center + HexCoordinates.SE * r + HexCoordinates.SW * i);
+            }
+            for (int i = 0; i < r; i++)
+            {
+                cells.Add(center + HexCoordinates.S * r + HexCoordinates.NW * i);
+            }
+            for (int i = 0; i < r; i++)
+            {
+                cells.Add(center + HexCoordinates.SW * r + HexCoordinates.N * i);
+            }
+            for (int i = 0; i < r; i++)
+            {
+                cells.Add(center + HexCoordinates.NW * r + HexCoordinates.NE * i);
+            }
+        }
+
+        return cells.ToArray();
+    }
+
     public Vector3[] GetRelativeOuterVertices()
     {
         //HexCoordinates[] outerCells = GetOuterCells();

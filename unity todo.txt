@@ -1,4 +1,5 @@
 Features:
+-Evasion levels
 -AI weapon choice
 -overwatch (?)
 -translation/maneuver
@@ -7,17 +8,16 @@ Features:
 -command points distribution: different max points for each ship
 
 Minor:
--UI for status effects
 -UI improvement
 -fix yellow speed line not updating after changing thrust
 -add AI control order randomness
--add selected weapon damage data
 -maintain team color on turn switch
 -out of bounds fix
 -force defense on turn end (for AI)
 -reconsider distributed actions for AI
 -fix action not set to none after using all command points
 -make unavailable actions uninteractable
+-make translation/boosting less effective at evading
 
 Bugs:
 -out of bounds

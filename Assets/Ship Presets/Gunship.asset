@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Gunship
   m_EditorClassIdentifier: 
   thrust: 4
+  mobility: 1
+  maneuverSpeed: 2
   health: 20
   armorPoints: 20
   armorLevel: 3
