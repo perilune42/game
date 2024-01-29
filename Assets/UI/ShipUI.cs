@@ -107,12 +107,16 @@ public class ShipUI : MonoBehaviour
 
         SetStatusEffects();
 
-        if (ship.team == TurnHandler.instance.currentTeam)
+        if (ship.team == Team.Player)
         {
             if (ship.isSelected) hudBackground.color = activeColor;
             else hudBackground.color = inactiveColor;
         }
-        else { hudBackground.color = enemyInactiveColor; }
+        else
+        {
+            if (ship.isSelected) hudBackground.color = enemyActiveColor;
+            else hudBackground.color = enemyInactiveColor;
+        }
 
     }
 
