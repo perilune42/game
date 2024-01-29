@@ -2,7 +2,6 @@ Features:
 -Evasion levels
 -AI weapon choice
 -overwatch (?)
--translation/maneuver
 -lockon
 -victory condition
 -command points distribution: different max points for each ship

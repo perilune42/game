@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 908168daf6878614089675d56449c39a, type: 3}
   m_Name: Gunship
   m_EditorClassIdentifier: 
-  thrust: 4
-  mobility: 1
-  maneuverSpeed: 2
+  thrust: 3
+  mobility: 0.9
+  maneuverSpeed: 1
   health: 20
-  armorPoints: 20
-  armorLevel: 3
+  armorPoints: 30
+  armorLevel: 4
   defaultMaxActions: 2

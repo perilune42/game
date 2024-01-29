@@ -64,7 +64,7 @@ public class PlayerControl : MonoBehaviour
 
     public void SetCurrentAction(ControlAction newAction, bool keep = false, Weapon weapon = null) //keep: keeping any changes to speed and direction
     {
-        if (!TurnHandler.instance.PlayerControllable()) return;
+        if (!TurnHandler.instance.PlayerControllable() && newAction != ControlAction.None) return;
         AttackDisplay.instance.Clear();
         GameEvents.instance.PreviewDamage(null, DamageData.none);
         selectedShip.shipStatus.isEvading = false;
