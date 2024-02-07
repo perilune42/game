@@ -10,4 +10,5 @@ public class AIBehaviorSO : ScriptableObject
     public float attackBias = 100; //score to attack a ship 5 tiles away
     public float interceptBias = 100;
     public float recentMovePenalty = 40;
+    public float rangeBiasModifier = 1f; //positive: prefer close range
 }

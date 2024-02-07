@@ -18,10 +18,23 @@ public class AILogic : MonoBehaviour
 
     public int lastMoved = -1;
 
-    float evasionBias; //score to evade a 5 armor damage attack with 100% accuracy
-    float attackBias; //score to attack a ship 5 tiles away
-    float interceptBias;
-    float recentMovePenalty;
+
+    //AI TUNING STATS
+    //for changes of a product of two numbers, adjust second multiplier only
+
+    //stats defined in scriptable object: baseline all 100, adjust multipliers here if not appropriate
+    const float evasionAdj = 1.2f; //score to evade a 5 armor damage attack with 100% accuracy
+    const float attackAdj = 1.5f; //score to attack a ship 5 tiles away
+    const float interceptAdj = 1f;
+    const float stackedThreatAdj = 1f;
+    const float distancePenalty = 1 * 1f;
+    const float noPenaltyDistance = 5f;
+    const float missChancePenaltyThreshold = 0.5f;
+    const float missChancePenalty = 100 * 1f; //score reduction per % to miss over (missChancePenaltyThreshold)%
+    const float laserDistancePenalty = 10 * 1f;
+    const float laserCloseRangeBonus = 15f;
+    const float laserFarPenaltyDistance = 10f;
+
 
     private void Awake()
     {
@@ -34,16 +47,20 @@ public class AILogic : MonoBehaviour
         playerShips = TurnHandler.instance.playerShipList;
     }
 
-    public void GetPossibleRoutines()
+    public Dictionary<IAIRoutine, float> GetPossibleRoutines()
     {
 
         possibleRoutines.Clear();
         float score = 0;
 
-        evasionBias = AIBehaviorData.evasionBias;
-        attackBias = AIBehaviorData.attackBias;
-        interceptBias = AIBehaviorData.interceptBias;
-        recentMovePenalty = AIBehaviorData.recentMovePenalty;
+        float evasionBias = AIBehaviorData.evasionBias * evasionAdj;
+        float attackBias = AIBehaviorData.attackBias * attackAdj;
+        float interceptBias = AIBehaviorData.interceptBias * interceptAdj;
+        float recentMovePenalty = AIBehaviorData.recentMovePenalty;
+        float rangeBiasModifier = AIBehaviorData.rangeBiasModifier;
+
+        possibleRoutines.Add(new AIPass(), 0);
+
         if (ship.shipStatus.IsUnderAttack())
         {
             foreach (IProjectile proj in ship.shipStatus.incomingProjectiles)
@@ -58,17 +75,49 @@ public class AILogic : MonoBehaviour
             Ship targetShip = AIUtils.ClosestShip(ship, playerShips, i);
             if (targetShip != null)
             {
-                score = attackBias - Mathf.Clamp(Ship.Distance(ship, targetShip) - 5, 0, 100); //factor in weapon accuracy, less emphasis on distance
-                possibleRoutines.Add(new AIAttackShip(targetShip), score); // add penalty based on how many threats target already has
+                foreach (Weapon weapon in ship.weapons) {
+                    if (!weapon.CanFire()) continue;
+                    score = attackBias;
+                    score -= Mathf.Clamp(Ship.Distance(ship, targetShip) - noPenaltyDistance, 0, 100) * distancePenalty; 
+                    //factor in weapon accuracy, less emphasis on distance
+                    if (weapon is IHasHitChance weapon1)
+                    {
+                        float chanceToMiss = 1 - weapon1.ChanceToHit(targetShip, ship.DistanceTo(targetShip), true);
+                        score -= Mathf.Clamp01(chanceToMiss - missChancePenaltyThreshold) * missChancePenalty;
+                        //reduce score per miss % over 50%
+                    }
+                    if (weapon is LaserWeapon laser)
+                    {
+                        //score += laserCloseRangeBonus;
+                        score -= Mathf.Clamp(Ship.Distance(ship, targetShip) - laser.fallOffRange, 0, 100) * laserDistancePenalty;
+                        //apply extra range penalty for laser weapons
+                    }
+                    if (targetShip.shipStatus.incomingProjectiles.Count >= 5)
+                    {
+                        foreach (IProjectile proj in targetShip.shipStatus.incomingProjectiles)
+                        {
+                            score -= stackedThreatAdj * proj.ChanceToHit() //reduce deathstacking on player
+                                * (proj.GetDamage().armorDamage + proj.GetDamage().healthDamage);
+                        }
+                    }
+
+                    possibleRoutines.Add(new AIAttackShip(targetShip, weapon), score); // add penalty based on how many threats target already has
+                }
             }
         }
         score = interceptBias;
+        score += ship.DistanceTo(AIUtils.ClosestShip(ship, playerShips)) * rangeBiasModifier;
         if (lastMoved != -1 && lastMoved < 3)
         {
             score -= (3 - lastMoved) * recentMovePenalty;
         }
+        if (ship.speed <= 1)
+        {
+            score *= 2f;
+        }
         possibleRoutines.Add(new AIIntercept(AIUtils.ClosestShip(ship, playerShips)), score);
 
+        return possibleRoutines;
     }
 
     public IAIRoutine GetBestRoutine()
@@ -84,6 +133,8 @@ public class AILogic : MonoBehaviour
         }
         return bestRoutine;
     }
+
+
 
     public RoutineType GetBestRoutine<RoutineType>()
     {
@@ -131,22 +182,8 @@ public class AILogic : MonoBehaviour
         }
     }
 
-    public IAIAttackRoutine GetBestAttackRoutine()
-    //prob doesn't need a routine, attacks are only really limited to "attack x ship"
-    //which can be defined in struct parameters
-    {
-        switch (this.behaviorType)
-        {
-            /*
-            case AIBehavior.Interceptor:
-                return new AIIntercept(AIUtils.ClosestShip(ship, playerShips));
-            case AIBehavior.Frontline:
-                return new AIAdvance(AIUtils.CenterMass(playerShips));
-            */
-            default:
-                return new AIAttackShip(AIUtils.ClosestShip(ship, playerShips));
-        }
-    }
+
+
 
 
 

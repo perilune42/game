@@ -1,10 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 
 public class AIController : MonoBehaviour
@@ -38,15 +41,14 @@ public class AIController : MonoBehaviour
 
             yield return new WaitForSeconds(1f);
             
-            while (ship.ActionAvailable(ControlAction.Pass))
+            while (ship.ActionAvailable())
             {
-                ship.AILogic.GetPossibleRoutines();
+                List<IAIRoutine> possibleRoutines = GetKeysSortedByValuesDescending(ship.AILogic.GetPossibleRoutines());
                 Debug.Log(Time.frameCount + " Possible Routines: " + ship.AILogic.possibleRoutines.ToLineSeparatedString());
-                IAIRoutine bestRoutine = ship.AILogic.GetBestRoutine();
-                Debug.Log(Time.frameCount + " Best Routine: " + bestRoutine);
+  
 
                 if (ship.isDestroyed) break;
-                bool finishedAction = false;
+
                 if (ship.AILogic.lastMoved != -1) ship.AILogic.lastMoved++;
 
                 string debugString = "";
@@ -54,109 +56,122 @@ public class AIController : MonoBehaviour
                 float deviationAngle = 0, maxDeviation = 45;
                 int targetSpeedLevel = 2;
 
-                if (bestRoutine is IAIMoveRoutine bestMoveRoutine)
+                bool success = false;
+
+                while (!success)
                 {
-
-                    if (bestMoveRoutine is AIIntercept interceptRoutine)
+                    if (possibleRoutines.Count == 0 || possibleRoutines[0] is AIPass)
                     {
-                        debugString += " " + interceptRoutine.targetShip.shipName;
-                        debugString += " " + AIUtils.ClosestDirection(ship.pos, interceptRoutine.targetShip.pos);
-                        targetMoveDirection = AIUtils.ClosestDirection(ship.pos, interceptRoutine.targetShip.pos);
-                        if (HexCoordinates.Distance(ship.pos, interceptRoutine.targetShip.pos) > ship.shipStatus.thrust.Get() * 5)
+                        StartCoroutine(Pass(ship, true));
+                        goto Finish;
+                    }
+                    IAIRoutine bestRoutine = possibleRoutines[0];
+                    possibleRoutines.RemoveAt(0);
+                    Debug.Log(Time.frameCount + " Best Routine: " + bestRoutine);
+
+
+                    if (!success && bestRoutine is IAIMoveRoutine bestMoveRoutine)
+                    {
+                        if (bestMoveRoutine is AIIntercept interceptRoutine)
                         {
-                            targetSpeedLevel = 3;
+                            debugString += " " + interceptRoutine.targetShip.shipName;
+                            debugString += " " + AIUtils.ClosestDirection(ship.pos, interceptRoutine.targetShip.pos);
+                            targetMoveDirection = AIUtils.ClosestDirection(ship.pos, interceptRoutine.targetShip.pos);
+                            if (HexCoordinates.Distance(ship.pos, interceptRoutine.targetShip.pos) > ship.shipStatus.thrust.Get() * 5)
+                            {
+                                targetSpeedLevel = 3;
+                            }
+                            else targetSpeedLevel = 2;
+
+
+                            deviationAngle = AIUtils.DeviationAngle(ship.moveDir, ship.pos, interceptRoutine.targetShip.pos);
+
+                            //debugString += " Deviation: " + deviationAngle;
+
                         }
-                        else targetSpeedLevel = 2;
+                        else if (bestMoveRoutine is AIAdvance advanceRoutine)
+                        {
+                            targetMoveDirection = AIUtils.ClosestDirection(ship.pos, advanceRoutine.destination);
+                            targetSpeedLevel = 2;
+                            deviationAngle = AIUtils.DeviationAngle(ship.moveDir, ship.pos, advanceRoutine.destination);
+
+                            //debugString += " Deviation: " + deviationAngle;
+                        }
+
+                        //perform movement if any
 
 
-                        deviationAngle = AIUtils.DeviationAngle(ship.moveDir, ship.pos, interceptRoutine.targetShip.pos);
-
-                        //debugString += " Deviation: " + deviationAngle;
-
-                    }
-                    else if (bestMoveRoutine is AIAdvance advanceRoutine)
-                    {
-                        targetMoveDirection = AIUtils.ClosestDirection(ship.pos, advanceRoutine.destination);
-                        targetSpeedLevel = 2;
-                        deviationAngle = AIUtils.DeviationAngle(ship.moveDir, ship.pos, advanceRoutine.destination);
-
-                        //debugString += " Deviation: " + deviationAngle;
-                    }
-
-                    //perform movement if any
-
-                    if (ship.AILogic.lastMoved == -1 || ship.AILogic.lastMoved > 3) //move cooldown, placeholder
-                                                                                    //to be replaced with score logic
-                    {
                         if (ship.moveDir != targetMoveDirection && deviationAngle >= maxDeviation)
                         {
                             HexDirection rotateManeuverDirection = AIUtils.RotateManeuverBestHeading(ship, targetMoveDirection);
                             if (ship.headingDir != rotateManeuverDirection)
                             {
                                 StartCoroutine(Rotate(ship, rotateManeuverDirection));
-                                yield return new WaitForSeconds(pauseTime);
-                                continue;
+                                goto Finish;
                             }
                             else
                             {
                                 StartCoroutine(Boost(ship));
                                 ship.AILogic.lastMoved = 0;
-                                yield return new WaitForSeconds(pauseTime);
-                                continue;
+                                goto Finish;
                             }
                         }
                         else if (ship.GetSpeedLevel() != targetSpeedLevel)
                         {
                             StartCoroutine(Boost(ship));
                             ship.AILogic.lastMoved = 0;
-                            yield return new WaitForSeconds(pauseTime);
-                            continue;
+                            goto Finish;
                         }
+
+                        //above: if moved, loop broken
+                        //reached here: no movement necessary
+                        continue;
                     }
-                    //above: if moved, loop broken
-                    //reached here: no movement necessary
-                    bestRoutine = ship.AILogic.GetBestRoutineNot<IAIMoveRoutine>();
-                }
 
 
 
 
 
-                if (bestRoutine is AIEvade)
-                {
-                    StartCoroutine(Evade(ship));
-                    yield return new WaitForSeconds(1.5f);
-                    finishedAction = true;
-                    continue;
-                }
-
-                //AttackRoutines
-                else if (bestRoutine is AIAttackShip attackShipRoutine)
-                {
-                    foreach (Weapon weapon in ship.weapons)
+                    else if (bestRoutine is AIEvade)
                     {
-                        if (weapon.CanFire() && weapon is ITargetsShip t)
+                        StartCoroutine(Evade(ship));
+                        goto Finish;
+                    }
+
+                    //AttackRoutines
+                    else if (bestRoutine is AIAttackShip attackShipRoutine)
+                    {
+                        if (attackShipRoutine.weapon is ITargetsShip t)
                         {
                             StartCoroutine(ShootShip(ship, attackShipRoutine.targetShip, t));
-                            yield return new WaitForSeconds(pauseTime);
-                            finishedAction = true;
-                            break;
+                            goto Finish;
                         }
+
+                        /*
+                        foreach (Weapon weapon in ship.weapons)
+                        {
+                            if (weapon.CanFire() && weapon is ITargetsShip t)
+                            {
+                                StartCoroutine(ShootShip(ship, attackShipRoutine.targetShip, t));
+                                goto Finish;
+                            }
+                        }
+                        */
+                        //above: if moved, loop broken
+                        //reached here: no weapon available
+                        continue;
                     }
-                    if (finishedAction) continue;
 
                 }
 
-
-
+                Debug.Log(debugString);
                 
 
-                if (!finishedAction)
-                {
-                    Debug.Log(debugString);
-                    StartCoroutine(Pass(ship, true));
+
+                Finish:
                     yield return new WaitForSeconds(pauseTime);
-                }
+
+
             }
             
         }
@@ -203,4 +218,11 @@ public class AIController : MonoBehaviour
 
 
     //Movement handler
+
+    static List<IAIRoutine> GetKeysSortedByValuesDescending(Dictionary<IAIRoutine, float> dictionary)
+    {
+        return dictionary.OrderByDescending(kv => kv.Value).Select(kv => kv.Key).ToList();
+    }
+
+
 }

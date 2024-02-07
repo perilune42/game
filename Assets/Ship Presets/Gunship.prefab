@@ -77,15 +77,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   team: 1
   speed: 4
-  thrust: 0
   moveDir: 3
   headingDir: 3
   pos:
     x: 20
     z: 26
   positionPreview: {fileID: 0}
-  rotateSpeed: 0
   actions: 0
+  maxActions: -1
   shipName: Gunship
   id: 0
   uid: 0
@@ -122,10 +121,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ship: {fileID: 0}
+  rotateSpeed: 0
   health: 20
   maxHealth: 20
+  armorPoints: 0
+  maxArmorPoints: 0
+  armorLevel: 0
   isEvading: 0
-  incomingProjectiles: []
 --- !u!114 &3653194956621763890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,7 +140,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40a5e617e3af3d644811ac0694d33678, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  behavior: 1
+  behaviorType: 0
+  AIBehaviorData: {fileID: 11400000, guid: 819e5c1b01d5f4941a457ea60a96457f, type: 2}
   lastMoved: 100
 --- !u!1001 &1903477726538356891
 PrefabInstance:

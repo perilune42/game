@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public enum AIBehaviorType
@@ -23,6 +24,10 @@ public interface IAIAttackRoutine : IAIRoutine
 
 }
 
+public class AIPass : IAIRoutine
+{
+    public AIPass() { }
+}
 
 public class AIIntercept : IAIMoveRoutine //intercept target ship at cruising speed
 {
@@ -53,9 +58,18 @@ public class AIAdvance : IAIMoveRoutine //go to dest at cruising speed
 public class AIAttackShip : IAIAttackRoutine
 {
     public Ship targetShip;
-    public AIAttackShip(Ship targetShip)
+    public Weapon weapon;
+    public AIAttackShip(Ship targetShip, Weapon weapon)
     {
         this.targetShip = targetShip;
+        this.weapon = weapon;
+    }
+
+    public override string ToString()
+    {
+        string str = "AIAttackShip";
+        str += $" attack {targetShip} using {weapon}";
+        return str;
     }
 }
 

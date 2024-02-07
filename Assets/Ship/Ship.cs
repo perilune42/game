@@ -346,5 +346,10 @@ public class Ship : MonoBehaviour
         return HexCoordinates.Distance(ship1.pos, ship2.pos);
     }
 
+    public float DistanceTo(Ship other)
+    {
+        return Distance(this, other);
+    }
+
 
 }

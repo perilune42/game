@@ -1,10 +1,12 @@
 Features:
 -Evasion levels
 -AI weapon choice
+-side armor
 -overwatch (?)
 -lockon
 -victory condition
 -command points distribution: different max points for each ship
+-identical projectile grouping in display list
 
 Minor:
 -UI improvement

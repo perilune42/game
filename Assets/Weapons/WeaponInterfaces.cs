@@ -51,3 +51,8 @@ public interface IProjectile
     public string GetName();
     public void Destroy();
 }
+
+public interface IInverseSquare
+{
+
+}

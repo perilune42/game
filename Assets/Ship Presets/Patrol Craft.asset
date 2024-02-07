@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Patrol Craft
   m_EditorClassIdentifier: 
   thrust: 4
+  mobility: 1.5
+  maneuverSpeed: 1
   health: 5
   armorPoints: 10
   armorLevel: 2

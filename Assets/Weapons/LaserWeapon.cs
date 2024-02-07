@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(ProjectileRenderer))]
-public class LaserWeapon : Weapon, IRanged, ITargetsShip, IHasCooldown
+public class LaserWeapon : Weapon, IRanged, ITargetsShip, IHasCooldown, IInverseSquare
 {
 
     public LaserWeaponSO weaponData;

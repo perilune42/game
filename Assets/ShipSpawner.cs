@@ -21,7 +21,7 @@ public class ShipSpawner : MonoBehaviour
         Team team = (Team)teamDropdown.value;
         Ship shipToSpawn = shipPresets[presetDropdown.value];
 
-        Debug.Log("Spawning a " + team + " " + shipToSpawn.name + "at " + pos.ToString());
+        Debug.Log("Spawning a " + team + " " + shipToSpawn.name + " at " + pos.ToString());
         Ship spawnedShip = Instantiate(shipToSpawn, HexGrid.instance.transform);
         spawnedShip.pos = pos;
         spawnedShip.team = team;
